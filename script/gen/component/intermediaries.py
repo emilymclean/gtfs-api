@@ -167,6 +167,19 @@ class CalendarCSV(Intermediary):
     start_date: str
     end_date: str
 
+    def to_json(self) -> Dict[str, Any]:
+        return {
+            'monday': self.days_of_week[0],
+            'tuesday': self.days_of_week[1],
+            'wednesday': self.days_of_week[2],
+            'thursday': self.days_of_week[3],
+            'friday': self.days_of_week[4],
+            'saturday': self.days_of_week[5],
+            'sunday': self.days_of_week[6],
+            'start_date': self.start_date,
+            'end_date': self.end_date,
+        }
+
     @staticmethod
     def from_csv_row(row: pd.Series) -> "CalendarCSV":
         return CalendarCSV(
@@ -196,14 +209,21 @@ class CalendarCSV(Intermediary):
 class CalendarExceptionCSV(Intermediary):
     service_id: str
     date: str
-    added: bool
+    type: int
+
+    def to_json(self) -> Dict[str, Any]:
+        return {
+            'service_id': self.service_id,
+            'date': self.date,
+            'type': timetable_service_exception_type[self.type],
+        }
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "CalendarExceptionCSV":
         return CalendarExceptionCSV(
             f"{row['service_id']}",
             f"{row['date']}",
-            row['exception_type'] == 1,
+            row['exception_type'],
         )
 
     @staticmethod

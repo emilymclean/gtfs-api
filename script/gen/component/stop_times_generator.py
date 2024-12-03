@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from pathlib import Path
+from time import strptime
 from typing import List, Optional, Any, Dict
 
-from .consts import wheelchair_boarding_options_pb
-from ..models import GtfsCsv, stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
+from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime
+from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV
+from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
 from .. import format_pb2 as pb
 
 
@@ -17,6 +18,8 @@ class StopTimeInformation(Intermediary):
     departure_time: str
     heading: str
     sequence: int
+    calendar: List[CalendarCSV]
+    exception: List[CalendarExceptionCSV]
 
     def to_json(self) -> Dict[str, Any]:
         return {
@@ -26,6 +29,10 @@ class StopTimeInformation(Intermediary):
             "departure_time": self.departure_time,
             "heading": self.heading,
             "sequence": self.sequence,
+            "service": {
+                "regular": [c.to_json() for c in self.calendar],
+                "exception": [c.to_json() for c in self.exception]
+            }
         }
 
 
@@ -54,6 +61,26 @@ class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
             time.departureTime = t.departure_time
             time.heading = t.heading
             time.sequence = t.sequence
+
+            for c in t.calendar:
+                regular = pb.TimetableServiceRegular()
+                regular.monday = c.days_of_week[0]
+                regular.tuesday = c.days_of_week[1]
+                regular.wednesday = c.days_of_week[2]
+                regular.thursday = c.days_of_week[3]
+                regular.friday = c.days_of_week[4]
+                regular.saturday = c.days_of_week[5]
+                regular.sunday = c.days_of_week[5]
+                regular.startDate.FromDatetime(parse_datetime(c.start_date, gt_date_format))
+                regular.endDate.FromDatetime(parse_datetime(c.end_date, gt_date_format))
+                time.service.regular.append(regular)
+
+            for c in t.exception:
+                exception = pb.TimetableServiceException()
+                exception.date.FromDatetime(parse_datetime(c.date, gt_date_format))
+                exception.type = timetable_service_exception_type_pb[c.type]
+                time.service.exception.append(exception)
+
             out.times.append(time)
 
         return out
@@ -66,11 +93,15 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
             stop_times: List[ParsedCsv[List[StopTimeCSV]]],
             trip_index: Dict[str, TripCSV],
             route_index: Dict[str, RouteCSV],
+            calendar_index: Dict[str, List[CalendarCSV]],
+            calendar_exception_index: Dict[str, List[CalendarExceptionCSV]],
             distinguishers: List[str]
     ):
         self.stop_times = stop_times
         self.trip_index = trip_index
         self.route_index = route_index
+        self.calendar_index = calendar_index
+        self.calendar_exception_index = calendar_exception_index
         self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[StopTimeByStop]]:
@@ -105,7 +136,9 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                     t.arrival_time,
                     t.departure_time,
                     trip.trip_headsign,
-                    t.stop_sequence
+                    t.stop_sequence,
+                    self.calendar_index[trip.service_id] if trip.service_id in self.calendar_index else [],
+                    self.calendar_exception_index[trip.service_id] if trip.service_id in self.calendar_exception_index else [],
                 ))
 
             out.append(StopTimeByStop(

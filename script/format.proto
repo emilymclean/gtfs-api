@@ -1,4 +1,5 @@
 syntax = "proto2";
+import "google/protobuf/timestamp.proto";
 
 package proto;
 
@@ -63,6 +64,35 @@ message StopTimetableTime {
   required string departureTime = 4;
   required string heading = 5;
   required int32 sequence = 6;
+  optional TimetableService service = 7;
+}
+
+message TimetableService {
+  repeated TimetableServiceRegular regular = 1;
+  repeated TimetableServiceException exception = 2;
+}
+
+message TimetableServiceRegular {
+  required bool monday = 1;
+  required bool tuesday = 2;
+  required bool wednesday = 3;
+  required bool thursday = 4;
+  required bool friday = 5;
+  required bool saturday = 6;
+  required bool sunday = 7;
+  required google.protobuf.Timestamp startDate = 8;
+  required google.protobuf.Timestamp endDate = 9;
+  repeated TimetableServiceException exceptions = 10;
+}
+
+enum TimetableServiceExceptionType {
+  TIMETABLE_SERVICE_EXCEPTION_TYPE_ADDED = 1;
+  TIMETABLE_SERVICE_EXCEPTION_TYPE_REMOVED = 2;
+}
+
+message TimetableServiceException {
+  required google.protobuf.Timestamp date = 1;
+  required TimetableServiceExceptionType type = 2;
 }
 
 message Location {

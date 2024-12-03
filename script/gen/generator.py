@@ -26,14 +26,16 @@ class Generator:
 
         self.stop_data = [ParsedCsv[List[StopCSV]](StopCSV.from_csv(p.data), p.distinguisher) for p in stop_csvs]
         self.route_data = [ParsedCsv[List[RouteCSV]](RouteCSV.from_csv(p.data), p.distinguisher) for p in route_csvs]
-        # self.calendar_data = [ParsedCsv[List[CalendarCSV]](CalendarCSV.from_csv(p.data), p.distinguisher) for p in calendar_csvs]
-        # self.calendar_exception_data = [ParsedCsv[List[CalendarExceptionCSV]](CalendarExceptionCSV.from_csv(p.data), p.distinguisher) for p in calendar_date_csvs]
+        self.calendar_data = [ParsedCsv[List[CalendarCSV]](CalendarCSV.from_csv(p.data), p.distinguisher) for p in calendar_csvs]
+        self.calendar_exception_data = [ParsedCsv[List[CalendarExceptionCSV]](CalendarExceptionCSV.from_csv(p.data), p.distinguisher) for p in calendar_date_csvs]
         self.stop_time_data = [ParsedCsv[List[StopTimeCSV]](StopTimeCSV.from_csv(p.data), p.distinguisher) for p in stop_time_csvs]
         self.trip_data = [ParsedCsv[List[TripCSV]](TripCSV.from_csv(p.data), p.distinguisher) for p in trip_csvs]
 
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
         self.route_index = self._create_index(flatten_parsed(self.route_data), lambda x: x.id)
         self.trip_index = self._create_index(flatten_parsed(self.trip_data), lambda x: x.id)
+        self.calendar_index = self._create_list_index(flatten_parsed(self.calendar_data), lambda x: x.service_id)
+        self.calendar_exception_index = self._create_list_index(flatten_parsed(self.calendar_exception_data), lambda x: x.service_id)
 
         self.distinguishers = list(filter(lambda x: x is not None, [d.distinguisher for d in route_csvs]))
 
@@ -42,11 +44,29 @@ class Generator:
         StopDetailGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
         RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
         RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
-        StopTimesGeneratorComponent(self.stop_time_data, self.trip_index, self.route_index, self.distinguishers).generate(output_folder)
+        StopTimesGeneratorComponent(
+            self.stop_time_data,
+            self.trip_index,
+            self.route_index,
+            self.calendar_index,
+            self.calendar_exception_index,
+            self.distinguishers
+        ).generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:
         out = {}
         for d in data:
             out[key(d)] = d
+        return out
+
+    @staticmethod
+    def _create_list_index(data: List[T], key: Callable[[T], str]) -> Dict[str, List[T]]:
+        out = {}
+        for d in data:
+            k = key(d)
+            if k not in out:
+                out[k] = [d]
+            else:
+                out[k].append(d)
         return out
