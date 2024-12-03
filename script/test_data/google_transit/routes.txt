@@ -1,0 +1,66 @@
+route_id,route_short_name,route_long_name,route_desc,route_type,route_color,route_text_color,route_url
+2-10647,2,"Fraser to Fyshwick via Belconnen & City",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+3-10647,3,"Spence to CBR Airport via City & Brindabella Park",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+4-10647,4,"Belconnen to Tuggeranong via City & Woden",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+5-10647,5,"Lanyon to City ANU via Erindale & Woden",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+6-10647,6,"Woden to City ANU via Kingston",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+7-10647,7,"Duffy to City ANU via Cooleman Court",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+8-10647,8,"Gunghalin to Belconnen",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+9-10647,9,"Belconnen to Watson via Bruce & Dickson",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+10-10647,10,"Denman Prospect to City ANU",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+18-10647,18,"Gungahlin to Dickson via Franklin & Mitchell",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+19-10647,19,"Bonner Loop via Forde & Amaroo",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+20-10647,20,"Bonner Loop via Amaroo & Forde",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+21-10647,21,"Throsby Loop via Palmerston & Harrison",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+22-10647,22,"Throsby Loop via Harrison & Palmerston",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+23-10647,23,"Gungahlin to Belconnen via Crace & Giralang",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+24-10647,24,"Gungahlin to Belconnen via Nicholls & McKellar",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+25-10647,25,"Taylor Loop via Amaroo & Moncrieff",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+26-10647,26,"Taylor Loop via Moncrieff & Amaroo",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+27-10647,27,"Casey to Gungahlin via Ngunnawal & Moncrieff",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+28-10647,28,"Casey to Gungahlin via Ngunnawal",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+30-10647,30,"Belconnen to Dickson via Giralang & Kaleen North",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+31-10647,31,"Belconnen to City via Kaleen South & Dickson",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+32-10647,32,"Belconnen to City via Jamison & Aranda",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+40-10647,40,"Fraser Loop via Kippax & Charnwood",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+41-10647,41,"Fraser to Belconnen via Flynn & Melba",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+42-10647,42,"Fraser Loop via Charnwood & Kippax",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+43-10647,43,"Spence to Belconnen via Evatt & McKellar",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+44-10647,44,"Kippax to Belconnen via West Macgregor & Higgins",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+45-10647,45,"Kippax to Belconnen via Hawker & Weetangera",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+46-10647,46,"Kippax to Belconnen via Latham & Florey",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+47-10647,47,"Whitlam Denman Loop",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+50-10647,50,"Watson to City via Dickson & Lyneham",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+51-10647,51,"Dickson to City via North Lyneham & O'Connor",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+53-10647,53,"Dickson to National Museum via Hackett & Ainslie",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+54-10647,54,"Majura Park Loop via Campbell Park",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+55-10647,55,"ADFA Loop via Campbell & Reid",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+56-10647,56,"Fyshwick to City via Red Hill & Kingston",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+57-10647,57,"Woden to City via Hughes & Yarralumla",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+58-10647,58,"Woden to City via Curtin & Deakin",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+59-10647,59,"Woden to City ANU via Barton & Russell",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+60-10647,60,"Mawson Loop via O'Malley & Farrer",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+61-10647,61,"Mawson Loop via Farrer & O'Malley",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+62-10647,62,"Torrens Loop via Lyons & Pearce",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+63-10647,63,"Cooleman Court to Woden via Stirling & Fisher",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+64-10647,64,"Chapman to Woden via Rivett & Cooleman Court",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+65-10647,65,"Duffy to Woden via Holder & Cooleman Court",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+66-10647,66,"Cooleman Court to Woden via Denman Prospect",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+70-10647,70,"Tuggeranong to Woden via Kambah West & Cooleman Ct",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+71-10647,71,"Tuggeranong to Woden via Kambah East & Cooleman Ct",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+72-10647,72,"Tuggeranong to Woden via Oxley & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+73-10647,73,"Tuggeranong to Woden via Monash & Wanniassa",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+74-10647,74,"Chisholm Loop via Erindale & Richardson",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+75-10647,75,"Chisholm Loop via Richardson & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+76-10647,76,"Tuggeranong to Woden via Calwell & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+77-10647,77,"Tuggeranong to Woden via Gowrie & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+78-10647,78,"Richardson Loop via Chisholm",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+79-10647,79,"Calwell to Tuggeranong via Theodore",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+80-10647,80,"Lanyon Marketplace to Tuggeranong via Banks",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+81-10647,81,"Lanyon Marketplace to Tuggeranong via Gordon",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+180-10647,180,"Lanyon Marketplace to City ANU via Banks & Conder",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+181-10647,181,"Lanyon Marketplace to City ANU via Banks & Gordon",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+182-10647,182,"Lanyon Marketplace to City ANU via Calwell",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+901-10647,901,"Bruce Shuttle via UC Hospital & CIT Bruce",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+902-10647,902,"Woden to Hume Loop via AMC",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+903-10647,903,"Strathnairn Loop",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
