@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import List, Dict, Callable
 
+from .component.route_detail_generator import RouteDetailGeneratorComponent
+from .component.stop_detail_generator import StopDetailGeneratorComponent
 from .component.stop_list_generator import StopListGeneratorComponent
 from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV
 from .component.route_list_generator import RouteListGeneratorComponent
@@ -33,10 +35,14 @@ class Generator:
         self.route_index = self._create_index(flatten_parsed(self.route_data), lambda x: x.id)
         self.trip_index = self._create_index(flatten_parsed(self.trip_data), lambda x: x.id)
 
+        self.distinguishers = list(filter(lambda x: x is not None, [d.distinguisher for d in route_csvs]))
+
     def generate(self, output_folder: Path):
-        StopListGeneratorComponent(self.stop_data).generate(output_folder)
-        RouteListGeneratorComponent(self.route_data).generate(output_folder)
-        StopTimesGeneratorComponent(self.stop_time_data, self.trip_index).generate(output_folder)
+        StopListGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
+        StopDetailGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
+        RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
+        RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
+        StopTimesGeneratorComponent(self.stop_time_data, self.trip_index, self.route_index, self.distinguishers).generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

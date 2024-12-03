@@ -5,13 +5,14 @@ from typing import List, Optional, Any, Dict
 from .consts import wheelchair_boarding_options_pb
 from ..models import GtfsCsv, stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import Intermediary, StopTimeCSV, TripCSV
+from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV
 from .. import format_pb2 as pb
 
 
 @dataclass
 class StopTimeInformation(Intermediary):
     route_id: str
+    route_code: str
     arrival_time: str
     departure_time: str
     heading: str
@@ -20,6 +21,7 @@ class StopTimeInformation(Intermediary):
     def to_json(self) -> Dict[str, Any]:
         return {
             "route_id": self.route_id,
+            "route_code": self.route_code,
             "arrival_time": self.arrival_time,
             "departure_time": self.departure_time,
             "heading": self.heading,
@@ -39,22 +41,22 @@ class JsonStopTimesGeneratorFormat(JsonGeneratorFormat[StopTimeByStop]):
         return [i.to_json() for i in intermediary.times]
 
 
-# class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[List[StopCSV]]):
-#
-#     def parse(self, intermediary: List[StopCSV], distinguisher: Optional[str]) -> Any:
-#         se = pb.StopEndpoint()
-#         for i in intermediary:
-#             stop = pb.Stop()
-#             stop.id = i.id
-#             stop.name = i.name
-#
-#             stop.location.lat = i.location.lat
-#             stop.location.lng = i.location.lng
-#
-#             stop.accessibility.wheelchair = wheelchair_boarding_options_pb[i.accessibility.wheelchair]
-#             se.stop.append(stop)
-#
-#         return se
+class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
+
+    def parse(self, intermediary: StopTimeByStop, distinguisher: Optional[str]) -> Any:
+        out = pb.StopTimetable()
+
+        for t in intermediary.times:
+            time = pb.StopTimetableTime()
+            time.routeId = t.route_id
+            time.routeCode = t.route_code
+            time.arrivalTime = t.arrival_time
+            time.departureTime = t.departure_time
+            time.heading = t.heading
+            time.sequence = t.sequence
+            out.times.append(time)
+
+        return out
 
 
 class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
@@ -62,15 +64,19 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
     def __init__(
             self,
             stop_times: List[ParsedCsv[List[StopTimeCSV]]],
-            trip_index: Dict[str, TripCSV]
+            trip_index: Dict[str, TripCSV],
+            route_index: Dict[str, RouteCSV],
+            distinguishers: List[str]
     ):
         self.stop_times = stop_times
         self.trip_index = trip_index
-        self.distinguishers = filter(lambda x: x is not None, [d.distinguisher for d in stop_times])
+        self.route_index = route_index
+        self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[StopTimeByStop]]:
         return [
-            JsonStopTimesGeneratorFormat()
+            JsonStopTimesGeneratorFormat(),
+            ProtoStopTimesGeneratorFormat()
         ]
 
     def _path(self, output_folder: Path, intermediary: StopTimeByStop, extension: str) -> Path:
@@ -95,6 +101,7 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                 trip = self.trip_index[t.trip_id]
                 i_times.append(StopTimeInformation(
                     trip.route_id,
+                    self.route_index[trip.route_id].code,
                     t.arrival_time,
                     t.departure_time,
                     trip.trip_headsign,

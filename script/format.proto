@@ -10,6 +10,14 @@ message RouteEndpoint {
   repeated Route route = 2;
 }
 
+message StopDetailEndpoint {
+  required Stop stop = 1;
+}
+
+message RouteDetailEndpoint {
+  required Route route = 1;
+}
+
 message Stop {
   required string id = 1;
   required string name = 2;
@@ -42,6 +50,19 @@ enum RouteType {
   ROUTE_TYPE_RAIL = 3;
   ROUTE_TYPE_BUS = 4;
   ROUTE_TYPE_FERRY = 5;
+}
+
+message StopTimetable {
+  repeated StopTimetableTime times = 1;
+}
+
+message StopTimetableTime {
+  required string routeId = 1;
+  required string routeCode = 2;
+  required string arrivalTime = 3;
+  required string departureTime = 4;
+  required string heading = 5;
+  required int32 sequence = 6;
 }
 
 message Location {

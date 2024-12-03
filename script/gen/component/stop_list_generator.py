@@ -34,10 +34,10 @@ class ProtoStopListGeneratorFormat(ProtoGeneratorFormat[List[StopCSV]]):
 
 class StopListGeneratorComponent(FormatGeneratorComponent[List[StopCSV]]):
 
-    def __init__(self, stop_data: List[ParsedCsv[List[StopCSV]]]):
+    def __init__(self, stop_data: List[ParsedCsv[List[StopCSV]]], distinguishers: List[str]):
         self.csvs = stop_data
         self.endpoint = stops_endpoint
-        self.distinguishers = filter(lambda x: x is not None, [d.distinguisher for d in stop_data])
+        self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[List[StopCSV]]]:
         return [

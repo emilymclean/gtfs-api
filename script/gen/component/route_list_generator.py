@@ -32,10 +32,10 @@ class ProtoRouteListGeneratorFormat(ProtoGeneratorFormat[List[RouteCSV]]):
 
 class RouteListGeneratorComponent(FormatGeneratorComponent[List[RouteCSV]]):
 
-    def __init__(self, route_csvs: List[ParsedCsv[List[RouteCSV]]]):
+    def __init__(self, route_csvs: List[ParsedCsv[List[RouteCSV]]], distinguishers: List[str]) -> None:
         self.csvs = route_csvs
         self.endpoint = routes_endpoint
-        self.distinguishers = filter(lambda x: x is not None, [d.distinguisher for d in route_csvs])
+        self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[List[RouteCSV]]]:
         return [
