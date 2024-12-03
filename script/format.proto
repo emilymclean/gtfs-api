@@ -17,21 +17,31 @@ message Stop {
   required StopAccessibility accessibility = 4;
 }
 
-message Route {
-  required string id = 1;
-  required string code = 2;
-  required string name = 3;
-  required string type = 4;
-}
-
 message StopAccessibility {
   required WheelchairStopAccessibility wheelchair = 1;
 }
 
 enum WheelchairStopAccessibility {
-  WHEELCHAIR_STOP_ACCESSIBILITY_NONE = 0;
-  WHEELCHAIR_STOP_ACCESSIBILITY_PARTIAL = 1;
-  WHEELCHAIR_STOP_ACCESSIBILITY_FULL = 2;
+  WHEELCHAIR_STOP_ACCESSIBILITY_UNKNOWN = 0;
+  WHEELCHAIR_STOP_ACCESSIBILITY_NONE = 1;
+  WHEELCHAIR_STOP_ACCESSIBILITY_PARTIAL = 2;
+  WHEELCHAIR_STOP_ACCESSIBILITY_FULL = 3;
+}
+
+message Route {
+  required string id = 1;
+  required string code = 2;
+  required string name = 3;
+  required RouteType type = 4;
+}
+
+enum RouteType {
+  ROUTE_TYPE_UNKNOWN = 0;
+  ROUTE_TYPE_TRAM = 1;
+  ROUTE_TYPE_METRO = 2;
+  ROUTE_TYPE_RAIL = 3;
+  ROUTE_TYPE_BUS = 4;
+  ROUTE_TYPE_FERRY = 5;
 }
 
 message Location {

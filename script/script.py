@@ -4,7 +4,8 @@ from typing import List, TypeVar, Optional
 import click
 import pandas as pd
 
-from generator import Generator, GtfsCsv
+from gen.generator import Generator
+from gen.models import GtfsCsv
 
 T = TypeVar("T")
 

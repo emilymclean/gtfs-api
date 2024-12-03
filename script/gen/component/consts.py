@@ -1,4 +1,4 @@
-import format_pb2 as pb
+from .. import format_pb2 as pb
 
 wheelchair_boarding_options = {
     0: "none",
@@ -18,4 +18,12 @@ route_type_options = {
     2: "rail",
     3: "bus",
     4: "ferry"
+}
+
+route_type_options_pb = {
+    0: pb.RouteType.ROUTE_TYPE_TRAM,
+    1: pb.RouteType.ROUTE_TYPE_METRO,
+    2: pb.RouteType.ROUTE_TYPE_RAIL,
+    3: pb.RouteType.ROUTE_TYPE_BUS,
+    4: pb.RouteType.ROUTE_TYPE_FERRY
 }

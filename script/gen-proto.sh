@@ -1,1 +1,1 @@
-protoc --python_out=. format.proto
+protoc --python_out=gen/ format.proto
