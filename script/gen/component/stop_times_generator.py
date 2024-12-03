@@ -62,10 +62,10 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
     def __init__(
             self,
             stop_times: List[ParsedCsv[List[StopTimeCSV]]],
-            trip: List[ParsedCsv[List[TripCSV]]]
+            trip_index: Dict[str, TripCSV]
     ):
         self.stop_times = stop_times
-        self.trip = trip
+        self.trip_index = trip_index
         self.distinguishers = filter(lambda x: x is not None, [d.distinguisher for d in stop_times])
 
     def _formats(self) -> List[GeneratorFormat[StopTimeByStop]]:
@@ -78,19 +78,21 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopTimeByStop]:
         stop_times = flatten_parsed(filter_parsed_by_distinguisher(self.stop_times, distinguisher))
-        trips = flatten_parsed(filter_parsed_by_distinguisher(self.trip, distinguisher))
 
-        return self._create_intermediary(stop_times, trips)
+        return self._create_intermediary(stop_times)
 
-    def _create_intermediary(self, stop_times: List[StopTimeCSV], trips: List[TripCSV]) -> List[StopTimeByStop]:
+    def _create_intermediary(self, stop_times: List[StopTimeCSV]) -> List[StopTimeByStop]:
         stop_ids = list(set([s.stop_id for s in stop_times]))
+        times_by_stop = {key: [] for key in stop_ids}
+        for t in stop_times:
+            times_by_stop[t.stop_id].append(t)
+
         out = []
-        for i, s in enumerate(stop_ids):
-            print(f"Creating stop times for stop {s} ({i}/{len(stop_ids)})")
-            f_times = filter(lambda x: x.stop_id == s, stop_times)
+        for s, f_times in times_by_stop.items():
+            print(f"Creating stop times for stop {s}")
             i_times = []
             for t in f_times:
-                trip = next(i for i in trips if i.trip_id == t.trip_id)
+                trip = self.trip_index[t.trip_id]
                 i_times.append(StopTimeInformation(
                     trip.route_id,
                     t.arrival_time,

@@ -136,18 +136,18 @@ class StopTimeCSV(Intermediary):
 
 @dataclass
 class TripCSV(Intermediary):
+    id: str
     route_id: str
     service_id: str
-    trip_id: str
     trip_headsign: str
     direction_id: int
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "TripCSV":
         return TripCSV(
+            f"{row['trip_id']}",
             f"{row['route_id']}",
             f"{row['service_id']}",
-            f"{row['trip_id']}",
             f"{row['trip_headsign']}",
             row['direction_id'],
         )
