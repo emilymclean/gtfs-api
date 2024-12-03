@@ -1,0 +1,97 @@
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Optional, Any, Dict
+
+from .consts import route_type_options_pb, parse_datetime, gt_date_format, timetable_service_exception_type_pb
+from ..models import GtfsCsv, routes_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
+from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
+from .intermediaries import CalendarCSV, CalendarExceptionCSV
+from .. import format_pb2 as pb
+
+
+@dataclass
+class ServiceIntermediary:
+    service_id: str
+    calendar: List[CalendarCSV]
+    exceptions: List[CalendarExceptionCSV]
+
+    def to_json(self) -> Dict[str, Any]:
+        return {
+            "id": self.service_id,
+            "regular": [c.to_json() for c in self.calendar],
+            "exception": [c.to_json() for c in self.exceptions],
+        }
+
+
+class JsonServiceListGeneratorFormat(JsonGeneratorFormat[List[ServiceIntermediary]]):
+
+    def parse(self, intermediary: List[ServiceIntermediary], distinguisher: Optional[str]) -> Any:
+        return [i.to_json() for i in intermediary]
+
+
+class ProtoServiceListGeneratorFormat(ProtoGeneratorFormat[List[ServiceIntermediary]]):
+
+    def parse(self, intermediary: List[ServiceIntermediary], distinguisher: Optional[str]) -> Any:
+        out = pb.ServiceEndpoint()
+        for i in intermediary:
+            service = pb.Service()
+            service.id = i.service_id
+
+            for c in i.calendar:
+                regular = pb.TimetableServiceRegular()
+                regular.monday = c.days_of_week[0]
+                regular.tuesday = c.days_of_week[1]
+                regular.wednesday = c.days_of_week[2]
+                regular.thursday = c.days_of_week[3]
+                regular.friday = c.days_of_week[4]
+                regular.saturday = c.days_of_week[5]
+                regular.sunday = c.days_of_week[5]
+                regular.startDate.FromDatetime(c.start_date)
+                regular.endDate.FromDatetime(c.end_date)
+                service.regular.append(regular)
+
+            for c in i.exceptions:
+                exception = pb.TimetableServiceException()
+                exception.date.FromDatetime(c.date)
+                exception.type = timetable_service_exception_type_pb[c.type]
+                service.exception.append(exception)
+
+            out.service.append(service)
+
+        return out
+
+
+class ServiceListGeneratorComponent(FormatGeneratorComponent[List[ServiceIntermediary]]):
+
+    def __init__(
+            self,
+            calendar_data: List[ParsedCsv[List[CalendarCSV]]],
+            exception_index: Dict[str, List[CalendarExceptionCSV]],
+            distinguishers: List[str]
+    ) -> None:
+        self.calendar_data = calendar_data
+        self.exception_index = exception_index
+        self.distinguishers = distinguishers
+
+    def _formats(self) -> List[GeneratorFormat[List[ServiceIntermediary]]]:
+        return [
+            JsonServiceListGeneratorFormat(),
+            ProtoServiceListGeneratorFormat()
+        ]
+
+    def _path(self, output_folder: Path, intermediary: List[ServiceIntermediary], extension: str) -> Path:
+        return output_folder.joinpath(f"services.{extension}")
+
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[List[ServiceIntermediary]]:
+        calendar = flatten_parsed(filter_parsed_by_distinguisher(self.calendar_data, distinguisher))
+
+        out = []
+        for c in calendar:
+            exceptions = self.exception_index[c.service_id] if c.service_id in self.exception_index else []
+            out.append(ServiceIntermediary(
+                c.service_id,
+                [c],
+                exceptions
+            ))
+
+        return [out]

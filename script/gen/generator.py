@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List, Dict, Callable
 
 from .component.route_detail_generator import RouteDetailGeneratorComponent
+from .component.service_list_generator import ServiceListGeneratorComponent
 from .component.stop_detail_generator import StopDetailGeneratorComponent
 from .component.stop_list_generator import StopListGeneratorComponent
 from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV
@@ -40,18 +41,19 @@ class Generator:
         self.distinguishers = list(filter(lambda x: x is not None, [d.distinguisher for d in route_csvs]))
 
     def generate(self, output_folder: Path):
-        StopListGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
-        StopDetailGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
-        RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
-        RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
-        StopTimesGeneratorComponent(
-            self.stop_time_data,
-            self.trip_index,
-            self.route_index,
-            self.calendar_index,
-            self.calendar_exception_index,
-            self.distinguishers
-        ).generate(output_folder)
+        # StopListGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
+        # StopDetailGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
+        # RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
+        # RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
+        # StopTimesGeneratorComponent(
+        #     self.stop_time_data,
+        #     self.trip_index,
+        #     self.route_index,
+        #     self.calendar_index,
+        #     self.calendar_exception_index,
+        #     self.distinguishers
+        # ).generate(output_folder)
+        ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.distinguishers).generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

@@ -8,7 +8,7 @@ message StopEndpoint {
 }
 
 message RouteEndpoint {
-  repeated Route route = 2;
+  repeated Route route = 1;
 }
 
 message StopDetailEndpoint {
@@ -17,6 +17,10 @@ message StopDetailEndpoint {
 
 message RouteDetailEndpoint {
   required Route route = 1;
+}
+
+message ServiceEndpoint {
+  repeated Service service = 1;
 }
 
 message Stop {
@@ -60,16 +64,17 @@ message StopTimetable {
 message StopTimetableTime {
   required string routeId = 1;
   required string routeCode = 2;
-  required string arrivalTime = 3;
-  required string departureTime = 4;
-  required string heading = 5;
-  required int32 sequence = 6;
-  optional TimetableService service = 7;
+  required string serviceId = 3;
+  required string arrivalTime = 4;
+  required string departureTime = 5;
+  required string heading = 6;
+  required int32 sequence = 7;
 }
 
-message TimetableService {
-  repeated TimetableServiceRegular regular = 1;
-  repeated TimetableServiceException exception = 2;
+message Service {
+  required string id = 1;
+  repeated TimetableServiceRegular regular = 2;
+  repeated TimetableServiceException exception = 3;
 }
 
 message TimetableServiceRegular {

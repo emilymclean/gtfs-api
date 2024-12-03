@@ -14,25 +14,21 @@ from .. import format_pb2 as pb
 class StopTimeInformation(Intermediary):
     route_id: str
     route_code: str
+    service_id: str
     arrival_time: str
     departure_time: str
     heading: str
     sequence: int
-    calendar: List[CalendarCSV]
-    exception: List[CalendarExceptionCSV]
 
     def to_json(self) -> Dict[str, Any]:
         return {
             "route_id": self.route_id,
             "route_code": self.route_code,
+            "service_id": self.service_id,
             "arrival_time": self.arrival_time,
             "departure_time": self.departure_time,
             "heading": self.heading,
-            "sequence": self.sequence,
-            "service": {
-                "regular": [c.to_json() for c in self.calendar],
-                "exception": [c.to_json() for c in self.exception]
-            }
+            "sequence": self.sequence
         }
 
 
@@ -57,29 +53,11 @@ class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
             time = pb.StopTimetableTime()
             time.routeId = t.route_id
             time.routeCode = t.route_code
+            time.serviceId = t.service_id
             time.arrivalTime = t.arrival_time
             time.departureTime = t.departure_time
             time.heading = t.heading
             time.sequence = t.sequence
-
-            for c in t.calendar:
-                regular = pb.TimetableServiceRegular()
-                regular.monday = c.days_of_week[0]
-                regular.tuesday = c.days_of_week[1]
-                regular.wednesday = c.days_of_week[2]
-                regular.thursday = c.days_of_week[3]
-                regular.friday = c.days_of_week[4]
-                regular.saturday = c.days_of_week[5]
-                regular.sunday = c.days_of_week[5]
-                regular.startDate.FromDatetime(parse_datetime(c.start_date, gt_date_format))
-                regular.endDate.FromDatetime(parse_datetime(c.end_date, gt_date_format))
-                time.service.regular.append(regular)
-
-            for c in t.exception:
-                exception = pb.TimetableServiceException()
-                exception.date.FromDatetime(parse_datetime(c.date, gt_date_format))
-                exception.type = timetable_service_exception_type_pb[c.type]
-                time.service.exception.append(exception)
 
             out.times.append(time)
 
@@ -133,6 +111,7 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                 i_times.append(StopTimeInformation(
                     trip.route_id,
                     self.route_index[trip.route_id].code,
+                    trip.service_id,
                     t.arrival_time,
                     t.departure_time,
                     trip.trip_headsign,

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from time import mktime, strptime
 
 from .. import format_pb2 as pb
@@ -6,8 +6,8 @@ from .. import format_pb2 as pb
 gt_date_format = "%Y%m%d"
 
 
-def parse_datetime(format: str, st: str) -> datetime:
-    return datetime.fromtimestamp(mktime(strptime(format, st)))
+def parse_datetime(st: str, format: str) -> datetime:
+    return datetime.fromtimestamp(mktime(strptime(st, format))).replace(tzinfo=timezone.utc)
 
 
 wheelchair_boarding_options = {
