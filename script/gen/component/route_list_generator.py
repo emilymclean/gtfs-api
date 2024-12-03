@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List, Optional, Any
 
 from .consts import route_type_options_pb
-from ..models import GtfsCsv, routes_endpoint, ParsedCsv
+from ..models import GtfsCsv, routes_endpoint, ParsedCsv, filter_parsed_by_distinguisher
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import RouteCSV
 from .. import format_pb2 as pb
@@ -48,7 +48,7 @@ class RouteListGeneratorComponent(FormatGeneratorComponent[List[RouteCSV]]):
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[List[RouteCSV]]:
         s = []
-        csvs = filter(lambda x: x.distinguisher == distinguisher, self.csvs) if distinguisher is not None else self.csvs
+        csvs = filter_parsed_by_distinguisher(self.csvs, distinguisher)
         for csv in csvs:
             s.extend(csv.data)
         return [s]

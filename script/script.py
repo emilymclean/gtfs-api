@@ -30,7 +30,20 @@ def read_csv(path: str, folders: List[str], distinguisher: List[str]) -> list[Gt
 def generate(input_folder: List[str], distinguisher: List[str], output_folder: str):
     stop_csvs = read_csv("stops.txt", input_folder, distinguisher)
     route_csvs = read_csv("routes.txt", input_folder, distinguisher)
-    Generator(stop_csvs, route_csvs).generate(Path(output_folder))
+    calendar_csvs = read_csv("calendar.txt", input_folder, distinguisher)
+    calendar_date_csvs = read_csv("calendar_dates.txt", input_folder, distinguisher)
+    shape_csvs = read_csv("shapes.txt", input_folder, distinguisher)
+    stop_time_csvs = read_csv("stop_times.txt", input_folder, distinguisher)
+    trips_csvs = read_csv("trips.txt", input_folder, distinguisher)
+    Generator(
+        stop_csvs,
+        route_csvs,
+        calendar_csvs,
+        calendar_date_csvs,
+        shape_csvs,
+        stop_time_csvs,
+        trips_csvs
+    ).generate(Path(output_folder))
 
 
 if __name__ == '__main__':

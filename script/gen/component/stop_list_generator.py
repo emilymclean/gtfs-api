@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List, Optional, Any
 
 from .consts import wheelchair_boarding_options_pb
-from ..models import GtfsCsv, stops_endpoint, ParsedCsv
+from ..models import GtfsCsv, stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import StopCSV
 from .. import format_pb2 as pb
@@ -50,7 +50,7 @@ class StopListGeneratorComponent(FormatGeneratorComponent[List[StopCSV]]):
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[List[StopCSV]]:
         s = []
-        csvs = filter(lambda x: x.distinguisher == distinguisher, self.csvs) if distinguisher is not None else self.csvs
+        csvs = filter_parsed_by_distinguisher(self.csvs, distinguisher)
         for csv in csvs:
             s.extend(csv.data)
         return [s]
