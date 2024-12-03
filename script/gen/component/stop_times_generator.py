@@ -116,8 +116,6 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                     t.departure_time,
                     trip.trip_headsign,
                     t.stop_sequence,
-                    self.calendar_index[trip.service_id] if trip.service_id in self.calendar_index else [],
-                    self.calendar_exception_index[trip.service_id] if trip.service_id in self.calendar_exception_index else [],
                 ))
 
             out.append(StopTimeByStop(
