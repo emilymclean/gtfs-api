@@ -1,24 +1,31 @@
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Any
 
 from .consts import route_type_options_pb
-from ..models import GtfsCsv, routes_endpoint, ParsedCsv, filter_parsed_by_distinguisher
+from ..models import GtfsCsv, routes_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import RouteCSV
+from .intermediaries import RouteCSV, StopCSV
 from .. import format_pb2 as pb
 
 
-class JsonRouteListGeneratorFormat(JsonGeneratorFormat[List[RouteCSV]]):
+@dataclass
+class IndexableRouteList:
+    index: Optional[str]
+    routes: List[RouteCSV]
 
-    def parse(self, intermediary: List[RouteCSV], distinguisher: Optional[str]) -> Any:
-        return [i.to_json() for i in intermediary]
+
+class JsonRouteListGeneratorFormat(JsonGeneratorFormat[IndexableRouteList]):
+
+    def parse(self, intermediary: IndexableRouteList, distinguisher: Optional[str]) -> Any:
+        return [i.to_json() for i in intermediary.routes]
 
 
-class ProtoRouteListGeneratorFormat(ProtoGeneratorFormat[List[RouteCSV]]):
+class ProtoRouteListGeneratorFormat(ProtoGeneratorFormat[IndexableRouteList]):
 
-    def parse(self, intermediary: List[RouteCSV], distinguisher: Optional[str]) -> Any:
+    def parse(self, intermediary: IndexableRouteList, distinguisher: Optional[str]) -> Any:
         re = pb.RouteEndpoint()
-        for i in intermediary:
+        for i in intermediary.routes:
             route = pb.Route()
             route.id = i.id
             route.code = i.code
@@ -30,25 +37,33 @@ class ProtoRouteListGeneratorFormat(ProtoGeneratorFormat[List[RouteCSV]]):
         return re
 
 
-class RouteListGeneratorComponent(FormatGeneratorComponent[List[RouteCSV]]):
+class RouteListGeneratorComponent(FormatGeneratorComponent[IndexableRouteList]):
 
     def __init__(self, route_csvs: List[ParsedCsv[List[RouteCSV]]], distinguishers: List[str]) -> None:
         self.csvs = route_csvs
         self.endpoint = routes_endpoint
         self.distinguishers = distinguishers
 
-    def _formats(self) -> List[GeneratorFormat[List[RouteCSV]]]:
+    def _formats(self) -> List[GeneratorFormat[IndexableRouteList]]:
         return [
             JsonRouteListGeneratorFormat(),
             ProtoRouteListGeneratorFormat()
         ]
 
-    def _path(self, output_folder: Path, intermediary: List[RouteCSV], extension: str) -> Path:
-        return output_folder.joinpath(f"routes.{extension}")
+    def _path(self, output_folder: Path, intermediary: IndexableRouteList, extension: str) -> Path:
+        if intermediary.index is None:
+            return output_folder.joinpath(f"routes.{extension}")
+        else:
+            return output_folder.joinpath(f"index/routes/{intermediary.index}/routes.{extension}")
 
-    def _read_intermediary(self, distinguisher: Optional[str]) -> List[List[RouteCSV]]:
-        s = []
-        csvs = filter_parsed_by_distinguisher(self.csvs, distinguisher)
-        for csv in csvs:
-            s.extend(csv.data)
-        return [s]
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[IndexableRouteList]:
+        idx = {key: [] for key in "abcdefghijklmnopqrstuvwxyz0123456789"}
+        routes = flatten_parsed(filter_parsed_by_distinguisher(self.csvs, distinguisher))
+
+        for route in routes:
+            idx[route.id[0].lower()].append(route)
+
+        indexed = [IndexableRouteList(k, v) for k, v in idx.items()]
+        indexed.append(IndexableRouteList(None, routes))
+
+        return indexed

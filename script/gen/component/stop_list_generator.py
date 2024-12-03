@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List, Optional, Any
 
 from .consts import wheelchair_boarding_options_pb
-from ..models import GtfsCsv, stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
+from ..models import stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import StopCSV
 from .. import format_pb2 as pb
