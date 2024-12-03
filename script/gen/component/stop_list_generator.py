@@ -63,7 +63,9 @@ class StopListGeneratorComponent(FormatGeneratorComponent[IndexableStopList]):
         stops = flatten_parsed(filter_parsed_by_distinguisher(self.csvs, distinguisher))
 
         for stop in stops:
-            idx[stop.id[0].lower()].append(stop)
+            keys = {stop.id[0].lower(), stop.name[0].lower()}
+            for k in keys:
+                idx[k].append(stop)
 
         indexed = [IndexableStopList(k, v) for k, v in idx.items()]
         indexed.append(IndexableStopList(None, stops))

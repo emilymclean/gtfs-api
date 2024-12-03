@@ -61,7 +61,9 @@ class RouteListGeneratorComponent(FormatGeneratorComponent[IndexableRouteList]):
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.csvs, distinguisher))
 
         for route in routes:
-            idx[route.id[0].lower()].append(route)
+            keys = {route.code[0].lower(), route.name[0].lower()}
+            for k in keys:
+                idx[k].append(route)
 
         indexed = [IndexableRouteList(k, v) for k, v in idx.items()]
         indexed.append(IndexableRouteList(None, routes))
