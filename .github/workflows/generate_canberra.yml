@@ -1,0 +1,41 @@
+name: Generate for Canberra
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/checkout@v4
+          with:
+            path: pages
+            ref: gh-pages
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.9'
+            cache: 'pip'
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r script/requirements.txt
+        - name: Download data
+          run: |
+            wget -q https://www.transport.act.gov.au/googletransit/google_transit.zip
+            wget -q https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
+            
+            mkdir canberra
+            unzip google_transit.zip -d canberra/normal
+            unzip google_transit_lr.zip -d canberra/lr
+        - name: Run script
+          run: |
+            python script/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -o pages
+        - uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            repository: ./pages
+            commit_message: "Update API"
+                
