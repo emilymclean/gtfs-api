@@ -17,6 +17,17 @@ def _get_route_prefix(designation: str, extras: Dict[str, Any]) -> Optional[str]
     return extras.get("designations", {}).get(designation, {}).get("prefix", None)
 
 
+def _get_route_real_time(id: str, extras: Dict[str, Any]) -> Optional[str]:
+    rt: List = extras.get("route", {}).get("real-time", None)
+    if rt is None:
+        return None
+
+    for r in rt:
+        if id == r["id"]:
+            return r["url"]
+    return None
+
+
 def _get_route_colors(code: str, extras: Dict[str, Any]) -> Optional[Tuple[str, str]]:
     colors: List[Any]|None = extras.get("route", {}).get("colors", None)
 

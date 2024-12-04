@@ -6,7 +6,7 @@ from typing import Dict, Any, List, Optional
 import pandas as pd
 
 from .consts import *
-from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors
+from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors, _get_route_real_time
 from ..time_helper import TimeHelper
 
 
@@ -136,6 +136,7 @@ class RouteIntermediary(Intermediary):
     designation: Optional[str]
     code_prefix: Optional[str]
     colors: Optional[ColorPair]
+    real_time: Optional[str]
 
     def to_json(self) -> dict:
         return {
@@ -146,6 +147,7 @@ class RouteIntermediary(Intermediary):
             "type": route_type_options[self.type],
             "designation": self.designation,
             "colors": self.colors.to_json() if self.colors is not None else None,
+            "realTimeUrl": self.real_time,
         }
 
     def to_pb(self, route: pb.Route):
@@ -158,6 +160,8 @@ class RouteIntermediary(Intermediary):
             route.designation = self.designation
         if self.colors is not None:
             self.colors.to_pb(route.colors)
+        if self.real_time is not None:
+            route.realTimeUrl = self.real_time
 
     @staticmethod
     def from_csv(route: RouteCSV, extras: Dict[str, Any]) -> "RouteIntermediary":
@@ -170,7 +174,8 @@ class RouteIntermediary(Intermediary):
             route.type,
             designation,
             _get_route_prefix(designation, extras) if designation is not None else None,
-            ColorPair(*colors) if colors is not None else None
+            ColorPair(*colors) if colors is not None else None,
+            _get_route_real_time(route.id, extras)
         )
 
 

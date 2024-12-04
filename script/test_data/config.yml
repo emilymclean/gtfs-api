@@ -5,6 +5,19 @@ designations:
   rapid:
     prefix: R
 route:
+  real-time:
+    - id: ACTO001
+      url: https://files.transport.act.gov.au/feeds/lightrail.pb
+    - id: NIS
+      url: https://files.transport.act.gov.au/feeds/lightrail.pb
+    - id: X1
+      url: https://files.transport.act.gov.au/feeds/lightrail.pb
+    - id: X2
+      url: https://files.transport.act.gov.au/feeds/lightrail.pb
+    - id: X3
+      url: https://files.transport.act.gov.au/feeds/lightrail.pb
+    - id: X4
+      url: https://files.transport.act.gov.au/feeds/lightrail.pb
   special-designations:
     - code: 1
       designation: light_rail

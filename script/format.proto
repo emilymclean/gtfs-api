@@ -60,6 +60,7 @@ message Route {
   required string name = 3;
   optional string designation = 7;
   required RouteType type = 4;
+  optional string realTimeUrl = 8;
 }
 
 message ColorPair {
