@@ -50,31 +50,27 @@ class TripInformation(Intermediary):
 
 @dataclass
 class RouteServiceInformation(Intermediary):
+    route_id: str
     service_id: str
     trips: List[TripInformation]
 
     def to_json(self) -> Dict[str, Any]:
         return {
             "service_id": self.service_id,
+            "route_id": self.route_id,
             "trips": [x.to_json() for x in self.trips],
         }
 
 
-@dataclass
-class RouteTimetable:
-    route_id: str
-    information: List[RouteServiceInformation]
+class JsonRouteTimetableGeneratorFormat(JsonGeneratorFormat[RouteServiceInformation]):
+
+    def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
+        return intermediary.to_json()
 
 
-class JsonRouteTimetableGeneratorFormat(JsonGeneratorFormat[RouteTimetable]):
+class ProtoRouteTimetableGeneratorFormat(ProtoGeneratorFormat[RouteServiceInformation]):
 
-    def parse(self, intermediary: RouteTimetable, distinguisher: Optional[str]) -> Any:
-        return [i.to_json() for i in intermediary.information]
-
-
-class ProtoRouteTimetableGeneratorFormat(ProtoGeneratorFormat[RouteTimetable]):
-
-    def parse(self, intermediary: RouteTimetable, distinguisher: Optional[str]) -> Any:
+    def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
         out = pb.StopTimetable()
 
         for t in intermediary.times:
@@ -92,7 +88,7 @@ class ProtoRouteTimetableGeneratorFormat(ProtoGeneratorFormat[RouteTimetable]):
         return out
 
 
-class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteTimetable]):
+class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInformation]):
 
     def __init__(
             self,
@@ -106,27 +102,24 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteTimetable])
         self.stop_time_index_by_trip = stop_time_index_by_trip
         self.distinguishers = distinguishers
 
-    def _formats(self) -> List[GeneratorFormat[RouteTimetable]]:
+    def _formats(self) -> List[GeneratorFormat[RouteServiceInformation]]:
         return [
             JsonRouteTimetableGeneratorFormat(),
             # ProtoRouteTimetableGeneratorFormat()
         ]
 
-    def _path(self, output_folder: Path, intermediary: RouteTimetable, extension: str) -> Path:
-        return output_folder.joinpath(f"route/{intermediary.route_id}/timetable.{extension}")
+    def _path(self, output_folder: Path, intermediary: RouteServiceInformation, extension: str) -> Path:
+        return output_folder.joinpath(f"route/{intermediary.route_id}/service/{intermediary.service_id}/timetable.{extension}")
 
-    def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteTimetable]:
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteServiceInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))
         return self._create_intermediary(routes)
 
-    def _create_intermediary(self, routes: List[RouteCSV]) -> List[RouteTimetable]:
+    def _create_intermediary(self, routes: List[RouteCSV]) -> List[RouteServiceInformation]:
         out = []
         for r in routes:
             trips = self.trip_index_by_route[r.id] if r.id in self.trip_index_by_route else None
             if trips is None:
-                out.append(RouteTimetable(
-                    r.id, []
-                ))
                 continue
 
             service_index = {}
@@ -136,7 +129,6 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteTimetable])
                 else:
                     service_index[t.service_id] = [t]
 
-            services_for_route = []
             for service_id, service_trips in service_index.items():
                 trips_for_service = []
                 for t in service_trips:
@@ -158,15 +150,12 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteTimetable])
                             stops_for_trip
                         )
                     )
-                services_for_route.append(
+                out.append(
                     RouteServiceInformation(
+                        r.id,
                         service_id,
                         trips_for_service
                     )
                 )
-            out.append(RouteTimetable(
-                r.id,
-                services_for_route
-            ))
 
         return out
