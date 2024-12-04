@@ -24,6 +24,10 @@ message ServiceEndpoint {
   repeated Service service = 1;
 }
 
+message RouteServicesEndpoint {
+  repeated string serviceIds = 1;
+}
+
 message Stop {
   required string id = 1;
   optional string parentStation = 5;

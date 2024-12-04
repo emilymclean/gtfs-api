@@ -33,19 +33,10 @@ class JsonRouteServiceGeneratorFormat(JsonGeneratorFormat[RouteServiceInformatio
 class ProtoRouteServiceGeneratorFormat(ProtoGeneratorFormat[RouteServiceInformation]):
 
     def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
-        out = pb.StopTimetable()
+        out = pb.RouteServicesEndpoint()
 
-        for t in intermediary.times:
-            time = pb.StopTimetableTime()
-            time.routeId = t.route_id
-            time.routeCode = t.route_code
-            time.serviceId = t.service_id
-            time.arrivalTime = t.arrival_time
-            time.departureTime = t.departure_time
-            time.heading = t.heading
-            time.sequence = t.sequence
-
-            out.times.append(time)
+        for s in intermediary.service_ids:
+            out.serviceIds.append(s)
 
         return out
 
@@ -65,7 +56,7 @@ class RouteServiceGeneratorComponent(FormatGeneratorComponent[RouteServiceInform
     def _formats(self) -> List[GeneratorFormat[RouteServiceInformation]]:
         return [
             JsonRouteServiceGeneratorFormat(),
-            # ProtoRouteServiceGeneratorFormat()
+            ProtoRouteServiceGeneratorFormat()
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteServiceInformation, extension: str) -> Path:
