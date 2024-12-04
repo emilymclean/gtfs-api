@@ -31,15 +31,15 @@ class GeneratorComponent(ABC):
         sha_path = Path(f"{path}.sha")
         path.parent.mkdir(parents=True, exist_ok=True)
         if isinstance(data, bytes):
-            sha = sha256(data).digest()
+            sha = sha256(data).hexdigest()
             with path.open('wb') as f:
                 f.write(data)
         else:
-            sha = sha256(data.encode('utf-8')).digest()
+            sha = sha256(data.encode('utf-8')).hexdigest()
             with path.open('w') as f:
                 f.write(data)
 
-        with sha_path.open('wb') as f:
+        with sha_path.open('w') as f:
             f.write(sha)
 
 
