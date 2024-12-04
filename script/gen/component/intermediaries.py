@@ -55,7 +55,7 @@ class StopCSV(Intermediary):
         return StopCSV(
             f"{row['stop_id']}",
             row['stop_name'],
-            row['parent_station'] if 'parent_station' in row else None,
+            f"{row['parent_station']}" if 'parent_station' in row and row["parent_station"] != "" else None,
             LocationCSV(
                 row['stop_lat'],
                 row['stop_lon'],

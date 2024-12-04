@@ -25,6 +25,7 @@ message ServiceEndpoint {
 
 message Stop {
   required string id = 1;
+  optional string parentStation = 5;
   required string name = 2;
   required Location location = 3;
   required StopAccessibility accessibility = 4;

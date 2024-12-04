@@ -28,6 +28,8 @@ class ProtoStopListGeneratorFormat(ProtoGeneratorFormat[IndexableStopList]):
         for i in intermediary.stops:
             stop = pb.Stop()
             stop.id = i.id
+            if i.parent_station is not None:
+                stop.parentStation = i.parent_station
             stop.name = i.name
 
             stop.location.lat = i.location.lat

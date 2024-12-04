@@ -22,6 +22,8 @@ class ProtoStopDetailGeneratorFormat(ProtoGeneratorFormat[StopCSV]):
         stop_detail = pb.StopDetailEndpoint()
 
         stop_detail.stop.id = intermediary.id
+        if intermediary.parent_station is not None:
+            stop_detail.stop.parentStation = intermediary.parent_station
         stop_detail.stop.name = intermediary.name
 
         stop_detail.stop.location.lat = intermediary.location.lat

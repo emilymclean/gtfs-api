@@ -18,7 +18,7 @@ def get_if_in_bounds(l: List[T], index: int) -> Optional[T]:
 
 def read_csv(path: str, folders: List[str], distinguisher: List[str]) -> list[GtfsCsv]:
     return [GtfsCsv(
-        pd.read_csv(Path(f).joinpath(path)),
+        pd.read_csv(Path(f).joinpath(path), keep_default_na=False),
         get_if_in_bounds(distinguisher, i)
     ) for i, f in enumerate(folders)]
 
