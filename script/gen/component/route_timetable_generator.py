@@ -1,9 +1,11 @@
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from time import strptime
 from typing import List, Optional, Any, Dict
 
-from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime
+from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime, service_bikes_allowed, \
+    service_wheelchair_accessible, service_bikes_allowed_pb, service_wheelchair_accessible_pb
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
@@ -11,11 +13,10 @@ from .. import format_pb2 as pb
 
 
 @dataclass
-class StopTimeInformation(Intermediary):
+class TripStops(Intermediary):
     stop_id: str
     arrival_time: str
     departure_time: str
-    heading: str
     sequence: int
 
     def to_json(self) -> Dict[str, Any]:
@@ -23,116 +24,152 @@ class StopTimeInformation(Intermediary):
             "stop_id": self.stop_id,
             "arrival_time": self.arrival_time,
             "departure_time": self.departure_time,
+            "sequence": self.sequence
         }
+
+    def to_pb(self, stop: pb.RouteTripStop):
+        stop.stopId = self.stop_id
+        stop.arrivalTime = self.arrival_time
+        stop.departureTime = self.departure_time
+        stop.sequence = self.sequence
+
+
+@dataclass
+class TripInformation(Intermediary):
+    start_time: Optional[str]
+    end_time: Optional[str]
+    wheelchair_accessible: int
+    bikes_allowed: int
+    stops: List[TripStops]
+
+    def to_json(self) -> Dict[str, Any]:
+        return {
+            "stops": [x.to_json() for x in self.stops],
+            "start_time": self.start_time,
+            "end_time": self.end_time,
+            "accessibility": {
+                "bikesAllowed": service_bikes_allowed[self.bikes_allowed],
+                "wheelchairAccessible": service_wheelchair_accessible[self.wheelchair_accessible],
+            }
+        }
+
+    def to_pb(self, info: pb.RouteTripInformation):
+        info.startTime = self.start_time
+        info.endTime = self.end_time
+        info.accessibility.bikesAllowed = service_bikes_allowed_pb[self.bikes_allowed]
+        info.accessibility.wheelchairAccessible = service_wheelchair_accessible_pb[self.wheelchair_accessible]
+
+        for stop in self.stops:
+            p = pb.RouteTripStop()
+            stop.to_pb(p)
+            info.stops.append(p)
 
 
 @dataclass
 class RouteServiceInformation(Intermediary):
+    route_id: str
     service_id: str
-    heading: str
-    start_time: str
-    end_time: str
-    stop_times: List[StopTimeInformation]
+    trips: List[TripInformation]
 
     def to_json(self) -> Dict[str, Any]:
         return {
             "service_id": self.service_id,
-            "heading": self.heading,
-            "start_time": self.start_time,
-            "end_time": self.end_time,
-            "stop_times": self.stop_times,
+            "route_id": self.route_id,
+            "trips": [x.to_json() for x in self.trips],
         }
 
+    def to_pb(self, info: pb.RouteTimetableEndpoint):
+        info.serviceId = self.service_id
+        info.routeId = self.route_id
 
-@dataclass
-class StopTimeByRoute(Intermediary):
-    route_id: str
-    trips: List[RouteServiceInformation]
-
-
-class JsonStopTimesGeneratorFormat(JsonGeneratorFormat[StopTimeByStop]):
-
-    def parse(self, intermediary: StopTimeByStop, distinguisher: Optional[str]) -> Any:
-        return [i.to_json() for i in intermediary.times]
+        for trip in self.trips:
+            p = pb.RouteTripInformation()
+            trip.to_pb(p)
+            info.trips.append(p)
 
 
-class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
+class JsonRouteTimetableGeneratorFormat(JsonGeneratorFormat[RouteServiceInformation]):
 
-    def parse(self, intermediary: StopTimeByStop, distinguisher: Optional[str]) -> Any:
-        out = pb.StopTimetable()
+    def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
+        return intermediary.to_json()
 
-        for t in intermediary.times:
-            time = pb.StopTimetableTime()
-            time.routeId = t.route_id
-            time.routeCode = t.route_code
-            time.serviceId = t.service_id
-            time.arrivalTime = t.arrival_time
-            time.departureTime = t.departure_time
-            time.heading = t.heading
-            time.sequence = t.sequence
 
-            out.times.append(time)
+class ProtoRouteTimetableGeneratorFormat(ProtoGeneratorFormat[RouteServiceInformation]):
 
+    def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
+        out = pb.RouteTimetableEndpoint()
+        intermediary.to_pb(out)
         return out
 
 
-class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
+class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInformation]):
 
     def __init__(
             self,
-            stop_times: List[ParsedCsv[List[StopTimeCSV]]],
-            trip_index: Dict[str, TripCSV],
-            route_index: Dict[str, RouteCSV],
-            calendar_index: Dict[str, List[CalendarCSV]],
-            calendar_exception_index: Dict[str, List[CalendarExceptionCSV]],
+            route_data: List[ParsedCsv[List[RouteCSV]]],
+            trip_index_by_route: Dict[str, List[TripCSV]],
+            stop_time_index_by_trip: Dict[str, List[StopTimeCSV]],
             distinguishers: List[str]
     ):
-        self.stop_times = stop_times
-        self.trip_index = trip_index
-        self.route_index = route_index
-        self.calendar_index = calendar_index
-        self.calendar_exception_index = calendar_exception_index
+        self.route_data = route_data
+        self.trip_index_by_route = trip_index_by_route
+        self.stop_time_index_by_trip = stop_time_index_by_trip
         self.distinguishers = distinguishers
 
-    def _formats(self) -> List[GeneratorFormat[StopTimeByStop]]:
+    def _formats(self) -> List[GeneratorFormat[RouteServiceInformation]]:
         return [
-            JsonStopTimesGeneratorFormat(),
-            ProtoStopTimesGeneratorFormat()
+            JsonRouteTimetableGeneratorFormat(),
+            ProtoRouteTimetableGeneratorFormat()
         ]
 
-    def _path(self, output_folder: Path, intermediary: StopTimeByStop, extension: str) -> Path:
-        return output_folder.joinpath(f"stop/{intermediary.stop_id}/timetable.{extension}")
+    def _path(self, output_folder: Path, intermediary: RouteServiceInformation, extension: str) -> Path:
+        return output_folder.joinpath(f"route/{intermediary.route_id}/service/{intermediary.service_id}/timetable.{extension}")
 
-    def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopTimeByStop]:
-        stop_times = flatten_parsed(filter_parsed_by_distinguisher(self.stop_times, distinguisher))
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteServiceInformation]:
+        routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))
+        return self._create_intermediary(routes)
 
-        return self._create_intermediary(stop_times)
-
-    def _create_intermediary(self, stop_times: List[StopTimeCSV]) -> List[StopTimeByStop]:
-        stop_ids = list(set([s.stop_id for s in stop_times]))
-        times_by_stop = {key: [] for key in stop_ids}
-        for t in stop_times:
-            times_by_stop[t.stop_id].append(t)
-
+    def _create_intermediary(self, routes: List[RouteCSV]) -> List[RouteServiceInformation]:
         out = []
-        for s, f_times in times_by_stop.items():
-            print(f"Creating stop times for stop {s}")
-            i_times = []
-            for t in f_times:
-                trip = self.trip_index[t.trip_id]
-                i_times.append(StopTimeInformation(
-                    trip.route_id,
-                    self.route_index[trip.route_id].code,
-                    trip.service_id,
-                    t.arrival_time,
-                    t.departure_time,
-                    trip.trip_headsign,
-                    t.stop_sequence,
-                ))
+        for r in routes:
+            trips = self.trip_index_by_route[r.id] if r.id in self.trip_index_by_route else None
+            if trips is None:
+                continue
 
-            out.append(StopTimeByStop(
-                s,
-                i_times,
-            ))
+            service_index = {}
+            for t in trips:
+                if t.service_id in service_index:
+                    service_index[t.service_id].append(t)
+                else:
+                    service_index[t.service_id] = [t]
+
+            for service_id, service_trips in service_index.items():
+                trips_for_service = []
+                for t in service_trips:
+                    stops_for_trip = [
+                        TripStops(
+                            s.stop_id,
+                            s.arrival_time,
+                            s.departure_time,
+                            s.stop_sequence
+                        )
+                        for s in self.stop_time_index_by_trip[t.id]
+                    ]
+                    trips_for_service.append(
+                        TripInformation(
+                            stops_for_trip[0].arrival_time if len(stops_for_trip) > 0 else None,
+                            stops_for_trip[-1].arrival_time if len(stops_for_trip) > 0 else None,
+                            t.wheelchair_accessible,
+                            t.bikes_allowed,
+                            stops_for_trip
+                        )
+                    )
+                out.append(
+                    RouteServiceInformation(
+                        r.id,
+                        service_id,
+                        trips_for_service
+                    )
+                )
 
         return out

@@ -25,25 +25,25 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x66ormat.proto\x12\x05proto\x1a\x1fgoogle/protobuf/timestamp.proto\")\n\x0cStopEndpoint\x12\x19\n\x04stop\x18\x01 \x03(\x0b\x32\x0b.proto.Stop\",\n\rRouteEndpoint\x12\x1b\n\x05route\x18\x01 \x03(\x0b\x32\x0c.proto.Route\"N\n\x12StopDetailEndpoint\x12\x19\n\x04stop\x18\x01 \x02(\x0b\x32\x0b.proto.Stop\x12\x1d\n\x08\x63hildren\x18\x02 \x03(\x0b\x32\x0b.proto.Stop\"2\n\x13RouteDetailEndpoint\x12\x1b\n\x05route\x18\x01 \x02(\x0b\x32\x0c.proto.Route\"2\n\x0fServiceEndpoint\x12\x1f\n\x07service\x18\x01 \x03(\x0b\x32\x0e.proto.Service\"\x8b\x01\n\x04Stop\x12\n\n\x02id\x18\x01 \x02(\t\x12\x15\n\rparentStation\x18\x05 \x01(\t\x12\x0c\n\x04name\x18\x02 \x02(\t\x12!\n\x08location\x18\x03 \x02(\x0b\x32\x0f.proto.Location\x12/\n\raccessibility\x18\x04 \x02(\x0b\x32\x18.proto.StopAccessibility\"Y\n\x11StopAccessibility\x12\x44\n\x18stopWheelchairAccessible\x18\x01 \x02(\x0e\x32\".proto.WheelchairStopAccessibility\"\x9b\x01\n\x05Route\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04\x63ode\x18\x02 \x02(\t\x12\x13\n\x0b\x64isplayCode\x18\x05 \x01(\t\x12 \n\x06\x63olors\x18\x06 \x01(\x0b\x32\x10.proto.ColorPair\x12\x0c\n\x04name\x18\x03 \x02(\t\x12\x13\n\x0b\x64\x65signation\x18\x07 \x01(\t\x12\x1e\n\x04type\x18\x04 \x02(\x0e\x32\x10.proto.RouteType\"+\n\tColorPair\x12\r\n\x05\x63olor\x18\x01 \x02(\t\x12\x0f\n\x07onColor\x18\x02 \x02(\t\"8\n\rStopTimetable\x12\'\n\x05times\x18\x01 \x03(\x0b\x32\x18.proto.StopTimetableTime\"\xe2\x01\n\x11StopTimetableTime\x12\x13\n\x0b\x63hildStopId\x18\t \x01(\t\x12\x0f\n\x07routeId\x18\x01 \x02(\t\x12\x11\n\trouteCode\x18\x02 \x02(\t\x12\x11\n\tserviceId\x18\x03 \x02(\t\x12\x13\n\x0b\x61rrivalTime\x18\x04 \x02(\t\x12\x15\n\rdepartureTime\x18\x05 \x02(\t\x12\x0f\n\x07heading\x18\x06 \x02(\t\x12\x10\n\x08sequence\x18\x07 \x02(\x05\x12\x32\n\raccessibility\x18\x08 \x02(\x0b\x32\x1b.proto.ServiceAccessibility\"\xaf\x01\n\x07Service\x12\n\n\x02id\x18\x01 \x02(\t\x12/\n\x07regular\x18\x02 \x03(\x0b\x32\x1e.proto.TimetableServiceRegular\x12\x33\n\texception\x18\x03 \x03(\x0b\x32 .proto.TimetableServiceException\x12\x32\n\raccessibility\x18\x04 \x01(\x0b\x32\x1b.proto.ServiceAccessibility\"\x94\x02\n\x14ServiceAccessibility\x12\x30\n\x0c\x62ikesAllowed\x18\x01 \x02(\x0e\x32\x1a.proto.ServiceBikesAllowed\x12?\n\x1d\x62ikesAllowedAppliesToAllTrips\x18\x02 \x01(\x0e\x32\x18.proto.MultipleQualifier\x12@\n\x14wheelchairAccessible\x18\x03 \x02(\x0e\x32\".proto.ServiceWheelchairAccessible\x12G\n%wheelchairAccessibleAppliesToAllTrips\x18\x04 \x01(\x0e\x32\x18.proto.MultipleQualifier\"\xa3\x02\n\x17TimetableServiceRegular\x12\x0e\n\x06monday\x18\x01 \x02(\x08\x12\x0f\n\x07tuesday\x18\x02 \x02(\x08\x12\x11\n\twednesday\x18\x03 \x02(\x08\x12\x10\n\x08thursday\x18\x04 \x02(\x08\x12\x0e\n\x06\x66riday\x18\x05 \x02(\x08\x12\x10\n\x08saturday\x18\x06 \x02(\x08\x12\x0e\n\x06sunday\x18\x07 \x02(\x08\x12-\n\tstartDate\x18\x08 \x02(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x07\x65ndDate\x18\t \x02(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\nexceptions\x18\n \x03(\x0b\x32 .proto.TimetableServiceException\"y\n\x19TimetableServiceException\x12(\n\x04\x64\x61te\x18\x01 \x02(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x04type\x18\x02 \x02(\x0e\x32$.proto.TimetableServiceExceptionType\"$\n\x08Location\x12\x0b\n\x03lat\x18\x01 \x02(\x01\x12\x0b\n\x03lng\x18\x02 \x02(\x01*\xc3\x01\n\x1bWheelchairStopAccessibility\x12)\n%WHEELCHAIR_STOP_ACCESSIBILITY_UNKNOWN\x10\x00\x12&\n\"WHEELCHAIR_STOP_ACCESSIBILITY_NONE\x10\x01\x12)\n%WHEELCHAIR_STOP_ACCESSIBILITY_PARTIAL\x10\x02\x12&\n\"WHEELCHAIR_STOP_ACCESSIBILITY_FULL\x10\x03*\x8d\x01\n\tRouteType\x12\x16\n\x12ROUTE_TYPE_UNKNOWN\x10\x00\x12\x13\n\x0fROUTE_TYPE_TRAM\x10\x01\x12\x14\n\x10ROUTE_TYPE_METRO\x10\x02\x12\x13\n\x0fROUTE_TYPE_RAIL\x10\x03\x12\x12\n\x0eROUTE_TYPE_BUS\x10\x04\x12\x14\n\x10ROUTE_TYPE_FERRY\x10\x05*\x81\x01\n\x13ServiceBikesAllowed\x12!\n\x1dSERVICE_BIKES_ALLOWED_UNKNOWN\x10\x00\x12!\n\x1dSERVICE_BIKES_ALLOWED_ALLOWED\x10\x01\x12$\n SERVICE_BIKES_ALLOWED_DISALLOWED\x10\x02*\xa6\x01\n\x1bServiceWheelchairAccessible\x12)\n%SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN\x10\x00\x12,\n(SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE\x10\x01\x12.\n*SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE\x10\x02*L\n\x11MultipleQualifier\x12\x1b\n\x17MULTIPLE_QUALIFIER_SOME\x10\x00\x12\x1a\n\x16MULTIPLE_QUALIFIER_ALL\x10\x01*y\n\x1dTimetableServiceExceptionType\x12*\n&TIMETABLE_SERVICE_EXCEPTION_TYPE_ADDED\x10\x01\x12,\n(TIMETABLE_SERVICE_EXCEPTION_TYPE_REMOVED\x10\x02')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x66ormat.proto\x12\x05proto\x1a\x1fgoogle/protobuf/timestamp.proto\")\n\x0cStopEndpoint\x12\x19\n\x04stop\x18\x01 \x03(\x0b\x32\x0b.proto.Stop\",\n\rRouteEndpoint\x12\x1b\n\x05route\x18\x01 \x03(\x0b\x32\x0c.proto.Route\"N\n\x12StopDetailEndpoint\x12\x19\n\x04stop\x18\x01 \x02(\x0b\x32\x0b.proto.Stop\x12\x1d\n\x08\x63hildren\x18\x02 \x03(\x0b\x32\x0b.proto.Stop\"2\n\x13RouteDetailEndpoint\x12\x1b\n\x05route\x18\x01 \x02(\x0b\x32\x0c.proto.Route\"2\n\x0fServiceEndpoint\x12\x1f\n\x07service\x18\x01 \x03(\x0b\x32\x0e.proto.Service\"h\n\x16RouteTimetableEndpoint\x12\x0f\n\x07routeId\x18\x01 \x02(\t\x12\x11\n\tserviceId\x18\x02 \x02(\t\x12*\n\x05trips\x18\x03 \x03(\x0b\x32\x1b.proto.RouteTripInformation\"+\n\x15RouteServicesEndpoint\x12\x12\n\nserviceIds\x18\x01 \x03(\t\"\x8b\x01\n\x04Stop\x12\n\n\x02id\x18\x01 \x02(\t\x12\x15\n\rparentStation\x18\x05 \x01(\t\x12\x0c\n\x04name\x18\x02 \x02(\t\x12!\n\x08location\x18\x03 \x02(\x0b\x32\x0f.proto.Location\x12/\n\raccessibility\x18\x04 \x02(\x0b\x32\x18.proto.StopAccessibility\"Y\n\x11StopAccessibility\x12\x44\n\x18stopWheelchairAccessible\x18\x01 \x02(\x0e\x32\".proto.WheelchairStopAccessibility\"\x9b\x01\n\x05Route\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04\x63ode\x18\x02 \x02(\t\x12\x13\n\x0b\x64isplayCode\x18\x05 \x01(\t\x12 \n\x06\x63olors\x18\x06 \x01(\x0b\x32\x10.proto.ColorPair\x12\x0c\n\x04name\x18\x03 \x02(\t\x12\x13\n\x0b\x64\x65signation\x18\x07 \x01(\t\x12\x1e\n\x04type\x18\x04 \x02(\x0e\x32\x10.proto.RouteType\"+\n\tColorPair\x12\r\n\x05\x63olor\x18\x01 \x02(\t\x12\x0f\n\x07onColor\x18\x02 \x02(\t\"8\n\rStopTimetable\x12\'\n\x05times\x18\x01 \x03(\x0b\x32\x18.proto.StopTimetableTime\"\xe2\x01\n\x11StopTimetableTime\x12\x13\n\x0b\x63hildStopId\x18\t \x01(\t\x12\x0f\n\x07routeId\x18\x01 \x02(\t\x12\x11\n\trouteCode\x18\x02 \x02(\t\x12\x11\n\tserviceId\x18\x03 \x02(\t\x12\x13\n\x0b\x61rrivalTime\x18\x04 \x02(\t\x12\x15\n\rdepartureTime\x18\x05 \x02(\t\x12\x0f\n\x07heading\x18\x06 \x02(\t\x12\x10\n\x08sequence\x18\x07 \x02(\r\x12\x32\n\raccessibility\x18\x08 \x02(\x0b\x32\x1b.proto.ServiceAccessibility\"\xaf\x01\n\x07Service\x12\n\n\x02id\x18\x01 \x02(\t\x12/\n\x07regular\x18\x02 \x03(\x0b\x32\x1e.proto.TimetableServiceRegular\x12\x33\n\texception\x18\x03 \x03(\x0b\x32 .proto.TimetableServiceException\x12\x32\n\raccessibility\x18\x04 \x01(\x0b\x32\x1b.proto.ServiceAccessibility\"\x94\x02\n\x14ServiceAccessibility\x12\x30\n\x0c\x62ikesAllowed\x18\x01 \x02(\x0e\x32\x1a.proto.ServiceBikesAllowed\x12?\n\x1d\x62ikesAllowedAppliesToAllTrips\x18\x02 \x01(\x0e\x32\x18.proto.MultipleQualifier\x12@\n\x14wheelchairAccessible\x18\x03 \x02(\x0e\x32\".proto.ServiceWheelchairAccessible\x12G\n%wheelchairAccessibleAppliesToAllTrips\x18\x04 \x01(\x0e\x32\x18.proto.MultipleQualifier\"\xa3\x02\n\x17TimetableServiceRegular\x12\x0e\n\x06monday\x18\x01 \x02(\x08\x12\x0f\n\x07tuesday\x18\x02 \x02(\x08\x12\x11\n\twednesday\x18\x03 \x02(\x08\x12\x10\n\x08thursday\x18\x04 \x02(\x08\x12\x0e\n\x06\x66riday\x18\x05 \x02(\x08\x12\x10\n\x08saturday\x18\x06 \x02(\x08\x12\x0e\n\x06sunday\x18\x07 \x02(\x08\x12-\n\tstartDate\x18\x08 \x02(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x07\x65ndDate\x18\t \x02(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x34\n\nexceptions\x18\n \x03(\x0b\x32 .proto.TimetableServiceException\"y\n\x19TimetableServiceException\x12(\n\x04\x64\x61te\x18\x01 \x02(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x32\n\x04type\x18\x02 \x02(\x0e\x32$.proto.TimetableServiceExceptionType\"\x93\x01\n\x14RouteTripInformation\x12\x11\n\tstartTime\x18\x01 \x02(\t\x12\x0f\n\x07\x65ndTime\x18\x02 \x02(\t\x12\x32\n\raccessibility\x18\x03 \x02(\x0b\x32\x1b.proto.ServiceAccessibility\x12#\n\x05stops\x18\x04 \x03(\x0b\x32\x14.proto.RouteTripStop\"]\n\rRouteTripStop\x12\x0e\n\x06stopId\x18\x01 \x02(\t\x12\x13\n\x0b\x61rrivalTime\x18\x02 \x02(\t\x12\x15\n\rdepartureTime\x18\x03 \x02(\t\x12\x10\n\x08sequence\x18\x04 \x02(\r\"$\n\x08Location\x12\x0b\n\x03lat\x18\x01 \x02(\x01\x12\x0b\n\x03lng\x18\x02 \x02(\x01*\xc3\x01\n\x1bWheelchairStopAccessibility\x12)\n%WHEELCHAIR_STOP_ACCESSIBILITY_UNKNOWN\x10\x00\x12&\n\"WHEELCHAIR_STOP_ACCESSIBILITY_NONE\x10\x01\x12)\n%WHEELCHAIR_STOP_ACCESSIBILITY_PARTIAL\x10\x02\x12&\n\"WHEELCHAIR_STOP_ACCESSIBILITY_FULL\x10\x03*\x8d\x01\n\tRouteType\x12\x16\n\x12ROUTE_TYPE_UNKNOWN\x10\x00\x12\x13\n\x0fROUTE_TYPE_TRAM\x10\x01\x12\x14\n\x10ROUTE_TYPE_METRO\x10\x02\x12\x13\n\x0fROUTE_TYPE_RAIL\x10\x03\x12\x12\n\x0eROUTE_TYPE_BUS\x10\x04\x12\x14\n\x10ROUTE_TYPE_FERRY\x10\x05*\x81\x01\n\x13ServiceBikesAllowed\x12!\n\x1dSERVICE_BIKES_ALLOWED_UNKNOWN\x10\x00\x12!\n\x1dSERVICE_BIKES_ALLOWED_ALLOWED\x10\x01\x12$\n SERVICE_BIKES_ALLOWED_DISALLOWED\x10\x02*\xa6\x01\n\x1bServiceWheelchairAccessible\x12)\n%SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN\x10\x00\x12,\n(SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE\x10\x01\x12.\n*SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE\x10\x02*L\n\x11MultipleQualifier\x12\x1b\n\x17MULTIPLE_QUALIFIER_SOME\x10\x00\x12\x1a\n\x16MULTIPLE_QUALIFIER_ALL\x10\x01*y\n\x1dTimetableServiceExceptionType\x12*\n&TIMETABLE_SERVICE_EXCEPTION_TYPE_ADDED\x10\x01\x12,\n(TIMETABLE_SERVICE_EXCEPTION_TYPE_REMOVED\x10\x02')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'format_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_WHEELCHAIRSTOPACCESSIBILITY']._serialized_start=1965
-  _globals['_WHEELCHAIRSTOPACCESSIBILITY']._serialized_end=2160
-  _globals['_ROUTETYPE']._serialized_start=2163
-  _globals['_ROUTETYPE']._serialized_end=2304
-  _globals['_SERVICEBIKESALLOWED']._serialized_start=2307
-  _globals['_SERVICEBIKESALLOWED']._serialized_end=2436
-  _globals['_SERVICEWHEELCHAIRACCESSIBLE']._serialized_start=2439
-  _globals['_SERVICEWHEELCHAIRACCESSIBLE']._serialized_end=2605
-  _globals['_MULTIPLEQUALIFIER']._serialized_start=2607
-  _globals['_MULTIPLEQUALIFIER']._serialized_end=2683
-  _globals['_TIMETABLESERVICEEXCEPTIONTYPE']._serialized_start=2685
-  _globals['_TIMETABLESERVICEEXCEPTIONTYPE']._serialized_end=2806
+  _globals['_WHEELCHAIRSTOPACCESSIBILITY']._serialized_start=2361
+  _globals['_WHEELCHAIRSTOPACCESSIBILITY']._serialized_end=2556
+  _globals['_ROUTETYPE']._serialized_start=2559
+  _globals['_ROUTETYPE']._serialized_end=2700
+  _globals['_SERVICEBIKESALLOWED']._serialized_start=2703
+  _globals['_SERVICEBIKESALLOWED']._serialized_end=2832
+  _globals['_SERVICEWHEELCHAIRACCESSIBLE']._serialized_start=2835
+  _globals['_SERVICEWHEELCHAIRACCESSIBLE']._serialized_end=3001
+  _globals['_MULTIPLEQUALIFIER']._serialized_start=3003
+  _globals['_MULTIPLEQUALIFIER']._serialized_end=3079
+  _globals['_TIMETABLESERVICEEXCEPTIONTYPE']._serialized_start=3081
+  _globals['_TIMETABLESERVICEEXCEPTIONTYPE']._serialized_end=3202
   _globals['_STOPENDPOINT']._serialized_start=56
   _globals['_STOPENDPOINT']._serialized_end=97
   _globals['_ROUTEENDPOINT']._serialized_start=99
@@ -54,26 +54,34 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_ROUTEDETAILENDPOINT']._serialized_end=275
   _globals['_SERVICEENDPOINT']._serialized_start=277
   _globals['_SERVICEENDPOINT']._serialized_end=327
-  _globals['_STOP']._serialized_start=330
-  _globals['_STOP']._serialized_end=469
-  _globals['_STOPACCESSIBILITY']._serialized_start=471
-  _globals['_STOPACCESSIBILITY']._serialized_end=560
-  _globals['_ROUTE']._serialized_start=563
-  _globals['_ROUTE']._serialized_end=718
-  _globals['_COLORPAIR']._serialized_start=720
-  _globals['_COLORPAIR']._serialized_end=763
-  _globals['_STOPTIMETABLE']._serialized_start=765
-  _globals['_STOPTIMETABLE']._serialized_end=821
-  _globals['_STOPTIMETABLETIME']._serialized_start=824
-  _globals['_STOPTIMETABLETIME']._serialized_end=1050
-  _globals['_SERVICE']._serialized_start=1053
-  _globals['_SERVICE']._serialized_end=1228
-  _globals['_SERVICEACCESSIBILITY']._serialized_start=1231
-  _globals['_SERVICEACCESSIBILITY']._serialized_end=1507
-  _globals['_TIMETABLESERVICEREGULAR']._serialized_start=1510
-  _globals['_TIMETABLESERVICEREGULAR']._serialized_end=1801
-  _globals['_TIMETABLESERVICEEXCEPTION']._serialized_start=1803
-  _globals['_TIMETABLESERVICEEXCEPTION']._serialized_end=1924
-  _globals['_LOCATION']._serialized_start=1926
-  _globals['_LOCATION']._serialized_end=1962
+  _globals['_ROUTETIMETABLEENDPOINT']._serialized_start=329
+  _globals['_ROUTETIMETABLEENDPOINT']._serialized_end=433
+  _globals['_ROUTESERVICESENDPOINT']._serialized_start=435
+  _globals['_ROUTESERVICESENDPOINT']._serialized_end=478
+  _globals['_STOP']._serialized_start=481
+  _globals['_STOP']._serialized_end=620
+  _globals['_STOPACCESSIBILITY']._serialized_start=622
+  _globals['_STOPACCESSIBILITY']._serialized_end=711
+  _globals['_ROUTE']._serialized_start=714
+  _globals['_ROUTE']._serialized_end=869
+  _globals['_COLORPAIR']._serialized_start=871
+  _globals['_COLORPAIR']._serialized_end=914
+  _globals['_STOPTIMETABLE']._serialized_start=916
+  _globals['_STOPTIMETABLE']._serialized_end=972
+  _globals['_STOPTIMETABLETIME']._serialized_start=975
+  _globals['_STOPTIMETABLETIME']._serialized_end=1201
+  _globals['_SERVICE']._serialized_start=1204
+  _globals['_SERVICE']._serialized_end=1379
+  _globals['_SERVICEACCESSIBILITY']._serialized_start=1382
+  _globals['_SERVICEACCESSIBILITY']._serialized_end=1658
+  _globals['_TIMETABLESERVICEREGULAR']._serialized_start=1661
+  _globals['_TIMETABLESERVICEREGULAR']._serialized_end=1952
+  _globals['_TIMETABLESERVICEEXCEPTION']._serialized_start=1954
+  _globals['_TIMETABLESERVICEEXCEPTION']._serialized_end=2075
+  _globals['_ROUTETRIPINFORMATION']._serialized_start=2078
+  _globals['_ROUTETRIPINFORMATION']._serialized_end=2225
+  _globals['_ROUTETRIPSTOP']._serialized_start=2227
+  _globals['_ROUTETRIPSTOP']._serialized_end=2320
+  _globals['_LOCATION']._serialized_start=2322
+  _globals['_LOCATION']._serialized_end=2358
 # @@protoc_insertion_point(module_scope)
