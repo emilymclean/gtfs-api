@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List, Dict, Callable, Any
 
 from .component.route_detail_generator import RouteDetailGeneratorComponent
+from .component.route_service_generator import RouteServiceGeneratorComponent
 from .component.route_timetable_generator import RouteTimetableGeneratorComponent
 from .component.service_list_generator import ServiceListGeneratorComponent
 from .component.stop_detail_generator import StopDetailGeneratorComponent
@@ -61,6 +62,11 @@ class Generator:
                 self.stop_time_index_by_trip,
                 self.distinguishers
             ),
+            RouteServiceGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.distinguishers
+            )
             # StopTimetableGeneratorComponent(
             #     self.stop_data,
             #     self.stop_time_index,
