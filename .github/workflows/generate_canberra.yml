@@ -34,8 +34,17 @@ jobs:
         - name: Run script
           run: |
             python script/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -o pages
-        - uses: emilymclean/git-auto-commit-action@master
-          with:
-            repository: ./pages
-            commit_message: "Update API"
+        - name: Push changes
+          run: |
+            cd pages
+            git add .
+            if git diff-index --cached --quiet HEAD --ignore-submodules --
+            then
+                echo "Nothing to commit"
+                exit
+            fi
+            git commit -m "Update API"
+            echo "Created commit, pushing"
+            git push
+            echo "Pushed changes"
                 
