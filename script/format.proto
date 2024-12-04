@@ -69,6 +69,7 @@ message StopTimetableTime {
   required string departureTime = 5;
   required string heading = 6;
   required int32 sequence = 7;
+  required ServiceAccessibility accessibility = 8;
 }
 
 message Service {

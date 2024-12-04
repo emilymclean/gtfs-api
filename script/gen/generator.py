@@ -7,7 +7,7 @@ from .component.stop_detail_generator import StopDetailGeneratorComponent
 from .component.stop_list_generator import StopListGeneratorComponent
 from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV
 from .component.route_list_generator import RouteListGeneratorComponent
-from .component.stop_times_generator import StopTimesGeneratorComponent
+from .component.stop_timetable_generator import StopTimetableGeneratorComponent
 from .models import *
 
 T = TypeVar('T')
@@ -46,7 +46,7 @@ class Generator:
         StopDetailGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
         RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
         RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
-        StopTimesGeneratorComponent(
+        StopTimetableGeneratorComponent(
             self.stop_time_data,
             self.trip_index,
             self.route_index,

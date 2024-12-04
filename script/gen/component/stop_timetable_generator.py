@@ -3,7 +3,8 @@ from pathlib import Path
 from time import strptime
 from typing import List, Optional, Any, Dict
 
-from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime
+from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime, service_bikes_allowed, \
+    service_wheelchair_accessible, service_bikes_allowed_pb
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
@@ -19,6 +20,8 @@ class StopTimeInformation(Intermediary):
     departure_time: str
     heading: str
     sequence: int
+    wheelchair_accessible: int
+    bikes_allowed: int
 
     def to_json(self) -> Dict[str, Any]:
         return {
@@ -28,7 +31,11 @@ class StopTimeInformation(Intermediary):
             "arrival_time": self.arrival_time,
             "departure_time": self.departure_time,
             "heading": self.heading,
-            "sequence": self.sequence
+            "sequence": self.sequence,
+            "accessibility": {
+                "bikesAllowed": service_bikes_allowed[self.bikes_allowed],
+                "wheelchairAccessible": service_wheelchair_accessible[self.wheelchair_accessible],
+            }
         }
 
 
@@ -59,12 +66,15 @@ class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
             time.heading = t.heading
             time.sequence = t.sequence
 
+            time.accessibility.bikesAllowed = service_bikes_allowed_pb[t.bikes_allowed]
+            time.accessibility.wheelchairAccessible = service_bikes_allowed_pb[t.wheelchair_accessible]
+
             out.times.append(time)
 
         return out
 
 
-class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
+class StopTimetableGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
 
     def __init__(
             self,
@@ -116,6 +126,8 @@ class StopTimesGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                     t.departure_time,
                     trip.trip_headsign,
                     t.stop_sequence,
+                    trip.wheelchair_accessible,
+                    trip.bikes_allowed,
                 ))
 
             out.append(StopTimeByStop(
