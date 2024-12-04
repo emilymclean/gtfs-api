@@ -2,12 +2,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Any, Dict
 
-from .consts import route_type_options_pb, parse_datetime, gt_date_format, timetable_service_exception_type_pb, \
+from .consts import timetable_service_exception_type_pb, \
     service_bikes_allowed, service_wheelchair_accessible, service_bikes_allowed_pb
-from ..models import GtfsCsv, routes_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
+from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import CalendarCSV, CalendarExceptionCSV, TripCSV
 from .. import format_pb2 as pb
+from ..time_helper import TimeHelper
 
 
 @dataclass
@@ -20,11 +21,11 @@ class ServiceIntermediary:
     wheelchair_accessible: int
     all_trips_wheelchair_accessible: bool
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             "id": self.service_id,
-            "regular": [c.to_json() for c in self.calendar],
-            "exception": [c.to_json() for c in self.exceptions],
+            "regular": [c.to_json(time_helper) for c in self.calendar],
+            "exception": [c.to_json(time_helper) for c in self.exceptions],
             "accessibility": {
                 "bikesAllowed": service_bikes_allowed[self.bikes_allowed],
                 "bikesAllowedAppliesToAllTrips": self.all_trips_bikes_allowed,
@@ -37,7 +38,7 @@ class ServiceIntermediary:
 class JsonServiceListGeneratorFormat(JsonGeneratorFormat[List[ServiceIntermediary]]):
 
     def parse(self, intermediary: List[ServiceIntermediary], distinguisher: Optional[str]) -> Any:
-        return [i.to_json() for i in intermediary]
+        return [i.to_json(self.time_helper) for i in intermediary]
 
 
 class ProtoServiceListGeneratorFormat(ProtoGeneratorFormat[List[ServiceIntermediary]]):
@@ -57,13 +58,13 @@ class ProtoServiceListGeneratorFormat(ProtoGeneratorFormat[List[ServiceIntermedi
                 regular.friday = c.days_of_week[4]
                 regular.saturday = c.days_of_week[5]
                 regular.sunday = c.days_of_week[5]
-                regular.startDate.FromDatetime(c.start_date)
-                regular.endDate.FromDatetime(c.end_date)
+                regular.startDate = self.time_helper.output_date_iso(c.start_date)
+                regular.endDate = self.time_helper.output_date_iso(c.end_date)
                 service.regular.append(regular)
 
             for c in i.exceptions:
                 exception = pb.TimetableServiceException()
-                exception.date.FromDatetime(c.date)
+                exception.date = self.time_helper.output_date_iso(c.date)
                 exception.type = timetable_service_exception_type_pb[c.type]
                 service.exception.append(exception)
 

@@ -11,8 +11,10 @@ from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarEx
 from .component.route_list_generator import RouteListGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
 from .models import *
+from .time_helper import TimeHelper
 
 T = TypeVar('T')
+
 
 class Generator:
 
@@ -27,12 +29,14 @@ class Generator:
             trip_csvs: List[GtfsCsv],
             config: Dict[str, Any]
     ):
+        self.config = config
+        self.time_helper = TimeHelper(config.get("timezone", "UTC"))
 
         self.stop_data = [ParsedCsv[List[StopCSV]](StopCSV.from_csv(p.data), p.distinguisher) for p in stop_csvs]
         self.route_data = [ParsedCsv[List[RouteCSV]](RouteCSV.from_csv(p.data), p.distinguisher) for p in route_csvs]
-        self.calendar_data = [ParsedCsv[List[CalendarCSV]](CalendarCSV.from_csv(p.data), p.distinguisher) for p in calendar_csvs]
-        self.calendar_exception_data = [ParsedCsv[List[CalendarExceptionCSV]](CalendarExceptionCSV.from_csv(p.data), p.distinguisher) for p in calendar_date_csvs]
-        self.stop_time_data = [ParsedCsv[List[StopTimeCSV]](StopTimeCSV.from_csv(p.data), p.distinguisher) for p in stop_time_csvs]
+        self.calendar_data = [ParsedCsv[List[CalendarCSV]](CalendarCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in calendar_csvs]
+        self.calendar_exception_data = [ParsedCsv[List[CalendarExceptionCSV]](CalendarExceptionCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in calendar_date_csvs]
+        self.stop_time_data = [ParsedCsv[List[StopTimeCSV]](StopTimeCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in stop_time_csvs]
         self.trip_data = [ParsedCsv[List[TripCSV]](TripCSV.from_csv(p.data), p.distinguisher) for p in trip_csvs]
 
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
@@ -47,8 +51,6 @@ class Generator:
         self.calendar_exception_index = self._create_list_index(flatten_parsed(self.calendar_exception_data), lambda x: x.service_id)
 
         self.distinguishers = list(filter(lambda x: x is not None, [d.distinguisher for d in route_csvs]))
-
-        self.config = config
 
     def generate(self, output_folder: Path):
         generators = [
@@ -82,6 +84,7 @@ class Generator:
 
         for g in generators:
             g.config = self.config
+            g.time_helper = self.time_helper
             g.generate(output_folder)
 
     @staticmethod

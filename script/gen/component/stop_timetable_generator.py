@@ -1,14 +1,15 @@
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
-from time import strptime
 from typing import List, Optional, Any, Dict
 
-from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime, service_bikes_allowed, \
+from .consts import service_bikes_allowed, \
     service_wheelchair_accessible, service_bikes_allowed_pb
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopCSV
 from .. import format_pb2 as pb
+from ..time_helper import TimeHelper
 
 
 @dataclass
@@ -17,21 +18,21 @@ class StopTimeInformation(Intermediary):
     route_id: str
     route_code: str
     service_id: str
-    arrival_time: str
-    departure_time: str
+    arrival_time: Any
+    departure_time: Any
     heading: str
     sequence: int
     wheelchair_accessible: int
     bikes_allowed: int
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             "child_stop_id": self.child_stop_id,
             "route_id": self.route_id,
             "route_code": self.route_code,
             "service_id": self.service_id,
-            "arrival_time": self.arrival_time,
-            "departure_time": self.departure_time,
+            "arrival_time": time_helper.output_time_iso(self.arrival_time),
+            "departure_time": time_helper.output_time_iso(self.departure_time),
             "heading": self.heading,
             "sequence": self.sequence,
             "accessibility": {
@@ -50,7 +51,7 @@ class StopTimeByStop(Intermediary):
 class JsonStopTimesGeneratorFormat(JsonGeneratorFormat[StopTimeByStop]):
 
     def parse(self, intermediary: StopTimeByStop, distinguisher: Optional[str]) -> Any:
-        return [i.to_json() for i in intermediary.times]
+        return [i.to_json(self.time_helper) for i in intermediary.times]
 
 
 class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
@@ -65,8 +66,8 @@ class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
             time.routeId = t.route_id
             time.routeCode = t.route_code
             time.serviceId = t.service_id
-            time.arrivalTime = t.arrival_time
-            time.departureTime = t.departure_time
+            time.arrivalTime = self.time_helper.output_time_iso(t.arrival_time)
+            time.departureTime = self.time_helper.output_time_iso(t.departure_time)
             time.heading = t.heading
             time.sequence = t.sequence
 

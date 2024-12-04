@@ -6,12 +6,15 @@ from os import PathLike
 from pathlib import Path
 from typing import TypeVar, Generic, Any, AnyStr, Optional, List, Tuple, Dict
 
+from ..time_helper import TimeHelper
+
 T = TypeVar("T")
 R = TypeVar("R")
 
 
 class GeneratorComponent(ABC):
     config: Dict[str, Any]
+    time_helper: TimeHelper
 
     @abstractmethod
     def generate(self, output_folder: Path):
@@ -43,6 +46,7 @@ class GeneratorComponent(ABC):
 
 class GeneratorFormat(ABC, Generic[T]):
     config: Dict[str, Any]
+    time_helper: TimeHelper
 
     @abstractmethod
     def extension(self) -> str:
@@ -97,6 +101,7 @@ class FormatGeneratorComponent(Generic[T], GeneratorComponent, ABC):
             for i in im:
                 for f in formats:
                     f.config = self.config
+                    f.time_helper = self.time_helper
                     self._write_for_format(i, d, f, output_folder)
 
     def _write_for_format(self, intermediary: T, distinguisher: Optional[str], format: GeneratorFormat[T], output_folder: Path):

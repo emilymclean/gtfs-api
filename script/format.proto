@@ -1,5 +1,4 @@
 syntax = "proto2";
-import "google/protobuf/timestamp.proto";
 
 package proto;
 
@@ -132,8 +131,8 @@ message TimetableServiceRegular {
   required bool friday = 5;
   required bool saturday = 6;
   required bool sunday = 7;
-  required google.protobuf.Timestamp startDate = 8;
-  required google.protobuf.Timestamp endDate = 9;
+  required string startDate = 8;
+  required string endDate = 9;
   repeated TimetableServiceException exceptions = 10;
 }
 
@@ -143,7 +142,7 @@ enum TimetableServiceExceptionType {
 }
 
 message TimetableServiceException {
-  required google.protobuf.Timestamp date = 1;
+  required string date = 1;
   required TimetableServiceExceptionType type = 2;
 }
 

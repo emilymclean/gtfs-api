@@ -4,64 +4,65 @@ from pathlib import Path
 from time import strptime
 from typing import List, Optional, Any, Dict
 
-from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime, service_bikes_allowed, \
+from .consts import timetable_service_exception_type_pb, service_bikes_allowed, \
     service_wheelchair_accessible, service_bikes_allowed_pb, service_wheelchair_accessible_pb
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
 from .. import format_pb2 as pb
+from ..time_helper import TimeHelper
 
 
 @dataclass
 class TripStops(Intermediary):
     stop_id: str
-    arrival_time: str
-    departure_time: str
+    arrival_time: Any
+    departure_time: Any
     sequence: int
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             "stop_id": self.stop_id,
-            "arrival_time": self.arrival_time,
-            "departure_time": self.departure_time,
+            "arrival_time": time_helper.output_time_iso(self.arrival_time),
+            "departure_time": time_helper.output_time_iso(self.departure_time),
             "sequence": self.sequence
         }
 
-    def to_pb(self, stop: pb.RouteTripStop):
+    def to_pb(self, stop: pb.RouteTripStop, time_helper: TimeHelper):
         stop.stopId = self.stop_id
-        stop.arrivalTime = self.arrival_time
-        stop.departureTime = self.departure_time
+        stop.arrivalTime = time_helper.output_time_iso(self.arrival_time)
+        stop.departureTime = time_helper.output_time_iso(self.departure_time)
         stop.sequence = self.sequence
 
 
 @dataclass
 class TripInformation(Intermediary):
-    start_time: Optional[str]
-    end_time: Optional[str]
+    start_time: Optional[Any]
+    end_time: Optional[Any]
     wheelchair_accessible: int
     bikes_allowed: int
     stops: List[TripStops]
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
-            "stops": [x.to_json() for x in self.stops],
-            "start_time": self.start_time,
-            "end_time": self.end_time,
+            "stops": [x.to_json(time_helper) for x in self.stops],
+            "start_time": time_helper.output_time_iso(self.start_time),
+            "end_time": time_helper.output_time_iso(self.end_time),
             "accessibility": {
                 "bikesAllowed": service_bikes_allowed[self.bikes_allowed],
                 "wheelchairAccessible": service_wheelchair_accessible[self.wheelchair_accessible],
             }
         }
 
-    def to_pb(self, info: pb.RouteTripInformation):
-        info.startTime = self.start_time
-        info.endTime = self.end_time
+    def to_pb(self, info: pb.RouteTripInformation, time_helper: TimeHelper):
+        info.startTime = time_helper.output_time_iso(self.start_time)
+        info.endTime = time_helper.output_time_iso(self.end_time)
         info.accessibility.bikesAllowed = service_bikes_allowed_pb[self.bikes_allowed]
         info.accessibility.wheelchairAccessible = service_wheelchair_accessible_pb[self.wheelchair_accessible]
 
         for stop in self.stops:
             p = pb.RouteTripStop()
-            stop.to_pb(p)
+            stop.to_pb(p, time_helper)
             info.stops.append(p)
 
 
@@ -71,34 +72,34 @@ class RouteServiceInformation(Intermediary):
     service_id: str
     trips: List[TripInformation]
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             "service_id": self.service_id,
             "route_id": self.route_id,
-            "trips": [x.to_json() for x in self.trips],
+            "trips": [x.to_json(time_helper) for x in self.trips],
         }
 
-    def to_pb(self, info: pb.RouteTimetableEndpoint):
+    def to_pb(self, info: pb.RouteTimetableEndpoint, time_helper: TimeHelper):
         info.serviceId = self.service_id
         info.routeId = self.route_id
 
         for trip in self.trips:
             p = pb.RouteTripInformation()
-            trip.to_pb(p)
+            trip.to_pb(p, time_helper)
             info.trips.append(p)
 
 
 class JsonRouteTimetableGeneratorFormat(JsonGeneratorFormat[RouteServiceInformation]):
 
     def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
-        return intermediary.to_json()
+        return intermediary.to_json(self.time_helper)
 
 
 class ProtoRouteTimetableGeneratorFormat(ProtoGeneratorFormat[RouteServiceInformation]):
 
     def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
         out = pb.RouteTimetableEndpoint()
-        intermediary.to_pb(out)
+        intermediary.to_pb(out, self.time_helper)
         return out
 
 

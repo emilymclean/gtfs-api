@@ -1,11 +1,13 @@
 from abc import ABC
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 import pandas as pd
 
 from .consts import *
 from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors
+from ..time_helper import TimeHelper
 
 
 class Intermediary(ABC):
@@ -175,8 +177,8 @@ class RouteIntermediary(Intermediary):
 @dataclass
 class StopTimeCSV(Intermediary):
     trip_id: str
-    arrival_time: str
-    departure_time: str
+    arrival_time: Any
+    departure_time: Any
     stop_id: str
     stop_sequence: int
     pickup_type: int
@@ -184,11 +186,11 @@ class StopTimeCSV(Intermediary):
     timepoint: Optional[int]
 
     @staticmethod
-    def from_csv_row(row: pd.Series) -> "StopTimeCSV":
+    def from_csv_row(row: pd.Series, time_helper: TimeHelper) -> "StopTimeCSV":
         return StopTimeCSV(
             f"{row['trip_id']}",
-            row['arrival_time'],
-            row['departure_time'],
+            time_helper.parse_time(row['arrival_time']),
+            time_helper.parse_time(row['departure_time']),
             f"{row['stop_id']}",
             row['stop_sequence'],
             row['pickup_type'],
@@ -197,10 +199,10 @@ class StopTimeCSV(Intermediary):
         )
 
     @staticmethod
-    def from_csv(df: pd.DataFrame) -> List["StopTimeCSV"]:
+    def from_csv(df: pd.DataFrame, time_helper: TimeHelper) -> List["StopTimeCSV"]:
         out = []
         for i, r in df.iterrows():
-            out.append(StopTimeCSV.from_csv_row(r))
+            out.append(StopTimeCSV.from_csv_row(r, time_helper))
         return out
 
 
@@ -241,7 +243,7 @@ class CalendarCSV(Intermediary):
     start_date: datetime
     end_date: datetime
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             'monday': self.days_of_week[0],
             'tuesday': self.days_of_week[1],
@@ -250,12 +252,12 @@ class CalendarCSV(Intermediary):
             'friday': self.days_of_week[4],
             'saturday': self.days_of_week[5],
             'sunday': self.days_of_week[6],
-            'start_date': self.start_date.isoformat(),
-            'end_date': self.end_date.isoformat(),
+            'start_date': time_helper.output_date_iso(self.start_date),
+            'end_date': time_helper.output_date_iso(self.end_date),
         }
 
     @staticmethod
-    def from_csv_row(row: pd.Series) -> "CalendarCSV":
+    def from_csv_row(row: pd.Series, time_helper: TimeHelper) -> "CalendarCSV":
         return CalendarCSV(
             f"{row['service_id']}",
             [
@@ -267,15 +269,15 @@ class CalendarCSV(Intermediary):
                 row["saturday"] == 1,
                 row["sunday"] == 1,
             ],
-            parse_datetime(f"{row['start_date']}", gt_date_format),
-            parse_datetime(f"{row['end_date']}", gt_date_format),
+            time_helper.parse_date(f"{row['start_date']}"),
+            time_helper.parse_date(f"{row['end_date']}"),
         )
 
     @staticmethod
-    def from_csv(df: pd.DataFrame) -> List["CalendarCSV"]:
+    def from_csv(df: pd.DataFrame, time_helper: TimeHelper) -> List["CalendarCSV"]:
         out = []
         for i, r in df.iterrows():
-            out.append(CalendarCSV.from_csv_row(r))
+            out.append(CalendarCSV.from_csv_row(r, time_helper))
         return out
 
 
@@ -285,24 +287,24 @@ class CalendarExceptionCSV(Intermediary):
     date: datetime
     type: int
 
-    def to_json(self) -> Dict[str, Any]:
+    def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             'service_id': self.service_id,
-            'date': self.date.isoformat(),
+            'date': time_helper.output_date_iso(self.date),
             'type': timetable_service_exception_type[self.type],
         }
 
     @staticmethod
-    def from_csv_row(row: pd.Series) -> "CalendarExceptionCSV":
+    def from_csv_row(row: pd.Series, time_helper: TimeHelper) -> "CalendarExceptionCSV":
         return CalendarExceptionCSV(
             f"{row['service_id']}",
-            parse_datetime(f"{row['date']}", gt_date_format),
+            time_helper.parse_date(f"{row['date']}"),
             row['exception_type'],
         )
 
     @staticmethod
-    def from_csv(df: pd.DataFrame) -> List["CalendarExceptionCSV"]:
+    def from_csv(df: pd.DataFrame, time_helper: TimeHelper) -> List["CalendarExceptionCSV"]:
         out = []
         for i, r in df.iterrows():
-            out.append(CalendarExceptionCSV.from_csv_row(r))
+            out.append(CalendarExceptionCSV.from_csv_row(r, time_helper))
         return out

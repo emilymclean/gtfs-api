@@ -1,3 +1,4 @@
+timezone: Australia/Sydney
 designations:
   light_rail:
     prefix: LR
