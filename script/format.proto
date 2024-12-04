@@ -49,6 +49,7 @@ message Route {
   optional string displayCode = 5;
   optional ColorPair colors = 6;
   required string name = 3;
+  optional string designation = 7;
   required RouteType type = 4;
 }
 

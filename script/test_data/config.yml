@@ -4,7 +4,7 @@ designations:
   rapid:
     prefix: R
 route:
-  special_designations:
+  special-designations:
     - code: 1
       designation: light_rail
     - code: 2

@@ -5,14 +5,14 @@ from typing import List, Optional, Any
 from .consts import route_type_options_pb
 from ..models import GtfsCsv, routes_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import RouteCSV, StopCSV
+from .intermediaries import RouteCSV, StopCSV, RouteIntermediary
 from .. import format_pb2 as pb
 
 
 @dataclass
 class IndexableRouteList:
     index: Optional[str]
-    routes: List[RouteCSV]
+    routes: List[RouteIntermediary]
 
 
 class JsonRouteListGeneratorFormat(JsonGeneratorFormat[IndexableRouteList]):
@@ -62,6 +62,9 @@ class RouteListGeneratorComponent(FormatGeneratorComponent[IndexableRouteList]):
                 idx[k].append(route)
 
         indexed = [IndexableRouteList(k, v) for k, v in idx.items()]
-        indexed.append(IndexableRouteList(None, routes))
+        indexed.append(IndexableRouteList(None, [
+            RouteIntermediary.from_csv(x, self.config)
+            for x in routes
+        ]))
 
         return indexed

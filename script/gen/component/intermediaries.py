@@ -5,6 +5,7 @@ from typing import Dict, Any, List, Optional
 import pandas as pd
 
 from .consts import *
+from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors
 
 
 class Intermediary(ABC):
@@ -91,20 +92,6 @@ class RouteCSV(Intermediary):
     name: str
     type: int
 
-    def to_json(self) -> dict:
-        return {
-            "id": self.id,
-            "name": self.name,
-            "code": self.code,
-            "type": route_type_options[self.type],
-        }
-
-    def to_pb(self, route: pb.Route):
-        route.id = self.id
-        route.code = self.code
-        route.name = self.name
-        route.type = route_type_options_pb[self.type]
-
     @staticmethod
     def from_csv_row(row: pd.Series) -> "RouteCSV":
         return RouteCSV(
@@ -120,6 +107,68 @@ class RouteCSV(Intermediary):
         for i, r in df.iterrows():
             out.append(RouteCSV.from_csv_row(r))
         return out
+
+
+@dataclass
+class ColorPair(Intermediary):
+    color: str
+    on_color: str
+
+    def to_json(self) -> dict:
+        return {
+            "color": self.color,
+            "onColor": self.on_color,
+        }
+
+    def to_pb(self, route: pb.ColorPair):
+        route.color = self.color
+        route.on_color = self.on_color
+
+
+@dataclass
+class RouteIntermediary(Intermediary):
+    id: str
+    code: str
+    name: str
+    type: int
+    designation: Optional[str]
+    code_prefix: Optional[str]
+    colors: Optional[ColorPair]
+
+    def to_json(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "code": self.code,
+            "displayCode": self.code if self.code_prefix is None else f"{self.code_prefix}{self.code}",
+            "type": route_type_options[self.type],
+            "designation": self.designation,
+            "colors": self.colors.to_json() if self.colors is not None else None,
+        }
+
+    def to_pb(self, route: pb.Route):
+        route.id = self.id
+        route.code = self.code
+        route.displayCode = self.code if self.code_prefix is None else f"{self.code_prefix}{self.code}"
+        route.name = self.name
+        route.type = route_type_options_pb[self.type]
+        route.designation = self.designation,
+        if self.colors is not None:
+            self.colors.to_pb(route.colors)
+
+    @staticmethod
+    def from_csv(route: RouteCSV, extras: Dict[str, Any]) -> "RouteIntermediary":
+        designation = _get_route_designation(route.code, extras)
+        colors = _get_route_colors(route.code, extras)
+        return RouteIntermediary(
+            route.id,
+            route.code,
+            route.name,
+            route.type,
+            designation,
+            _get_route_prefix(designation, extras) if designation is not None else None,
+            ColorPair(*colors) if colors is not None else None
+        )
 
 
 @dataclass
