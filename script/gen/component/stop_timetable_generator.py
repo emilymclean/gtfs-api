@@ -7,12 +7,13 @@ from .consts import gt_date_format, timetable_service_exception_type_pb, parse_d
     service_wheelchair_accessible, service_bikes_allowed_pb
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
+from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopCSV
 from .. import format_pb2 as pb
 
 
 @dataclass
 class StopTimeInformation(Intermediary):
+    child_stop_id: Optional[str]
     route_id: str
     route_code: str
     service_id: str
@@ -25,6 +26,7 @@ class StopTimeInformation(Intermediary):
 
     def to_json(self) -> Dict[str, Any]:
         return {
+            "child_stop_id": self.child_stop_id,
             "route_id": self.route_id,
             "route_code": self.route_code,
             "service_id": self.service_id,
@@ -58,6 +60,8 @@ class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
 
         for t in intermediary.times:
             time = pb.StopTimetableTime()
+            if t.child_stop_id is not None:
+                time.childStopId = t.child_stop_id
             time.routeId = t.route_id
             time.routeCode = t.route_code
             time.serviceId = t.service_id
@@ -78,14 +82,18 @@ class StopTimetableGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
 
     def __init__(
             self,
-            stop_times: List[ParsedCsv[List[StopTimeCSV]]],
+            stops: List[ParsedCsv[List[StopCSV]]],
+            stop_time_index: Dict[str, List[StopTimeCSV]],
+            stop_index_by_parent: Dict[str, List[StopCSV]],
             trip_index: Dict[str, TripCSV],
             route_index: Dict[str, RouteCSV],
             calendar_index: Dict[str, List[CalendarCSV]],
             calendar_exception_index: Dict[str, List[CalendarExceptionCSV]],
             distinguishers: List[str]
     ):
-        self.stop_times = stop_times
+        self.stops = stops
+        self.stop_time_index = stop_time_index
+        self.stop_index_by_parent = stop_index_by_parent
         self.trip_index = trip_index
         self.route_index = route_index
         self.calendar_index = calendar_index
@@ -102,23 +110,23 @@ class StopTimetableGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
         return output_folder.joinpath(f"stop/{intermediary.stop_id}/timetable.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopTimeByStop]:
-        stop_times = flatten_parsed(filter_parsed_by_distinguisher(self.stop_times, distinguisher))
-
-        return self._create_intermediary(stop_times)
-
-    def _create_intermediary(self, stop_times: List[StopTimeCSV]) -> List[StopTimeByStop]:
-        stop_ids = list(set([s.stop_id for s in stop_times]))
-        times_by_stop = {key: [] for key in stop_ids}
-        for t in stop_times:
-            times_by_stop[t.stop_id].append(t)
+        stops = flatten_parsed(filter_parsed_by_distinguisher(self.stops, distinguisher))
 
         out = []
-        for s, f_times in times_by_stop.items():
-            print(f"Creating stop times for stop {s}")
-            i_times = []
-            for t in f_times:
+        for stop in stops:
+            times = self._create_intermediary(None, [stop])
+            out.append(StopTimeByStop(stop.id, times))
+
+        return out
+
+    def _create_intermediary(self, parent_id: Optional[str], stops: List[StopCSV]) -> List[StopTimeInformation]:
+        out = []
+        for s in stops:
+            times = self.stop_time_index[s.id] if s.id in self.stop_time_index else []
+            for t in times:
                 trip = self.trip_index[t.trip_id]
-                i_times.append(StopTimeInformation(
+                out.append(StopTimeInformation(
+                    s.id if (s.id != parent_id) else None,
                     trip.route_id,
                     self.route_index[trip.route_id].code,
                     trip.service_id,
@@ -130,9 +138,8 @@ class StopTimetableGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                     trip.bikes_allowed,
                 ))
 
-            out.append(StopTimeByStop(
-                s,
-                i_times,
-            ))
+            children = self.stop_index_by_parent[s.id] if s.id in self.stop_index_by_parent else []
+            if len(children) > 0:
+                out.extend(self._create_intermediary(parent_id, children))
 
         return out

@@ -33,6 +33,8 @@ class Generator:
         self.trip_data = [ParsedCsv[List[TripCSV]](TripCSV.from_csv(p.data), p.distinguisher) for p in trip_csvs]
 
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
+        self.stop_index_by_parent = self._create_list_index(filter(lambda x: x.parent_station is not None, flatten_parsed(self.stop_data)), lambda x: x.parent_station)
+        self.stop_time_index = self._create_list_index(flatten_parsed(self.stop_time_data), lambda x: x.stop_id)
         self.route_index = self._create_index(flatten_parsed(self.route_data), lambda x: x.id)
         self.trip_index = self._create_index(flatten_parsed(self.trip_data), lambda x: x.id)
         self.trip_index_by_service = self._create_list_index(flatten_parsed(self.trip_data), lambda x: x.service_id)
@@ -47,7 +49,9 @@ class Generator:
         RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
         RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
         StopTimetableGeneratorComponent(
-            self.stop_time_data,
+            self.stop_data,
+            self.stop_time_index,
+            self.stop_index_by_parent,
             self.trip_index,
             self.route_index,
             self.calendar_index,

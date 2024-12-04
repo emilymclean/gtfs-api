@@ -37,6 +37,7 @@ class StopAccessibilityCSV(Intermediary):
 class StopCSV(Intermediary):
     id: str
     name: str
+    parent_station: Optional[str]
     location: LocationCSV
     accessibility: StopAccessibilityCSV
 
@@ -44,6 +45,7 @@ class StopCSV(Intermediary):
         return {
             "id": self.id,
             "name": self.name,
+            "parent_station": self.parent_station,
             "location": self.location.to_json(),
             "accessibility": self.accessibility.to_json()
         }
@@ -53,6 +55,7 @@ class StopCSV(Intermediary):
         return StopCSV(
             f"{row['stop_id']}",
             row['stop_name'],
+            row['parent_station'] if 'parent_station' in row else None,
             LocationCSV(
                 row['stop_lat'],
                 row['stop_lon'],

@@ -62,6 +62,7 @@ message StopTimetable {
 }
 
 message StopTimetableTime {
+  optional string childStopId = 9;
   required string routeId = 1;
   required string routeCode = 2;
   required string serviceId = 3;
