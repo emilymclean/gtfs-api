@@ -122,7 +122,7 @@ class ColorPair(Intermediary):
 
     def to_pb(self, route: pb.ColorPair):
         route.color = self.color
-        route.on_color = self.on_color
+        route.onColor = self.on_color
 
 
 @dataclass
@@ -153,7 +153,7 @@ class RouteIntermediary(Intermediary):
         route.name = self.name
         route.type = route_type_options_pb[self.type]
         if self.designation is not None:
-            route.designation = self.designation,
+            route.designation = self.designation
         if self.colors is not None:
             self.colors.to_pb(route.colors)
 

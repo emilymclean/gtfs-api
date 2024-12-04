@@ -7,7 +7,7 @@ def _get_route_designation(code: str, extras: Dict[str, Any]) -> Optional[str]:
         return None
 
     for d in special_designations:
-        if d["code"] == code:
+        if f"{d['code']}" == code:
             return d["designation"]
 
     return None
@@ -24,7 +24,7 @@ def _get_route_colors(code: str, extras: Dict[str, Any]) -> Optional[Tuple[str, 
         return None
 
     for color in colors:
-        if color["code"] == code:
+        if f"{color['code']}" == code:
             return color["color"], color["onColor"]
 
     return None
