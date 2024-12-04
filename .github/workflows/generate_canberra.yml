@@ -34,7 +34,7 @@ jobs:
         - name: Run script
           run: |
             python script/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -o pages
-        - uses: stefanzweifel/git-auto-commit-action@v5
+        - uses: emilymclean/git-auto-commit-action@master
           with:
             repository: ./pages
             commit_message: "Update API"
