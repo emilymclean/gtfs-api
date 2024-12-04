@@ -152,7 +152,8 @@ class RouteIntermediary(Intermediary):
         route.displayCode = self.code if self.code_prefix is None else f"{self.code_prefix}{self.code}"
         route.name = self.name
         route.type = route_type_options_pb[self.type]
-        route.designation = self.designation,
+        if self.designation is not None:
+            route.designation = self.designation,
         if self.colors is not None:
             self.colors.to_pb(route.colors)
 
