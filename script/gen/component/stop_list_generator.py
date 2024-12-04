@@ -27,15 +27,8 @@ class ProtoStopListGeneratorFormat(ProtoGeneratorFormat[IndexableStopList]):
         se = pb.StopEndpoint()
         for i in intermediary.stops:
             stop = pb.Stop()
-            stop.id = i.id
-            if i.parent_station is not None:
-                stop.parentStation = i.parent_station
-            stop.name = i.name
+            i.to_pb(stop)
 
-            stop.location.lat = i.location.lat
-            stop.location.lng = i.location.lng
-
-            stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[i.accessibility.wheelchair]
             se.stop.append(stop)
 
         return se

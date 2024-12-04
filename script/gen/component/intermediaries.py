@@ -50,6 +50,17 @@ class StopCSV(Intermediary):
             "accessibility": self.accessibility.to_json()
         }
 
+    def to_pb(self, stop: pb.Stop):
+        stop.id = self.id
+        if self.parent_station is not None:
+            stop.parentStation = self.parent_station
+        stop.name = self.name
+
+        stop.location.lat = self.location.lat
+        stop.location.lng = self.location.lng
+
+        stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[self.accessibility.wheelchair]
+
     @staticmethod
     def from_csv_row(row: pd.Series) -> "StopCSV":
         return StopCSV(

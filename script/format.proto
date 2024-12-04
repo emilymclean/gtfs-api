@@ -13,6 +13,7 @@ message RouteEndpoint {
 
 message StopDetailEndpoint {
   required Stop stop = 1;
+  repeated Stop children = 2;
 }
 
 message RouteDetailEndpoint {

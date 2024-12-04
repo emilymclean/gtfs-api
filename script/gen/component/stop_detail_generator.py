@@ -1,5 +1,6 @@
+from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 
 from .consts import wheelchair_boarding_options_pb
 from ..models import GtfsCsv, stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
@@ -8,47 +9,66 @@ from .intermediaries import StopCSV
 from .. import format_pb2 as pb
 
 
-class JsonStopDetailGeneratorFormat(JsonGeneratorFormat[StopCSV]):
+@dataclass
+class StopDetail:
+    stop: StopCSV
+    children: List[StopCSV]
 
-    def parse(self, intermediary: StopCSV, distinguisher: Optional[str]) -> Any:
+
+class JsonStopDetailGeneratorFormat(JsonGeneratorFormat[StopDetail]):
+
+    def parse(self, intermediary: StopDetail, distinguisher: Optional[str]) -> Any:
         return {
-            'stop': intermediary.to_json()
+            'stop': intermediary.stop.to_json(),
+            'children': [c.to_json() for c in intermediary.children],
         }
 
 
-class ProtoStopDetailGeneratorFormat(ProtoGeneratorFormat[StopCSV]):
+class ProtoStopDetailGeneratorFormat(ProtoGeneratorFormat[StopDetail]):
 
-    def parse(self, intermediary: StopCSV, distinguisher: Optional[str]) -> Any:
+    def parse(self, intermediary: StopDetail, distinguisher: Optional[str]) -> Any:
         stop_detail = pb.StopDetailEndpoint()
 
-        stop_detail.stop.id = intermediary.id
-        if intermediary.parent_station is not None:
-            stop_detail.stop.parentStation = intermediary.parent_station
-        stop_detail.stop.name = intermediary.name
+        intermediary.stop.to_pb(stop_detail.stop)
 
-        stop_detail.stop.location.lat = intermediary.location.lat
-        stop_detail.stop.location.lng = intermediary.location.lng
-
-        stop_detail.stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[intermediary.accessibility.wheelchair]
+        for c in intermediary.children:
+            stop = pb.Stop()
+            c.to_pb(stop)
+            stop_detail.children.append(stop)
 
         return stop_detail
 
 
-class StopDetailGeneratorComponent(FormatGeneratorComponent[StopCSV]):
+class StopDetailGeneratorComponent(FormatGeneratorComponent[StopDetail]):
 
-    def __init__(self, stop_csvs: List[ParsedCsv[List[StopCSV]]], distinguishers: List[str]) -> None:
+    def __init__(
+            self,
+            stop_csvs: List[ParsedCsv[List[StopCSV]]],
+            stop_index_by_parent: Dict[str, List[StopCSV]],
+            distinguishers: List[str]
+    ) -> None:
         self.csvs = stop_csvs
+        self.stop_index_by_parent = stop_index_by_parent
         self.endpoint = stops_endpoint
         self.distinguishers = distinguishers
 
-    def _formats(self) -> List[GeneratorFormat[StopCSV]]:
+    def _formats(self) -> List[GeneratorFormat[StopDetail]]:
         return [
             JsonStopDetailGeneratorFormat(),
             ProtoStopDetailGeneratorFormat()
         ]
 
-    def _path(self, output_folder: Path, intermediary: StopCSV, extension: str) -> Path:
-        return output_folder.joinpath(f"stop/{intermediary.id}/details.{extension}")
+    def _path(self, output_folder: Path, intermediary: StopDetail, extension: str) -> Path:
+        return output_folder.joinpath(f"stop/{intermediary.stop.id}/details.{extension}")
 
-    def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopCSV]:
-        return flatten_parsed(filter_parsed_by_distinguisher(self.csvs, distinguisher))
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopDetail]:
+        stops = flatten_parsed(filter_parsed_by_distinguisher(self.csvs, distinguisher))
+        out = []
+
+        for stop in stops:
+            out.append(StopDetail(
+                stop,
+                self.stop_index_by_parent[stop.id] if stop.id in self.stop_index_by_parent else [],
+            ))
+
+        return out

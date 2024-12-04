@@ -45,7 +45,7 @@ class Generator:
 
     def generate(self, output_folder: Path):
         StopListGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
-        StopDetailGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
+        StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers).generate(output_folder)
         RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
         RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
         StopTimetableGeneratorComponent(
