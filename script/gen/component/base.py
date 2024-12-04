@@ -1,6 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from hashlib import sha256
 from os import PathLike
 from pathlib import Path
 from typing import TypeVar, Generic, Any, AnyStr, Optional, List, Tuple, Dict
@@ -24,13 +25,20 @@ class GeneratorComponent(ABC):
 
     def _write(self, data: bytes|str, path: str | PathLike):
         path = Path(path)
+        sha_path = Path(f"{path}.sha")
         path.parent.mkdir(parents=True, exist_ok=True)
         if isinstance(data, bytes):
+            sha = sha256(data).digest()
             with path.open('wb') as f:
                 f.write(data)
         else:
+            sha = sha256(data.encode('utf-8')).digest()
             with path.open('w') as f:
                 f.write(data)
+
+        with sha_path.open('wb') as f:
+            f.write(sha)
+
 
 
 class GeneratorFormat(ABC, Generic[T]):
