@@ -141,6 +141,8 @@ class TripCSV(Intermediary):
     service_id: str
     trip_headsign: str
     direction_id: int
+    wheelchair_accessible: int
+    bikes_allowed: int
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "TripCSV":
@@ -150,6 +152,8 @@ class TripCSV(Intermediary):
             f"{row['service_id']}",
             f"{row['trip_headsign']}",
             row['direction_id'],
+            row['wheelchair_accessible'],
+            row['bikes_allowed'],
         )
 
     @staticmethod

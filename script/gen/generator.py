@@ -35,6 +35,7 @@ class Generator:
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
         self.route_index = self._create_index(flatten_parsed(self.route_data), lambda x: x.id)
         self.trip_index = self._create_index(flatten_parsed(self.trip_data), lambda x: x.id)
+        self.trip_index_by_service = self._create_list_index(flatten_parsed(self.trip_data), lambda x: x.service_id)
         self.calendar_index = self._create_list_index(flatten_parsed(self.calendar_data), lambda x: x.service_id)
         self.calendar_exception_index = self._create_list_index(flatten_parsed(self.calendar_exception_data), lambda x: x.service_id)
 
@@ -53,7 +54,7 @@ class Generator:
             self.calendar_exception_index,
             self.distinguishers
         ).generate(output_folder)
-        ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.distinguishers).generate(output_folder)
+        ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers).generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

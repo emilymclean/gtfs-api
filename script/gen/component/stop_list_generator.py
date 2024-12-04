@@ -33,7 +33,7 @@ class ProtoStopListGeneratorFormat(ProtoGeneratorFormat[IndexableStopList]):
             stop.location.lat = i.location.lat
             stop.location.lng = i.location.lng
 
-            stop.accessibility.wheelchair = wheelchair_boarding_options_pb[i.accessibility.wheelchair]
+            stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[i.accessibility.wheelchair]
             se.stop.append(stop)
 
         return se
@@ -41,7 +41,7 @@ class ProtoStopListGeneratorFormat(ProtoGeneratorFormat[IndexableStopList]):
 
 class StopListGeneratorComponent(FormatGeneratorComponent[IndexableStopList]):
 
-    def __init__(self, stop_data: List[ParsedCsv[IndexableStopList]], distinguishers: List[str]):
+    def __init__(self, stop_data: List[ParsedCsv[List[StopCSV]]], distinguishers: List[str]):
         self.csvs = stop_data
         self.endpoint = stops_endpoint
         self.distinguishers = distinguishers

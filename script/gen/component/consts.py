@@ -47,3 +47,38 @@ timetable_service_exception_type_pb = {
     1: pb.TimetableServiceExceptionType.TIMETABLE_SERVICE_EXCEPTION_TYPE_ADDED,
     2: pb.TimetableServiceExceptionType.TIMETABLE_SERVICE_EXCEPTION_TYPE_REMOVED
 }
+
+service_wheelchair_accessible = {
+    0: "unknown",
+    1: "accessible",
+    2: "inaccessible"
+}
+
+service_wheelchair_accessible_pb = {
+    0: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN,
+    1: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE,
+    2: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE,
+}
+
+service_bikes_allowed = {
+    0: "unknown",
+    1: "allowed",
+    2: "disallowed"
+}
+
+service_wheelchair_accessible_pb = {
+    0: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN,
+    1: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE,
+    2: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE,
+}
+
+service_bikes_allowed_pb = {
+    0: pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_UNKNOWN,
+    1: pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_ALLOWED,
+    2: pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_DISALLOWED,
+}
+
+multiple_qualifier_pb = {
+    True: pb.MultipleQualifier.MULTIPLE_QUALIFIER_ALL,
+    False: pb.MultipleQualifier.MULTIPLE_QUALIFIER_SOME,
+}

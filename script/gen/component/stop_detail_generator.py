@@ -27,7 +27,7 @@ class ProtoStopDetailGeneratorFormat(ProtoGeneratorFormat[StopCSV]):
         stop_detail.stop.location.lat = intermediary.location.lat
         stop_detail.stop.location.lng = intermediary.location.lng
 
-        stop_detail.stop.accessibility.wheelchair = wheelchair_boarding_options_pb[intermediary.accessibility.wheelchair]
+        stop_detail.stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[intermediary.accessibility.wheelchair]
 
         return stop_detail
 

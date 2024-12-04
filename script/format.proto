@@ -31,7 +31,7 @@ message Stop {
 }
 
 message StopAccessibility {
-  required WheelchairStopAccessibility wheelchair = 1;
+  required WheelchairStopAccessibility stopWheelchairAccessible = 1;
 }
 
 enum WheelchairStopAccessibility {
@@ -75,6 +75,31 @@ message Service {
   required string id = 1;
   repeated TimetableServiceRegular regular = 2;
   repeated TimetableServiceException exception = 3;
+  optional ServiceAccessibility accessibility = 4;
+}
+
+enum ServiceBikesAllowed {
+  SERVICE_BIKES_ALLOWED_UNKNOWN = 0;
+  SERVICE_BIKES_ALLOWED_ALLOWED = 1;
+  SERVICE_BIKES_ALLOWED_DISALLOWED = 2;
+}
+
+enum ServiceWheelchairAccessible {
+  SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN = 0;
+  SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE = 1;
+  SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE = 2;
+}
+
+enum MultipleQualifier {
+  MULTIPLE_QUALIFIER_SOME = 0;
+  MULTIPLE_QUALIFIER_ALL = 1;
+}
+
+message ServiceAccessibility {
+  required ServiceBikesAllowed bikesAllowed = 1;
+  optional MultipleQualifier bikesAllowedAppliesToAllTrips = 2;
+  required ServiceWheelchairAccessible wheelchairAccessible = 3;
+  optional MultipleQualifier wheelchairAccessibleAppliesToAllTrips = 4;
 }
 
 message TimetableServiceRegular {
