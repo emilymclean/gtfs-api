@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Any
 
 from .component.route_detail_generator import RouteDetailGeneratorComponent
 from .component.service_list_generator import ServiceListGeneratorComponent
@@ -23,6 +23,7 @@ class Generator:
             shape_csvs: List[GtfsCsv],
             stop_time_csvs: List[GtfsCsv],
             trip_csvs: List[GtfsCsv],
+            config: Dict[str, Any]
     ):
 
         self.stop_data = [ParsedCsv[List[StopCSV]](StopCSV.from_csv(p.data), p.distinguisher) for p in stop_csvs]
@@ -43,22 +44,30 @@ class Generator:
 
         self.distinguishers = list(filter(lambda x: x is not None, [d.distinguisher for d in route_csvs]))
 
+        self.config = config
+
     def generate(self, output_folder: Path):
-        StopListGeneratorComponent(self.stop_data, self.distinguishers).generate(output_folder)
-        StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers).generate(output_folder)
-        RouteListGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
-        RouteDetailGeneratorComponent(self.route_data, self.distinguishers).generate(output_folder)
-        StopTimetableGeneratorComponent(
-            self.stop_data,
-            self.stop_time_index,
-            self.stop_index_by_parent,
-            self.trip_index,
-            self.route_index,
-            self.calendar_index,
-            self.calendar_exception_index,
-            self.distinguishers
-        ).generate(output_folder)
-        ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers).generate(output_folder)
+        generators = [
+            StopListGeneratorComponent(self.stop_data, self.distinguishers),
+            StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
+            RouteListGeneratorComponent(self.route_data, self.distinguishers),
+            RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
+            StopTimetableGeneratorComponent(
+                self.stop_data,
+                self.stop_time_index,
+                self.stop_index_by_parent,
+                self.trip_index,
+                self.route_index,
+                self.calendar_index,
+                self.calendar_exception_index,
+                self.distinguishers
+            ),
+            ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
+        ]
+
+        for g in generators:
+            g.config = self.config
+            g.generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

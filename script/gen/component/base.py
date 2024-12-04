@@ -1,14 +1,16 @@
 import json
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from os import PathLike
 from pathlib import Path
-from typing import TypeVar, Generic, Any, AnyStr, Optional, List, Tuple
+from typing import TypeVar, Generic, Any, AnyStr, Optional, List, Tuple, Dict
 
 T = TypeVar("T")
 R = TypeVar("R")
 
 
 class GeneratorComponent(ABC):
+    config: Dict[str, Any]
 
     @abstractmethod
     def generate(self, output_folder: Path):
@@ -32,6 +34,7 @@ class GeneratorComponent(ABC):
 
 
 class GeneratorFormat(ABC, Generic[T]):
+    config: Dict[str, Any]
 
     @abstractmethod
     def extension(self) -> str:
@@ -85,6 +88,7 @@ class FormatGeneratorComponent(Generic[T], GeneratorComponent, ABC):
             d, im = dc
             for i in im:
                 for f in formats:
+                    f.config = self.config
                     self._write_for_format(i, d, f, output_folder)
 
     def _write_for_format(self, intermediary: T, distinguisher: Optional[str], format: GeneratorFormat[T], output_folder: Path):
@@ -99,4 +103,46 @@ class FormatGeneratorComponent(Generic[T], GeneratorComponent, ABC):
 
     @abstractmethod
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[T]:
+        pass
+
+
+@dataclass
+class IndexedWrapper(Generic[T]):
+    index: Optional[str]
+    data: List[T]
+
+
+class IndexedGeneratorComponent(Generic[T], FormatGeneratorComponent[IndexedWrapper[T]], ABC):
+
+    @abstractmethod
+    def _name(self) -> str:
+        pass
+
+    def _path(self, output_folder: Path, intermediary: IndexedWrapper[T], extension: str) -> Path:
+        name = self._name()
+        if intermediary.index is None:
+            return output_folder.joinpath(f"{name}.{extension}")
+        else:
+            return output_folder.joinpath(f"index/{name}/{intermediary.index}/{name}.{extension}")
+
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[IndexedWrapper[T]]:
+        idx = {key: [] for key in "abcdefghijklmnopqrstuvwxyz0123456789"}
+        all = self._read_all_intermediary(distinguisher)
+
+        for entry in all:
+            keys = {k[0].lower() for k in self._keys_from_intermediary(entry)}
+            for k in keys:
+                idx[k].append(entry)
+
+        indexed = [IndexedWrapper(k, v) for k, v in idx.items()]
+        indexed.append(IndexedWrapper(None, all))
+
+        return indexed
+
+    @abstractmethod
+    def _read_all_intermediary(self, distinguisher: Optional[str]) -> List[T]:
+        pass
+
+    @abstractmethod
+    def _keys_from_intermediary(self, intermediary: T) -> List[str]:
         pass
