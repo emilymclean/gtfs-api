@@ -5,7 +5,7 @@ from time import strptime
 from typing import List, Optional, Any, Dict
 
 from .consts import gt_date_format, timetable_service_exception_type_pb, parse_datetime, service_bikes_allowed, \
-    service_wheelchair_accessible
+    service_wheelchair_accessible, service_bikes_allowed_pb, service_wheelchair_accessible_pb
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
 from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
@@ -27,6 +27,12 @@ class TripStops(Intermediary):
             "sequence": self.sequence
         }
 
+    def to_pb(self, stop: pb.RouteTripStop):
+        stop.stopId = self.stop_id
+        stop.arrivalTime = self.arrival_time
+        stop.departureTime = self.departure_time
+        stop.sequence = self.sequence
+
 
 @dataclass
 class TripInformation(Intermediary):
@@ -47,6 +53,17 @@ class TripInformation(Intermediary):
             }
         }
 
+    def to_pb(self, info: pb.RouteTripInformation):
+        info.startTime = self.start_time
+        info.endTime = self.end_time
+        info.accessibility.bikesAllowed = service_bikes_allowed_pb[self.bikes_allowed]
+        info.accessibility.wheelchairAccessible = service_wheelchair_accessible_pb[self.wheelchair_accessible]
+
+        for stop in self.stops:
+            p = pb.RouteTripStop()
+            stop.to_pb(p)
+            info.stops.append(p)
+
 
 @dataclass
 class RouteServiceInformation(Intermediary):
@@ -61,6 +78,15 @@ class RouteServiceInformation(Intermediary):
             "trips": [x.to_json() for x in self.trips],
         }
 
+    def to_pb(self, info: pb.RouteTimetableEndpoint):
+        info.serviceId = self.service_id
+        info.routeId = self.route_id
+
+        for trip in self.trips:
+            p = pb.RouteTripInformation()
+            trip.to_pb(p)
+            info.trips.append(p)
+
 
 class JsonRouteTimetableGeneratorFormat(JsonGeneratorFormat[RouteServiceInformation]):
 
@@ -71,20 +97,8 @@ class JsonRouteTimetableGeneratorFormat(JsonGeneratorFormat[RouteServiceInformat
 class ProtoRouteTimetableGeneratorFormat(ProtoGeneratorFormat[RouteServiceInformation]):
 
     def parse(self, intermediary: RouteServiceInformation, distinguisher: Optional[str]) -> Any:
-        out = pb.StopTimetable()
-
-        for t in intermediary.times:
-            time = pb.StopTimetableTime()
-            time.routeId = t.route_id
-            time.routeCode = t.route_code
-            time.serviceId = t.service_id
-            time.arrivalTime = t.arrival_time
-            time.departureTime = t.departure_time
-            time.heading = t.heading
-            time.sequence = t.sequence
-
-            out.times.append(time)
-
+        out = pb.RouteTimetableEndpoint()
+        intermediary.to_pb(out)
         return out
 
 
@@ -105,7 +119,7 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInfo
     def _formats(self) -> List[GeneratorFormat[RouteServiceInformation]]:
         return [
             JsonRouteTimetableGeneratorFormat(),
-            # ProtoRouteTimetableGeneratorFormat()
+            ProtoRouteTimetableGeneratorFormat()
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteServiceInformation, extension: str) -> Path:

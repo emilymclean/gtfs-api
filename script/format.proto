@@ -24,6 +24,12 @@ message ServiceEndpoint {
   repeated Service service = 1;
 }
 
+message RouteTimetableEndpoint {
+  required string routeId = 1;
+  required string serviceId = 2;
+  repeated RouteTripInformation trips = 3;
+}
+
 message RouteServicesEndpoint {
   repeated string serviceIds = 1;
 }
@@ -83,7 +89,7 @@ message StopTimetableTime {
   required string arrivalTime = 4;
   required string departureTime = 5;
   required string heading = 6;
-  required int32 sequence = 7;
+  required uint32 sequence = 7;
   required ServiceAccessibility accessibility = 8;
 }
 
@@ -139,6 +145,20 @@ enum TimetableServiceExceptionType {
 message TimetableServiceException {
   required google.protobuf.Timestamp date = 1;
   required TimetableServiceExceptionType type = 2;
+}
+
+message RouteTripInformation {
+  required string startTime = 1;
+  required string endTime = 2;
+  required ServiceAccessibility accessibility = 3;
+  repeated RouteTripStop stops = 4;
+}
+
+message RouteTripStop {
+  required string stopId = 1;
+  required string arrivalTime = 2;
+  required string departureTime = 3;
+  required uint32 sequence = 4;
 }
 
 message Location {

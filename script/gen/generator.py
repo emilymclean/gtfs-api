@@ -52,10 +52,10 @@ class Generator:
 
     def generate(self, output_folder: Path):
         generators = [
-            # StopListGeneratorComponent(self.stop_data, self.distinguishers),
-            # StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
-            # RouteListGeneratorComponent(self.route_data, self.distinguishers),
-            # RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
+            StopListGeneratorComponent(self.stop_data, self.distinguishers),
+            StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
+            RouteListGeneratorComponent(self.route_data, self.distinguishers),
+            RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
             RouteTimetableGeneratorComponent(
                 self.route_data,
                 self.trip_index_by_route,
@@ -66,18 +66,18 @@ class Generator:
                 self.route_data,
                 self.trip_index_by_route,
                 self.distinguishers
-            )
-            # StopTimetableGeneratorComponent(
-            #     self.stop_data,
-            #     self.stop_time_index,
-            #     self.stop_index_by_parent,
-            #     self.trip_index,
-            #     self.route_index,
-            #     self.calendar_index,
-            #     self.calendar_exception_index,
-            #     self.distinguishers
-            # ),
-            # ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
+            ),
+            StopTimetableGeneratorComponent(
+                self.stop_data,
+                self.stop_time_index,
+                self.stop_index_by_parent,
+                self.trip_index,
+                self.route_index,
+                self.calendar_index,
+                self.calendar_exception_index,
+                self.distinguishers
+            ),
+            ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
         ]
 
         for g in generators:
