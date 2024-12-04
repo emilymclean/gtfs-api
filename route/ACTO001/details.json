@@ -1,0 +1,1 @@
+{"route": {"id": "ACTO001", "name": "Alinga Street - Gungahlin Place", "code": "1", "displayCode": "LR1", "type": "tram", "designation": "light_rail", "colors": {"color": "DA1F3A", "onColor": "light"}, "realTimeUrl": "https://files.transport.act.gov.au/feeds/lightrail.pb"}}
