@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import List, Dict, Callable, Any
 
 from .component.route_detail_generator import RouteDetailGeneratorComponent
+from .component.route_timetable_generator import RouteTimetableGeneratorComponent
 from .component.service_list_generator import ServiceListGeneratorComponent
 from .component.stop_detail_generator import StopDetailGeneratorComponent
 from .component.stop_list_generator import StopListGeneratorComponent
@@ -36,9 +37,11 @@ class Generator:
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
         self.stop_index_by_parent = self._create_list_index(filter(lambda x: x.parent_station is not None, flatten_parsed(self.stop_data)), lambda x: x.parent_station)
         self.stop_time_index = self._create_list_index(flatten_parsed(self.stop_time_data), lambda x: x.stop_id)
+        self.stop_time_index_by_trip = self._create_list_index(flatten_parsed(self.stop_time_data), lambda x: x.trip_id)
         self.route_index = self._create_index(flatten_parsed(self.route_data), lambda x: x.id)
         self.trip_index = self._create_index(flatten_parsed(self.trip_data), lambda x: x.id)
         self.trip_index_by_service = self._create_list_index(flatten_parsed(self.trip_data), lambda x: x.service_id)
+        self.trip_index_by_route = self._create_list_index(flatten_parsed(self.trip_data), lambda x: x.route_id)
         self.calendar_index = self._create_list_index(flatten_parsed(self.calendar_data), lambda x: x.service_id)
         self.calendar_exception_index = self._create_list_index(flatten_parsed(self.calendar_exception_data), lambda x: x.service_id)
 
@@ -48,21 +51,27 @@ class Generator:
 
     def generate(self, output_folder: Path):
         generators = [
-            StopListGeneratorComponent(self.stop_data, self.distinguishers),
-            StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
-            RouteListGeneratorComponent(self.route_data, self.distinguishers),
-            RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
-            StopTimetableGeneratorComponent(
-                self.stop_data,
-                self.stop_time_index,
-                self.stop_index_by_parent,
-                self.trip_index,
-                self.route_index,
-                self.calendar_index,
-                self.calendar_exception_index,
+            # StopListGeneratorComponent(self.stop_data, self.distinguishers),
+            # StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
+            # RouteListGeneratorComponent(self.route_data, self.distinguishers),
+            # RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
+            RouteTimetableGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.stop_time_index_by_trip,
                 self.distinguishers
             ),
-            ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
+            # StopTimetableGeneratorComponent(
+            #     self.stop_data,
+            #     self.stop_time_index,
+            #     self.stop_index_by_parent,
+            #     self.trip_index,
+            #     self.route_index,
+            #     self.calendar_index,
+            #     self.calendar_exception_index,
+            #     self.distinguishers
+            # ),
+            # ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
         ]
 
         for g in generators:
