@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from time import mktime, strptime
-from typing import Any
+from typing import Any, List
 
 import pytz
 
@@ -16,16 +16,23 @@ class TimeHelper:
         self.timezone = pytz.timezone(timezone)
 
     def parse_time(self, time: str) -> Any:
-        return f"T{time}Z[{self.region}]"
+        parsed = [0, 0, 0]
+        components = time.split(":")
+        for i in range(0, min(len(components), 3)):
+            parsed[i] = int(components[i])
+        return parsed
 
     def parse_date(self, date: str) -> datetime:
         return self._parse(date, gt_date_format)
 
     def output_time_iso(self, time: Any) -> str:
-        return time
+        time: List[int] = time
+        if time[0] > 23:
+            return f"P1DT{time[0]-24}H{time[1]}M{time[2]}S"
+        return f"PT{time[0]}H{time[1]}M{time[2]}S"
 
     def output_date_iso(self, date: datetime) -> str:
-        return date.astimezone(tz=pytz.utc).isoformat()
+        return date.isoformat()
 
     def _parse(self, time: str, format: str) -> datetime:
-        return datetime.fromtimestamp(mktime(strptime(time, format))).replace(tzinfo=self.timezone)
+        return datetime.fromtimestamp(mktime(strptime(time, format)))
