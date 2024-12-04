@@ -99,6 +99,12 @@ class RouteCSV(Intermediary):
             "type": route_type_options[self.type],
         }
 
+    def to_pb(self, route: pb.Route):
+        route.id = self.id
+        route.code = self.code
+        route.name = self.name
+        route.type = route_type_options_pb[self.type]
+
     @staticmethod
     def from_csv_row(row: pd.Series) -> "RouteCSV":
         return RouteCSV(

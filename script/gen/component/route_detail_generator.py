@@ -20,11 +20,7 @@ class ProtoRouteDetailGeneratorFormat(ProtoGeneratorFormat[RouteCSV]):
 
     def parse(self, intermediary: RouteCSV, distinguisher: Optional[str]) -> Any:
         route_detail = pb.RouteDetailEndpoint()
-        route_detail.route.id = intermediary.id
-        route_detail.route.code = intermediary.code
-        route_detail.route.name = intermediary.name
-        route_detail.route.type = route_type_options_pb[intermediary.type]
-
+        intermediary.to_pb(route_detail.route)
         return route_detail
 
 

@@ -46,8 +46,15 @@ enum WheelchairStopAccessibility {
 message Route {
   required string id = 1;
   required string code = 2;
+  optional string displayCode = 5;
+  optional ColorPair colors = 6;
   required string name = 3;
   required RouteType type = 4;
+}
+
+message ColorPair {
+  required string color = 1;
+  required string onColor = 2;
 }
 
 enum RouteType {

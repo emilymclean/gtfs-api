@@ -27,11 +27,7 @@ class ProtoRouteListGeneratorFormat(ProtoGeneratorFormat[IndexableRouteList]):
         re = pb.RouteEndpoint()
         for i in intermediary.routes:
             route = pb.Route()
-            route.id = i.id
-            route.code = i.code
-            route.name = i.name
-            route.type = route_type_options_pb[i.type]
-
+            i.to_pb(route)
             re.route.append(route)
 
         return re
