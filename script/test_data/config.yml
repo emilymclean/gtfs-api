@@ -1,0 +1,58 @@
+designations:
+  light_rail:
+    prefix: LR
+  rapid:
+    prefix: R
+route:
+  special_designations:
+    - code: 1
+      designation: light_rail
+    - code: 2
+      designation: rapid
+    - code: 3
+      designation: rapid
+    - code: 4
+      designation: rapid
+    - code: 5
+      designation: rapid
+    - code: 6
+      designation: rapid
+    - code: 7
+      designation: rapid
+    - code: 8
+      designation: rapid
+    - code: 9
+      designation: rapid
+    - code: 10
+      designation: rapid
+  colors:
+    - code: 1
+      color: DA1F3A
+      onColor: light
+    - code: 2
+      color: ebb9d5
+      onColor: dark
+    - code: 3
+      color: f9da5c
+      onColor: dark
+    - code: 4
+      color: 479ecd
+      onColor: light
+    - code: 5
+      color: d14a9b
+      onColor: light
+    - code: 6
+      color: 83bf58
+      onColor: dark
+    - code: 7
+      color: e0803d
+      onColor: light
+    - code: 8
+      color: "282724"
+      onColor: light
+    - code: 9
+      color: "929c9c"
+      onColor: dark
+    - code: 10
+      color: "a8332f"
+      onColor: light

@@ -8,6 +8,7 @@ click = "*"
 pandas = "*"
 dataclasses = "*"
 protobuf = "*"
+pyyaml = "*"
 
 [dev-packages]
 

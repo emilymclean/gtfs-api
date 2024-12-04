@@ -2,13 +2,14 @@ import json
 from abc import ABC, abstractmethod
 from os import PathLike
 from pathlib import Path
-from typing import TypeVar, Generic, Any, AnyStr, Optional, List, Tuple
+from typing import TypeVar, Generic, Any, AnyStr, Optional, List, Tuple, Dict
 
 T = TypeVar("T")
 R = TypeVar("R")
 
 
 class GeneratorComponent(ABC):
+    config: Dict[str, Any]
 
     @abstractmethod
     def generate(self, output_folder: Path):
@@ -32,6 +33,7 @@ class GeneratorComponent(ABC):
 
 
 class GeneratorFormat(ABC, Generic[T]):
+    config: Dict[str, Any]
 
     @abstractmethod
     def extension(self) -> str:
@@ -85,6 +87,7 @@ class FormatGeneratorComponent(Generic[T], GeneratorComponent, ABC):
             d, im = dc
             for i in im:
                 for f in formats:
+                    f.config = self.config
                     self._write_for_format(i, d, f, output_folder)
 
     def _write_for_format(self, intermediary: T, distinguisher: Optional[str], format: GeneratorFormat[T], output_folder: Path):
