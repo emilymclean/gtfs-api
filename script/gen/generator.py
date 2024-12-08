@@ -11,6 +11,7 @@ from .component.stop_list_generator import StopListGeneratorComponent
 from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV
 from .component.route_list_generator import RouteListGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
+from .component.trip_timetable_generator import TripTimetableGeneratorComponent
 from .models import *
 from .time_helper import TimeHelper
 
@@ -66,6 +67,12 @@ class Generator:
                 self.distinguishers
             ),
             RouteCanonicalTimetableGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.stop_time_index_by_trip,
+                self.distinguishers
+            ),
+            TripTimetableGeneratorComponent(
                 self.route_data,
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,

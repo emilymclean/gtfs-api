@@ -35,6 +35,13 @@ message RouteCanonicalTimetableEndpoint {
   required RouteTripInformation trip = 3;
 }
 
+message RouteTripTimetableEndpoint {
+  required string routeId = 1;
+  required string serviceId = 2;
+  required string tripId = 3;
+  required RouteTripInformation trip = 4;
+}
+
 message RouteServicesEndpoint {
   repeated string serviceIds = 1;
 }
@@ -92,6 +99,7 @@ message StopTimetableTime {
   required string routeId = 1;
   required string routeCode = 2;
   required string serviceId = 3;
+  required string tripId = 10;
   required string arrivalTime = 4;
   required string departureTime = 5;
   required string heading = 6;

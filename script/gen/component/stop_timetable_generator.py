@@ -18,6 +18,7 @@ class StopTimeInformation(Intermediary):
     route_id: str
     route_code: str
     service_id: str
+    trip_id: str
     arrival_time: Any
     departure_time: Any
     heading: str
@@ -31,6 +32,7 @@ class StopTimeInformation(Intermediary):
             "route_id": self.route_id,
             "route_code": self.route_code,
             "service_id": self.service_id,
+            "trip_id": self.trip_id,
             "arrival_time": time_helper.output_time_iso(self.arrival_time),
             "departure_time": time_helper.output_time_iso(self.departure_time),
             "heading": self.heading,
@@ -66,6 +68,7 @@ class ProtoStopTimesGeneratorFormat(ProtoGeneratorFormat[StopTimeByStop]):
             time.routeId = t.route_id
             time.routeCode = t.route_code
             time.serviceId = t.service_id
+            time.tripId = t.trip_id
             time.arrivalTime = self.time_helper.output_time_iso(t.arrival_time)
             time.departureTime = self.time_helper.output_time_iso(t.departure_time)
             time.heading = t.heading
@@ -131,6 +134,7 @@ class StopTimetableGeneratorComponent(FormatGeneratorComponent[StopTimeByStop]):
                     trip.route_id,
                     self.route_index[trip.route_id].code,
                     trip.service_id,
+                    trip.id,
                     t.arrival_time,
                     t.departure_time,
                     trip.trip_headsign,
