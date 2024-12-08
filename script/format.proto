@@ -29,6 +29,12 @@ message RouteTimetableEndpoint {
   repeated RouteTripInformation trips = 3;
 }
 
+message RouteCanonicalTimetableEndpoint {
+  required string routeId = 1;
+  required string serviceId = 2;
+  required RouteTripInformation trip = 3;
+}
+
 message RouteServicesEndpoint {
   repeated string serviceIds = 1;
 }
@@ -148,16 +154,16 @@ message TimetableServiceException {
 }
 
 message RouteTripInformation {
-  required string startTime = 1;
-  required string endTime = 2;
+  optional string startTime = 1;
+  optional string endTime = 2;
   required ServiceAccessibility accessibility = 3;
   repeated RouteTripStop stops = 4;
 }
 
 message RouteTripStop {
   required string stopId = 1;
-  required string arrivalTime = 2;
-  required string departureTime = 3;
+  optional string arrivalTime = 2;
+  optional string departureTime = 3;
   required uint32 sequence = 4;
 }
 

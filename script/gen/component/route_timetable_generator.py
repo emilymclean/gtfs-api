@@ -16,23 +16,28 @@ from ..time_helper import TimeHelper
 @dataclass
 class TripStops(Intermediary):
     stop_id: str
-    arrival_time: Any
-    departure_time: Any
+    arrival_time: Optional[Any]
+    departure_time: Optional[Any]
     sequence: int
 
     def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             "stop_id": self.stop_id,
-            "arrival_time": time_helper.output_time_iso(self.arrival_time),
-            "departure_time": time_helper.output_time_iso(self.departure_time),
+            "arrival_time": time_helper.output_time_iso(self.arrival_time) if self.arrival_time is not None else None,
+            "departure_time": time_helper.output_time_iso(self.departure_time) if self.departure_time is not None else None,
             "sequence": self.sequence
         }
 
     def to_pb(self, stop: pb.RouteTripStop, time_helper: TimeHelper):
         stop.stopId = self.stop_id
-        stop.arrivalTime = time_helper.output_time_iso(self.arrival_time)
-        stop.departureTime = time_helper.output_time_iso(self.departure_time)
+        if self.arrival_time is not None:
+            stop.arrivalTime = time_helper.output_time_iso(self.arrival_time)
+        if self.departure_time is not None:
+            stop.departureTime = time_helper.output_time_iso(self.departure_time)
         stop.sequence = self.sequence
+
+    def __hash__(self) -> int:
+        return hash(f"{self.stop_id}|{self.sequence}|{self.arrival_time}|{self.departure_time}")
 
 
 @dataclass
@@ -46,8 +51,8 @@ class TripInformation(Intermediary):
     def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
             "stops": [x.to_json(time_helper) for x in self.stops],
-            "start_time": time_helper.output_time_iso(self.start_time),
-            "end_time": time_helper.output_time_iso(self.end_time),
+            "start_time": time_helper.output_time_iso(self.start_time) if self.start_time is not None else None,
+            "end_time": time_helper.output_time_iso(self.end_time) if self.end_time is not None else None,
             "accessibility": {
                 "bikesAllowed": service_bikes_allowed[self.bikes_allowed],
                 "wheelchairAccessible": service_wheelchair_accessible[self.wheelchair_accessible],
@@ -55,8 +60,10 @@ class TripInformation(Intermediary):
         }
 
     def to_pb(self, info: pb.RouteTripInformation, time_helper: TimeHelper):
-        info.startTime = time_helper.output_time_iso(self.start_time)
-        info.endTime = time_helper.output_time_iso(self.end_time)
+        if self.start_time is not None:
+            info.startTime = time_helper.output_time_iso(self.start_time)
+        if self.end_time is not None:
+            info.endTime = time_helper.output_time_iso(self.end_time)
         info.accessibility.bikesAllowed = service_bikes_allowed_pb[self.bikes_allowed]
         info.accessibility.wheelchairAccessible = service_wheelchair_accessible_pb[self.wheelchair_accessible]
 
@@ -64,6 +71,12 @@ class TripInformation(Intermediary):
             p = pb.RouteTripStop()
             stop.to_pb(p, time_helper)
             info.stops.append(p)
+
+    def __hash__(self) -> int:
+        ret = hash(f"{self.start_time}|{self.end_time}|{self.wheelchair_accessible}|{self.bikes_allowed}")
+        for stop in self.stops:
+            ret += hash(stop)
+        return int(ret)
 
 
 @dataclass
@@ -124,7 +137,8 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInfo
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteServiceInformation, extension: str) -> Path:
-        return output_folder.joinpath(f"route/{intermediary.route_id}/service/{intermediary.service_id}/timetable.{extension}")
+        return output_folder.joinpath(
+            f"route/{intermediary.route_id}/service/{intermediary.service_id}/timetable.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteServiceInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))

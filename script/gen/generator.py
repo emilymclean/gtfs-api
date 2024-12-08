@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List, Dict, Callable, Any
 
+from .component.route_canonical_timetable_generator import RouteCanonicalTimetableGeneratorComponent
 from .component.route_detail_generator import RouteDetailGeneratorComponent
 from .component.route_service_generator import RouteServiceGeneratorComponent
 from .component.route_timetable_generator import RouteTimetableGeneratorComponent
@@ -59,6 +60,12 @@ class Generator:
             RouteListGeneratorComponent(self.route_data, self.distinguishers),
             RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
             RouteTimetableGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.stop_time_index_by_trip,
+                self.distinguishers
+            ),
+            RouteCanonicalTimetableGeneratorComponent(
                 self.route_data,
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,
