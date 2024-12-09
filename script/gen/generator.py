@@ -70,6 +70,7 @@ class Generator:
                 self.route_data,
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,
+                self.stop_index,
                 self.distinguishers
             ),
             TripTimetableGeneratorComponent(

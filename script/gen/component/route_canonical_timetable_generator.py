@@ -10,7 +10,7 @@ from .route_timetable_generator import RouteServiceInformation, JsonRouteTimetab
     ProtoRouteTimetableGeneratorFormat, TripInformation, TripStops
 from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV
+from .intermediaries import Intermediary, StopTimeCSV, TripCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopCSV
 from .. import format_pb2 as pb
 from ..time_helper import TimeHelper
 
@@ -55,11 +55,13 @@ class RouteCanonicalTimetableGeneratorComponent(FormatGeneratorComponent[RouteCa
             route_data: List[ParsedCsv[List[RouteCSV]]],
             trip_index_by_route: Dict[str, List[TripCSV]],
             stop_time_index_by_trip: Dict[str, List[StopTimeCSV]],
+            stop_index: Dict[str, StopCSV],
             distinguishers: List[str]
     ):
         self.route_data = route_data
         self.trip_index_by_route = trip_index_by_route
         self.stop_time_index_by_trip = stop_time_index_by_trip
+        self.stop_index = stop_index
         self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[RouteCanonicalServiceInformation]]:
@@ -74,6 +76,13 @@ class RouteCanonicalTimetableGeneratorComponent(FormatGeneratorComponent[RouteCa
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteCanonicalServiceInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))
         return self._create_intermediary(routes)
+
+    def _parent_stop(self, stop_id: str) -> StopCSV:
+        stop = self.stop_index[stop_id]
+        if stop.parent_station is None:
+            return stop
+        else:
+            return self._parent_stop(stop.parent_station)
 
     def _create_intermediary(self, routes: List[RouteCSV]) -> List[RouteCanonicalServiceInformation]:
         out = []
@@ -92,15 +101,16 @@ class RouteCanonicalTimetableGeneratorComponent(FormatGeneratorComponent[RouteCa
             for service_id, service_trips in service_index.items():
                 trips_for_service = []
                 for t in service_trips:
-                    stops_for_trip = [
-                        TripStops(
-                            s.stop_id,
+                    stops_for_trip = []
+                    for s in self.stop_time_index_by_trip[t.id]:
+                        parentStop = self._parent_stop(s.stop_id).id
+                        stops_for_trip.append(TripStops(
+                            parentStop,
                             None,
                             None,
-                            s.stop_sequence
-                        )
-                        for s in self.stop_time_index_by_trip[t.id]
-                    ]
+                            s.stop_sequence,
+                            s.stop_id if s.stop_id != parentStop else None,
+                        ))
                     trips_for_service.append(
                         TripInformation(
                             None,

@@ -170,6 +170,7 @@ message RouteTripInformation {
 
 message RouteTripStop {
   required string stopId = 1;
+  optional string childStopId = 5;
   optional string arrivalTime = 2;
   optional string departureTime = 3;
   required uint32 sequence = 4;
