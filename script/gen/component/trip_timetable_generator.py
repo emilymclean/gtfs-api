@@ -113,7 +113,8 @@ class TripTimetableGeneratorComponent(FormatGeneratorComponent[RouteTripInformat
                                 stops_for_trip[-1].arrival_time if len(stops_for_trip) > 0 else None,
                                 t.wheelchair_accessible,
                                 t.bikes_allowed,
-                                stops_for_trip
+                                stops_for_trip,
+                                t.trip_headsign
                             )
                         )
                     )

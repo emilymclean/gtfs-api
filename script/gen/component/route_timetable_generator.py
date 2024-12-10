@@ -51,6 +51,7 @@ class TripInformation(Intermediary):
     wheelchair_accessible: int
     bikes_allowed: int
     stops: List[TripStops]
+    heading: Optional[str] = None
 
     def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
@@ -60,7 +61,8 @@ class TripInformation(Intermediary):
             "accessibility": {
                 "bikesAllowed": service_bikes_allowed[self.bikes_allowed],
                 "wheelchairAccessible": service_wheelchair_accessible[self.wheelchair_accessible],
-            }
+            },
+            "heading": self.heading,
         }
 
     def to_pb(self, info: pb.RouteTripInformation, time_helper: TimeHelper):
@@ -70,6 +72,9 @@ class TripInformation(Intermediary):
             info.endTime = time_helper.output_time_iso(self.end_time)
         info.accessibility.bikesAllowed = service_bikes_allowed_pb[self.bikes_allowed]
         info.accessibility.wheelchairAccessible = service_wheelchair_accessible_pb[self.wheelchair_accessible]
+
+        if self.heading is not None:
+            info.heading = self.heading
 
         for stop in self.stops:
             p = pb.RouteTripStop()
@@ -180,7 +185,8 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInfo
                             stops_for_trip[-1].arrival_time if len(stops_for_trip) > 0 else None,
                             t.wheelchair_accessible,
                             t.bikes_allowed,
-                            stops_for_trip
+                            stops_for_trip,
+                            t.trip_headsign
                         )
                     )
                 out.append(
