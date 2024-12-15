@@ -4,16 +4,14 @@ on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0"
 
 jobs:
   build:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
-        - uses: actions/checkout@v4
-          with:
-            path: pages
-            ref: gh-pages
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
@@ -33,22 +31,12 @@ jobs:
             unzip google_transit_lr.zip -d canberra/lr
         - name: Run script
           run: |
-            python script/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -o pages
-        - name: Push changes
-          run: |
-            cd pages
-
-            git config --global user.email "emilymclean@users.noreply.github.com"
-            git config --global user.name "Emily McLean"
-
-            git add .
-            if git diff-index --cached --quiet HEAD --ignore-submodules --
-            then
-                echo "Nothing to commit"
-                exit
-            fi
-            git commit -m "Update API"
-            echo "Created commit, pushing"
-            git push
-            echo "Pushed changes"
+            python script/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -o build
+        - name: Setup AWS CLI
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+        - run: aws s3 sync build s3://${{ vars.AWS_BUCKET }} --delete --acl public-read
                 
