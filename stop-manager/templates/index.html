@@ -162,11 +162,11 @@
         }
 
         function createSuggestedTitle(names) {
-            const prefix = longestCommonPrefix(names);
-            const suffix = longestCommonSuffix(names);
+            const prefix = longestCommonPrefix(names).trim();
+            const suffix = longestCommonSuffix(names).trim();
 
             if (prefix === "" && suffix === "") return "";
-            if (suffix === "") return prefix;
+            if (suffix === "" || suffix === "St") return prefix;
             return prefix + " at " + suffix;
         }
 
