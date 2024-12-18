@@ -61,8 +61,6 @@
         // Track selected markers
         const selectedMarkers = new Set();
 
-
-
         // Add drag-to-select using Leaflet.PM
         map.pm.addControls({
             drawMarker: false,
@@ -81,7 +79,7 @@
                     if (bounds.contains(marker.getLatLng())) {
                         const markerId = marker.options.id;
                         selectedMarkers.add(markerId);
-                        marker.setIcon(L.icon({ iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png' }));
+                        marker.setIcon(yellowIcon);
                     }
                 });
                 console.log('Selected Markers After Drag:', Array.from(selectedMarkers));
