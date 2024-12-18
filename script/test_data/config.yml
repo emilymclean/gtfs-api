@@ -70,3 +70,5 @@ route:
     - code: 10
       color: "a8332f"
       onColor: light
+stops:
+  parent-stations:
