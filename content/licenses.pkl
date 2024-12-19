@@ -55,7 +55,7 @@ class LicenseCollection {
             let(license = licenses[e.code])
             let(contentDescription = licensedContentDescription(e.content))
             """
-            ## \(license.name)
+            #### \(license.name)
             The following components are licensed under the [\(license.name)](\(license.url))
 
             \(contentDescription)
