@@ -17,6 +17,10 @@ jobs:
           with:
             python-version: '3.10.13'
             cache: 'pip'
+        - name: Install pkl
+          uses: pkl-community/setup-pkl@v0
+          with:
+            pkl-version: 0.27.1
         - name: Install dependencies
           run: |
             python -m pip install --upgrade pip
@@ -42,5 +46,5 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ vars.AWS_REGION }}
-        - run: aws s3 sync build s3://${{ vars.AWS_BUCKET }} --delete
+        - run: aws s3 cp build s3://${{ vars.AWS_BUCKET }}
                 
