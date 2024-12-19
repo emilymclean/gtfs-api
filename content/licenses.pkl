@@ -1,0 +1,154 @@
+typealias LicenseCode = "A2.0" | "MIT"
+
+class License {
+    name: String
+    url: String
+}
+
+local const licenses = new Mapping<LicenseCode, License> {
+    ["A2.0"] = new License {
+        name = "Apache License 2.0"
+        url = "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+    ["MIT"] = new License {
+        name = "MIT License"
+        url = "https://opensource.org/license/mit"
+    }
+}
+
+class LicensedContent {
+    name: String
+    attribution: String? = null
+    year: String? = null
+    licenseCode: LicenseCode
+}
+
+local class GroupedLicensedContent {
+    code: LicenseCode
+    content: Listing<LicensedContent>
+}
+
+class LicenseCollection {
+    content: Listing<LicensedContent>
+
+    local function groupByLicense(): Listing<GroupedLicensedContent> =
+        let(usedLicenses = content.toList().map((e) -> (e.licenseCode)).distinct)
+        let(_content = content)
+        usedLicenses.map(
+            (l) -> new GroupedLicensedContent {
+                code = l
+                content = _content.toList().filter((e) -> e.licenseCode == l).sortBy((e) -> e.name).toListing()
+            }
+        ).sortBy((e) -> e.code).toListing()
+
+    local function licensedContentDescription(_content: Listing<LicensedContent>): String =
+        _content.toList().map((e) -> 
+            if (e.attribution != null && e.year != null)
+                "* **\(e.name)**, Copyright (c) \(e.year) \(e.attribution)"
+            else
+                "* **\(e.name)**"
+        ).join("\n").trim()
+
+    function description(): String = 
+        let(grouped = groupByLicense())
+        grouped.toList().map((e) -> 
+            let(license = licenses[e.code])
+            let(contentDescription = licensedContentDescription(e.content))
+            """
+            ## \(license.name)
+            The following components are licensed under the [\(license.name)](\(license.url))
+
+            \(contentDescription)
+            """
+        ).join("\n\n")
+
+}
+
+hidden appLicense = new LicenseCollection {
+    content = new {
+        new {
+            name = "Koin"
+            attribution = "Arnaud GIULIANI, Laurent BARESSE"
+            year = "2017"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Ktorfit"
+            attribution = "Jens Klingenberg"
+            year = "2022"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Ktor"
+            attribution = "JetBrains s.r.o"
+            year = "2000-2023"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Napier"
+            attribution = "AAkira"
+            year = "2019"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Kotlin Datetime"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Units"
+            attribution = "Emily McLean"
+            year = "2024"
+            licenseCode = "MIT"
+        }
+        new {
+            name = "Serializable"
+            attribution = "Emily McLean"
+            year = "2024"
+            licenseCode = "MIT"
+        }
+        new {
+            name = "RequestState"
+            attribution = "Emily McLean"
+            year = "2024"
+            licenseCode = "MIT"
+        }
+        new {
+            name = "ErrorWidget"
+            attribution = "Emily McLean"
+            year = "2024"
+            licenseCode = "MIT"
+        }
+        new {
+            name = "pbandk"
+            attribution = "Chad Retz"
+            year = "2018"
+            licenseCode = "MIT"
+        }
+        new {
+            name = "Coil"
+            attribution = "Coil Contributors"
+            year = "2024"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "AOSP"
+            attribution = "The Android Open Source Project"
+            year = "2020"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Moko Permissions"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Firebase"
+            licenseCode = "A2.0"
+        }
+        new {
+            name = "Voyager"
+            attribution = "Adriel Café"
+            year = "2021"
+            licenseCode = "MIT"
+        }
+    }
+}

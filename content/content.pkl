@@ -1,5 +1,6 @@
 open module content;
 extends "def.pkl"
+import "licenses.pkl" as licenses
 
 pages = new Listing<Content> {
     new Content {
@@ -22,5 +23,14 @@ pages = new Listing<Content> {
                 url = "https://emilym.cl/sinatra/privacy"
             }
         }
+    }
+    new Content {
+        id = "attribution"
+        title = "Third Party Notices"
+        content = """
+        The following sets forth attribution notices for third party software that may be contained in portions of this app.
+
+        \(licenses.appLicense.description())
+        """
     }
 }
