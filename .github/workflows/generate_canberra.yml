@@ -32,6 +32,10 @@ jobs:
         - name: Run script
           run: |
             python script/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -o build/canberra/v1
+        - name: Generate content
+          run: |
+            ./render-content.sh
+            cp content/content{.json,.json.sha,.pb,.pb.sha} build/canberra/v1
         - name: Setup AWS CLI
           uses: aws-actions/configure-aws-credentials@v4
           with:

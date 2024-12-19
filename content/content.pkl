@@ -1,0 +1,26 @@
+open module content;
+extends "def.pkl"
+
+pages = new Listing<Content> {
+    new Content {
+        id = "about"
+        title = "About"
+        content = """
+        Sinatra is a companion app for the Canberra MyWay+ network made by locals for locals. Our goal is to make it easier to find route and stop information, offering a fresh, streamlined experience alongside the official app.
+
+        While Sinatra doesn't include ticketing or full routing features, we focus on delivering the key info you need, fast and frustration-free.
+
+        Sinatra is open source! You can find and contribute to our codebase at [Github](https://github.com/emilymclean/sinatra).
+        """
+        externalLinks = new {
+            new ExternalLink {
+                title = "Terms and Conditions"
+                url = "https://emilym.cl/sinatra/terms"
+            }
+            new ExternalLink {
+                title = "Privacy Policy"
+                url = "https://emilym.cl/sinatra/privacy"
+            }
+        }
+    }
+}
