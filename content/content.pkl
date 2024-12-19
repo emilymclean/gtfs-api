@@ -23,6 +23,12 @@ pages = new Listing<Content> {
                 url = "https://emilym.cl/sinatra/privacy"
             }
         }
+        contentLinks = new {
+            new ContentLink {
+                title = "Third Party Notices"
+                contentId = "attribution"
+            }
+        }
     }
     new Content {
         id = "attribution"
