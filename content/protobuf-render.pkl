@@ -1,0 +1,6 @@
+extends "content.pkl"
+import "pkl:protobuf" as protobuf
+
+output {
+    renderer = new protobuf.Renderer {}
+}
