@@ -31,6 +31,10 @@ class TimeHelper:
             return f"P1DT{time[0]-24}H{time[1]}M{time[2]}S"
         return f"PT{time[0]}H{time[1]}M{time[2]}S"
 
+    def output_time_seconds(self, time: Any) -> int:
+        time: List[int] = time
+        return (time[2]) + (time[1] * 60) + (time[0] * 60 * 60)
+
     def output_date_iso(self, date: datetime) -> str:
         return date.isoformat()
 

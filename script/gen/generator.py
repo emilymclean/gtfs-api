@@ -107,12 +107,14 @@ class Generator:
             g.generate(output_folder)
 
     def network_graph(self, output_folder: Path):
-        NetworkGraphGenerator(
+        g = NetworkGraphGenerator(
             flatten_parsed(self.stop_data),
             self.route_index,
             flatten_parsed(self.trip_data),
             self.stop_time_index_by_trip
-        ).generate(output_folder)
+        )
+        g.time_helper = self.time_helper
+        g.generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

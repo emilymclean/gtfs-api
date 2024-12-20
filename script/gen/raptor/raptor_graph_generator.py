@@ -9,6 +9,7 @@ from ..component import GeneratorComponent
 from ..component.base import Writer
 from ..component.intermediaries import StopCSV, RouteCSV, TripCSV, StopTimeCSV
 from .. import network_graph_pb2 as pb
+from ..time_helper import TimeHelper
 
 
 class SeparatedEdge(ABC):
@@ -84,8 +85,10 @@ class NodeAndIndex:
 
 
 class NetworkGraphGenerator(Writer):
-    distance_time_multiplier = 25
+    distance_time_multiplier = 25 * 60 # 25 mins per kilometer
     distance_threshold_km = 2
+
+    time_helper: TimeHelper
 
     def __init__(
             self,
@@ -160,7 +163,7 @@ class NetworkGraphGenerator(Writer):
     def _generate_route_nodes(self):
         for trip in self.trips:
             stop_times = self.stop_time_index_by_trip[trip.id]
-            for stop_time in stop_times:
+            for i, stop_time in enumerate(stop_times):
                 stop_index = self.stop_id_to_node_index[stop_time.stop_id]
                 route_id = trip.route_id
 
@@ -172,11 +175,29 @@ class NetworkGraphGenerator(Writer):
                     self.nodes.append(route_node.node)
                 else:
                     index = self.stop_id_route_id_to_node_index[(stop_index, route_id)]
-                    route_node = NodeAndIndex(index, self.route_ids[index])
+                    route_node = NodeAndIndex(self.nodes[index], index)
 
                 self._create_stop_to_route_edge(stop_index, route_node.index, trip.service_id)
 
-    def _distance(self, lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+                if i - 1 >= 0 and stop_time.stop_sequence > 0:
+                    previous_stop_time = stop_times[i - 1]
+                    previous_route_index = self.stop_id_route_id_to_node_index[(
+                        self.stop_id_to_node_index[previous_stop_time.stop_id],
+                        route_id
+                    )]
+                    previous_departure_time = self.time_helper.output_time_seconds(previous_stop_time.departure_time)
+                    self._create_trip_edge(
+                        previous_route_index,
+                        route_node.index,
+                        previous_departure_time,
+                        self.time_helper.output_time_seconds(stop_time.arrival_time) - previous_departure_time,
+                        trip.service_id,
+                        trip.wheelchair_accessible == 1,
+                        trip.bikes_allowed == 1
+                    )
+
+    @staticmethod
+    def _distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
         lat1 = math.radians(lat1)
         lng1 = math.radians(lng1)
         lat2 = math.radians(lat2)
@@ -206,7 +227,6 @@ class NetworkGraphGenerator(Writer):
                 self._create_transfer_edge(stop2, stop1, distance)
                 visited_stops[(stop1.id, stop2.id)] = True
 
-
     def _create_stop_node(
             self,
             stop: StopCSV,
@@ -231,8 +251,7 @@ class NetworkGraphGenerator(Writer):
     ) -> NodeAndIndex:
         route_index = len(self.route_ids)
         self.route_ids.append(route.id)
-
-        print(f"Creating route node {route_index}")
+        self.stop_id_route_id_to_node_index[(stop_index, route.id)] = route_index
 
         out = pb.Node()
         out.type = pb.NodeType.NODE_TYPE_STOP_ROUTE
@@ -245,6 +264,9 @@ class NetworkGraphGenerator(Writer):
             self,
             service_id: str
     ) -> int:
+        if service_id in self.service_id_to_service_index:
+            return self.service_id_to_service_index[service_id]
+
         service_index = len(self.service_ids)
         self.service_ids.append(service_id)
         self.service_id_to_service_index[service_id] = service_index
@@ -258,13 +280,8 @@ class NetworkGraphGenerator(Writer):
             route_index: int,
             service_id: str,
     ):
-        if service_id not in self.service_id_to_service_index:
-            service_index = self._register_service(service_id)
-        else:
-            service_index = self.service_id_to_service_index[service_id]
-
         condition = LeafLogicTreeNode(
-            service_index=service_index,
+            service_index=self._register_service(service_id),
             service_index_byte_width=self.service_id_byte_width,
         )
 
@@ -281,6 +298,38 @@ class NetworkGraphGenerator(Writer):
 
         stop_edges[route_index] = edge
         self.trip_stop_to_route_edges[stop_index] = stop_edges
+
+    def _create_trip_edge(
+            self,
+            from_route_index: int,
+            to_route_index: int,
+            departure_time: int,
+            travel_time_sec: int,
+            service_id: str,
+            wheelchair_accessible: bool,
+            bikes_allowed: bool,
+    ):
+        from_route_node = self.nodes[from_route_index]
+        condition = LeafLogicTreeNode(
+            service_index=self._register_service(service_id),
+            service_index_byte_width=self.service_id_byte_width,
+        )
+
+        out = pb.Edge()
+        out.type = pb.EdgeType.EDGE_TYPE_TRAVEL
+        out.toNodeId = to_route_index
+        out.departureTime = departure_time
+        out.penalty = travel_time_sec
+        out.condition = condition.build()
+
+        accessibility = 0b0
+        if wheelchair_accessible:
+            accessibility |= 0b01
+        if bikes_allowed:
+            accessibility |= 0b10
+        out.accessibilityFlags = accessibility
+
+        from_route_node.edges.append(out)
 
     def _create_transfer_edge(
             self,

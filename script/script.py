@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import List, TypeVar, Optional
 
@@ -56,4 +57,5 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
 
 
 if __name__ == '__main__':
+    sys.setrecursionlimit(2500)
     generate()
