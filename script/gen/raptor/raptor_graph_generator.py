@@ -61,13 +61,14 @@ class NotLogicTreeNode(LogicTreeNode):
 @dataclass
 class TripRouteEdge(SeparatedEdge):
     route_id: int
-    condition: LogicTreeNode
+    condition: Optional[LogicTreeNode]
 
     def build(self, from_node_id: int) -> pb.Edge:
         out = pb.Edge()
         out.toNodeId = self.route_id
         out.penalty = 0
-        out.condition = self.condition.build()
+        if self.condition is not None:
+            out.condition = self.condition.build()
 
         return out
 
@@ -102,7 +103,7 @@ class NetworkGraphGenerator(Writer):
         self.service_ids = []
         self.service_id_to_service_index = {}
 
-        self.trip_stop_to_route_edges = {}
+        self.trip_stop_to_route_edges: Dict[int, Dict[int, TripRouteEdge]] = {}
 
         self.service_id_byte_width = 1
 
@@ -111,6 +112,7 @@ class NetworkGraphGenerator(Writer):
     def generate(self, output_folder: Path):
         self._generate_stop_nodes()
         self._generate_route_nodes()
+        self._add_all_edges()
 
         out = pb.Graph()
 
@@ -135,7 +137,10 @@ class NetworkGraphGenerator(Writer):
         self._write(out.SerializeToString(), output_folder.joinpath("network_graph.pb"))
 
     def _add_all_edges(self):
-
+        for stop_index, v in self.trip_stop_to_route_edges.items():
+            node = self.nodes[stop_index]
+            for k,vs in v.items():
+                node.edges.append(vs.build(stop_index))
 
     def _generate_stop_nodes(self):
         for stop in self.stops:
@@ -158,9 +163,6 @@ class NetworkGraphGenerator(Writer):
                 else:
                     index = self.stop_id_route_id_to_node_index[(stop_index, route_id)]
                     route_node = NodeAndIndex(index, self.route_ids[index])
-
-                trip_edge = self._create_stop_to_route_edge(route_node.index, trip.service_id)
-                self.nodes[stop_index].edges.append(trip_edge)
 
     def _create_stop_node(
             self,
@@ -209,11 +211,10 @@ class NetworkGraphGenerator(Writer):
 
     def _create_stop_to_route_edge(
             self,
+            stop_index: int,
             route_index: int,
             service_id: str,
     ):
-        print(f"Creating edge for route_index {route_index}")
-
         if service_id not in self.service_id_to_service_index:
             service_index = self._register_service(service_id)
         else:
@@ -222,12 +223,21 @@ class NetworkGraphGenerator(Writer):
         condition = LeafLogicTreeNode(
             service_index=service_index,
             service_index_byte_width=self.service_id_byte_width,
-        ).build()
+        )
 
-        out = pb.Edge()
-        out.toNodeId = route_index
-        out.penalty = 0
-        out.condition = condition
+        if stop_index in self.trip_stop_to_route_edges:
+            stop_edges = self.trip_stop_to_route_edges[stop_index]
+            need_to_add = False
+        else:
+            stop_edges = {}
+            need_to_add = True
 
-        return out
+        if route_index in stop_edges:
+            edge = stop_edges[route_index]
+            edge.condition = OrLogicTreeNode(edge.condition, condition)
+        else:
+            stop_edges[route_index] = TripRouteEdge(route_index, condition)
+
+        if need_to_add:
+            self.trip_stop_to_route_edges[stop_index] = stop_edges
 
