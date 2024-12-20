@@ -12,20 +12,7 @@ T = TypeVar("T")
 R = TypeVar("R")
 
 
-class GeneratorComponent(ABC):
-    config: Dict[str, Any]
-    time_helper: TimeHelper
-
-    @abstractmethod
-    def generate(self, output_folder: Path):
-        pass
-
-    def _write_distinguished(self, data: bytes|str, distinguisher: Optional[str], path: str | PathLike):
-        if distinguisher is None:
-            return
-
-        self._write(data, Path(distinguisher).joinpath(path))
-
+class Writer(ABC):
     def _write(self, data: bytes|str, path: str | PathLike):
         path = Path(path)
         sha_path = Path(f"{path}.sha")
@@ -42,6 +29,20 @@ class GeneratorComponent(ABC):
         with sha_path.open('w') as f:
             f.write(sha)
 
+
+class GeneratorComponent(Writer, ABC):
+    config: Dict[str, Any]
+    time_helper: TimeHelper
+
+    @abstractmethod
+    def generate(self, output_folder: Path):
+        pass
+
+    def _write_distinguished(self, data: bytes|str, distinguisher: Optional[str], path: str | PathLike):
+        if distinguisher is None:
+            return
+
+        self._write(data, Path(distinguisher).joinpath(path))
 
 
 class GeneratorFormat(ABC, Generic[T]):

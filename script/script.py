@@ -24,7 +24,7 @@ def read_csv(path: str, folders: List[str], distinguisher: List[str]) -> list[Gt
     ) for i, f in enumerate(folders)]
 
 
-@click.command
+@click.command()
 @click.option('--input-folder', '-i', multiple=True, required=True)
 @click.option('--distinguisher', '-d', multiple=True, required=False)
 @click.option('--config', '-c', required=True)
@@ -40,7 +40,7 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
     with Path(config).open('r') as f:
         config = yaml.safe_load(f.read())
 
-    Generator(
+    generator = Generator(
         stop_csvs,
         route_csvs,
         calendar_csvs,
@@ -49,7 +49,10 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
         stop_time_csvs,
         trips_csvs,
         config
-    ).generate(Path(output_folder))
+    )
+
+    # generator.generate(Path(output_folder))
+    generator.network_graph(Path(output_folder))
 
 
 if __name__ == '__main__':
