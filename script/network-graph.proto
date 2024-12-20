@@ -24,13 +24,13 @@ message GraphConfiguration {
 
 enum EdgeType {
   // Represents an edge connecting a stop to its associated routes.
-  EDGE_TYPE_STOP_ROUTE = 1;
+  EDGE_TYPE_STOP_ROUTE = 0;
   // Represents a connection between two STOP_ROUTE nodes through a vehicle.
-  EDGE_TYPE_TRAVEL = 2;
+  EDGE_TYPE_TRAVEL = 1;
   // Represents a connection between two TRANSFER nodes through walking (or bike, or wheelchair).
-  EDGE_TYPE_TRANSFER = 3;
+  EDGE_TYPE_TRANSFER = 2;
   // Same as above but marks that the penalty should not be adjusted by mode of transfer.
-  EDGE_TYPE_TRANSFER_NON_ADJUSTABLE = 4;
+  EDGE_TYPE_TRANSFER_NON_ADJUSTABLE = 3;
 }
 
 message Edge {

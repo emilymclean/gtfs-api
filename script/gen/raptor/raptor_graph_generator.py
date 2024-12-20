@@ -1,8 +1,11 @@
+import json
 import math
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Dict, Set
+
+from google.protobuf.json_format import MessageToJson
 
 from .. import network_graph_pb2 as pb
 from ..component.base import Writer
@@ -69,7 +72,7 @@ class NetworkGraphGenerator(Writer):
 
         self.nodes = []
 
-    def generate(self, output_folder: Path):
+    def _create_graph(self) -> pb.Graph:
         self._generate_stop_nodes()
         self._connect_stops_by_transfer()
         self._generate_route_nodes()
@@ -95,8 +98,42 @@ class NetworkGraphGenerator(Writer):
         for s in self.service_ids:
             out.mappings.serviceIds.append(s)
 
-        print(out.nodes[0])
-        self._write(out.SerializeToString(), output_folder.joinpath("network_graph.pb"))
+        return out
+
+    def generate(self, output_folder: Path):
+        graph = self._create_graph()
+        self._write(graph.SerializeToString(), output_folder.joinpath("network_graph.pb"))
+
+    def simple_graph(self, output_folder: Path):
+        graph = self._create_graph()
+        out = {
+            'nodes': {},
+            'edges': []
+        }
+
+        node_types = ["stop", "stop_route"]
+        edge_types = ["stop_route", "travel", "transfer", "transfer_non_adjustable"]
+
+        for i, node in enumerate(graph.nodes):
+            out['nodes'][i] = {
+                'nodeId': i,
+                'type': node_types[node.type],
+                'stopId': self.stop_ids[node.stopId],
+                'routeId': self.route_ids[node.routeId] if node.routeId is not None else None
+            }
+            for edge in node.edges:
+                out['edges'].append(
+                    {
+                        'fromNodeId': i,
+                        'toNodeId': edge.toNodeId,
+                        'type': edge_types[edge.type],
+                        'departureTime': edge.departureTime if edge.departureTime is not None else None,
+                        'penalty': edge.penalty,
+                        'availableServices': [self.service_ids[s] for s in edge.availableServices],
+                    }
+                )
+
+        self._write(json.dumps(out, indent=2), output_folder.joinpath("network_graph.json"))
 
     def _add_all_edges(self):
         print("Adding all edges")
@@ -137,6 +174,9 @@ class NetworkGraphGenerator(Writer):
                         route_id
                     )]
                     previous_departure_time = self.time_helper.output_time_seconds(previous_stop_time.departure_time)
+                    if previous_route_index == route_node.index:
+                        continue
+
                     self._create_trip_edge(
                         previous_route_index,
                         route_node.index,
