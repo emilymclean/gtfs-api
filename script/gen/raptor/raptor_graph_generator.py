@@ -1,14 +1,12 @@
 import math
 from abc import ABC, abstractmethod
-from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Dict, Set
+from typing import List, Dict, Set
 
-from ..component import GeneratorComponent
+from .. import network_graph_pb2 as pb
 from ..component.base import Writer
 from ..component.intermediaries import StopCSV, RouteCSV, TripCSV, StopTimeCSV
-from .. import network_graph_pb2 as pb
 from ..time_helper import TimeHelper
 
 
@@ -16,57 +14,6 @@ class SeparatedEdge(ABC):
     @abstractmethod
     def build(self, from_node_id: int) -> pb.Edge:
         pass
-
-
-class LogicTreeNode(ABC):
-
-    @abstractmethod
-    def build(self) -> bytes:
-        pass
-
-
-@dataclass
-class LeafLogicTreeNode(LogicTreeNode):
-    service_index: int
-    service_index_byte_width: int
-
-    def build(self) -> bytes:
-        return bytes(
-            [0b1]
-        ) + self.service_index.to_bytes(self.service_index_byte_width, byteorder='little')
-
-
-@dataclass
-class AndLogicTreeNode(LogicTreeNode):
-    left: LogicTreeNode
-    right: LogicTreeNode
-
-    def build(self) -> bytes:
-        return bytes([0b110]) + self.left.build() + self.right.build()
-
-
-@dataclass
-class OrLogicTreeNode(LogicTreeNode):
-    left: LogicTreeNode
-    right: LogicTreeNode
-
-    def build(self) -> bytes:
-        return bytes([0b010]) + self.left.build() + self.right.build()
-
-
-@dataclass
-class NotLogicTreeNode(LogicTreeNode):
-    child: LogicTreeNode
-
-    def build(self) -> bytes:
-        return bytes([0b111]) + self.child.build()
-
-@dataclass
-class PreCalculatedLogicTreeNode(LogicTreeNode):
-    value: bytes
-
-    def build(self) -> bytes:
-        return self.value
 
 
 @dataclass
@@ -79,17 +26,7 @@ class TripRouteEdge(SeparatedEdge):
         out.toNodeId = self.route_id
         out.type = pb.EdgeType.EDGE_TYPE_STOP_ROUTE
         out.penalty = 0
-
-        condition = None
-        for available_service in self.available_services:
-            if condition is None:
-                condition = LeafLogicTreeNode(service_index=available_service, service_index_byte_width=1)
-            else:
-                condition = OrLogicTreeNode(
-                    left=LeafLogicTreeNode(service_index=available_service, service_index_byte_width=1),
-                    right=PreCalculatedLogicTreeNode(condition.build())
-                )
-        out.condition = condition.build()
+        out.availableServices.extend(self.available_services)
 
         return out
 
@@ -130,8 +67,6 @@ class NetworkGraphGenerator(Writer):
 
         self.trip_stop_to_route_edges: Dict[int, Dict[int, TripRouteEdge]] = {}
 
-        self.service_id_byte_width = 1
-
         self.nodes = []
 
     def generate(self, output_folder: Path):
@@ -145,8 +80,8 @@ class NetworkGraphGenerator(Writer):
         for node in self.nodes:
             out.nodes.append(node)
 
-        out.config.conditionLeafNodeWidth = self.service_id_byte_width
         out.config.penaltyMultiplier = 1
+        out.config.assumedWalkingSecondsPerKilometer = self.distance_time_multiplier
 
         for k, v in self.stop_id_to_node_index.items():
             out.mappings.stopNodes[k] = v
@@ -323,17 +258,14 @@ class NetworkGraphGenerator(Writer):
             bikes_allowed: bool,
     ):
         from_route_node = self.nodes[from_route_index]
-        condition = LeafLogicTreeNode(
-            service_index=self._register_service(service_id),
-            service_index_byte_width=self.service_id_byte_width,
-        )
+        service_index = self._register_service(service_id)
 
         out = pb.Edge()
         out.type = pb.EdgeType.EDGE_TYPE_TRAVEL
         out.toNodeId = to_route_index
         out.departureTime = departure_time
         out.penalty = travel_time_sec
-        out.condition = condition.build()
+        out.availableServices.append(service_index)
 
         accessibility = 0b0
         if wheelchair_accessible:

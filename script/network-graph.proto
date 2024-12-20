@@ -18,9 +18,8 @@ message GraphMappings {
 }
 
 message GraphConfiguration {
-  // The byte count of a leaf node data bytes
-  required uint32 conditionLeafNodeWidth = 1;
   required double penaltyMultiplier = 2;
+  required uint64 assumedWalkingSecondsPerKilometer = 3;
 }
 
 enum EdgeType {
@@ -42,22 +41,8 @@ message Edge {
   required uint64 penalty = 4;
   required EdgeType type = 7;
 
-  /*
-  Activation conditions for an edge are represented by a byte encoded Pre-order, NLR
-  traversal of a logical statement tree made up of the nodes AND, OR, NOT, and LEAF (i.e. service ID).
-
-  Each node is represented by an identification byte and optionally data bytes of a fixed size.
-
-  * LEAF = 0b001, 0 children, conditionLeafNodeWidth data bytes representing a index into
-           the mappings.serviceID array (multi byte numbers are little endian)
-  * AND  = 0b110, 2 children, 0 data bytes
-  * OR   = 0b010, 2 children, 0 data bytes
-  * NOT  = 0b111, 1 child,    0 data bytes
-
-  A tree of the form (AND(OR(LEAF(1), LEAF(2)), LEAF(3)) would thus be represented as such:
-  0b110 0b010 0b001 0d1 0b001 0d2 0b001 0d3
-   */
-  optional bytes condition = 5;
+  // The services on which this edge can be traversed
+  repeated uint64 availableServices = 8;
   /*
   Bit flags about the accessibility of a particular node. The following are defined (lsb to msb).
 
