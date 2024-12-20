@@ -134,12 +134,15 @@ class NetworkGraphGenerator(Writer):
         for s in self.service_ids:
             out.mappings.serviceIds.append(s)
 
+        print(out.nodes[0])
         self._write(out.SerializeToString(), output_folder.joinpath("network_graph.pb"))
 
     def _add_all_edges(self):
+        print("Adding all edges")
         for stop_index, v in self.trip_stop_to_route_edges.items():
             node = self.nodes[stop_index]
-            for k,vs in v.items():
+            print(f"Adding edges for node {stop_index}")
+            for k, vs in v.items():
                 node.edges.append(vs.build(stop_index))
 
     def _generate_stop_nodes(self):
@@ -163,6 +166,8 @@ class NetworkGraphGenerator(Writer):
                 else:
                     index = self.stop_id_route_id_to_node_index[(stop_index, route_id)]
                     route_node = NodeAndIndex(index, self.route_ids[index])
+
+                self._create_stop_to_route_edge(stop_index, route_node.index, trip.service_id)
 
     def _create_stop_node(
             self,
@@ -227,17 +232,15 @@ class NetworkGraphGenerator(Writer):
 
         if stop_index in self.trip_stop_to_route_edges:
             stop_edges = self.trip_stop_to_route_edges[stop_index]
-            need_to_add = False
         else:
             stop_edges = {}
-            need_to_add = True
 
         if route_index in stop_edges:
             edge = stop_edges[route_index]
             edge.condition = OrLogicTreeNode(edge.condition, condition)
         else:
-            stop_edges[route_index] = TripRouteEdge(route_index, condition)
+            edge = TripRouteEdge(route_index, condition)
 
-        if need_to_add:
-            self.trip_stop_to_route_edges[stop_index] = stop_edges
+        stop_edges[route_index] = edge
+        self.trip_stop_to_route_edges[stop_index] = stop_edges
 
