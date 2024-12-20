@@ -40,6 +40,7 @@ message Edge {
   // Used on travel nodes
   optional uint64 departureTime = 3;
   required uint64 penalty = 4;
+  required EdgeType type = 7;
 
   /*
   Activation conditions for an edge are represented by a byte encoded Pre-order, NLR

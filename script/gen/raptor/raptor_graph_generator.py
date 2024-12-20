@@ -1,3 +1,4 @@
+import math
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -15,11 +16,13 @@ class SeparatedEdge(ABC):
     def build(self, from_node_id: int) -> pb.Edge:
         pass
 
+
 class LogicTreeNode(ABC):
 
     @abstractmethod
     def build(self) -> bytes:
         pass
+
 
 @dataclass
 class LeafLogicTreeNode(LogicTreeNode):
@@ -66,6 +69,7 @@ class TripRouteEdge(SeparatedEdge):
     def build(self, from_node_id: int) -> pb.Edge:
         out = pb.Edge()
         out.toNodeId = self.route_id
+        out.type = pb.EdgeType.EDGE_TYPE_STOP_ROUTE
         out.penalty = 0
         if self.condition is not None:
             out.condition = self.condition.build()
@@ -80,6 +84,8 @@ class NodeAndIndex:
 
 
 class NetworkGraphGenerator(Writer):
+    distance_time_multiplier = 25
+    distance_threshold_km = 2
 
     def __init__(
             self,
@@ -111,6 +117,7 @@ class NetworkGraphGenerator(Writer):
 
     def generate(self, output_folder: Path):
         self._generate_stop_nodes()
+        self._connect_stops_by_transfer()
         self._generate_route_nodes()
         self._add_all_edges()
 
@@ -168,6 +175,37 @@ class NetworkGraphGenerator(Writer):
                     route_node = NodeAndIndex(index, self.route_ids[index])
 
                 self._create_stop_to_route_edge(stop_index, route_node.index, trip.service_id)
+
+    def _distance(self, lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+        lat1 = math.radians(lat1)
+        lng1 = math.radians(lng1)
+        lat2 = math.radians(lat2)
+        lng2 = math.radians(lng2)
+
+        return math.acos((math.sin(lat1) * math.sin(lat2)) +
+                         (math.cos(lat1) * math.cos(lat2) * math.cos(lng2 - lng1))) * 6371.0
+
+    def _connect_stops_by_transfer(self):
+        visited_stops = {}
+        for stop1 in self.stops:
+            for stop2 in self.stops:
+                if stop1.id == stop2.id:
+                    continue
+                if (stop2.id, stop1.id) in visited_stops:
+                    continue
+
+                distance = self._distance(stop1.location.lat, stop1.location.lng, stop2.location.lat,
+                                          stop2.location.lng)
+
+                if distance > self.distance_threshold_km:
+                    continue
+
+                print(f"Connecting {stop1.id} to {stop2.id} (distance = {distance})")
+
+                self._create_transfer_edge(stop1, stop2, distance)
+                self._create_transfer_edge(stop2, stop1, distance)
+                visited_stops[(stop1.id, stop2.id)] = True
+
 
     def _create_stop_node(
             self,
@@ -243,4 +281,20 @@ class NetworkGraphGenerator(Writer):
 
         stop_edges[route_index] = edge
         self.trip_stop_to_route_edges[stop_index] = stop_edges
+
+    def _create_transfer_edge(
+            self,
+            stop1: StopCSV,
+            stop2: StopCSV,
+            distance: float,
+    ):
+        stop1_node = self.nodes[self.stop_id_to_node_index[stop1.id]]
+        stop2_node_index = self.stop_id_to_node_index[stop2.id]
+
+        out = pb.Edge()
+        out.type = pb.EdgeType.EDGE_TYPE_TRANSFER
+        out.toNodeId = stop2_node_index
+        out.penalty = int(distance * self.distance_time_multiplier)
+
+        stop1_node.edges.append(out)
 
