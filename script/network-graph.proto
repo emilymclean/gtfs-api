@@ -43,7 +43,7 @@ message Edge {
   required EdgeType type = 7;
 
   // The services on which this edge can be traversed
-  repeated uint64 availableServices = 8;
+  repeated uint32 availableServices = 8;
   /*
   Bit flags about the accessibility of a particular node. The following are defined (lsb to msb).
 

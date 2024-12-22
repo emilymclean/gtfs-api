@@ -5,8 +5,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Dict, Set, Tuple
 
-from google.protobuf.json_format import MessageToJson
-
 from .. import network_graph_pb2 as pb
 from ..component.base import Writer
 from ..component.intermediaries import StopCSV, RouteCSV, TripCSV, StopTimeCSV
