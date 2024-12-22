@@ -2,7 +2,7 @@ name: Generate for Canberra
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
@@ -46,5 +46,5 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{ vars.AWS_REGION }}
-        - run: aws s3 sync build s3://${{ vars.AWS_BUCKET }} --delete
+        - run: aws s3 sync build s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }} --delete
                 
