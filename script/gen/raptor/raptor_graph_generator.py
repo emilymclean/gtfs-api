@@ -60,6 +60,7 @@ class NetworkGraphGenerator(Writer):
         self.stop_ids = []
         self.stop_id_to_node_index = {}
 
+        self.route_id_to_route_index = {}
         self.route_ids = []
         self.stop_id_route_id_to_node_index: Dict[Tuple[int, str, int], int] = {}
 
@@ -176,7 +177,10 @@ class NetworkGraphGenerator(Writer):
                         heading_index,
                         stop_index
                     )
-                    self.nodes.append(route_node.node)
+                    node_index = len(self.nodes)
+                    self.nodes.append(route_node)
+                    self.stop_id_route_id_to_node_index[(stop_index, route_id, heading_index)] = node_index
+                    route_node = NodeAndIndex(route_node, node_index)
                 else:
                     index = self.stop_id_route_id_to_node_index[(stop_index, route_id, heading_index)]
                     route_node = NodeAndIndex(self.nodes[index], index)
@@ -252,15 +256,26 @@ class NetworkGraphGenerator(Writer):
 
         return NodeAndIndex(out, stop_index)
 
+    def _register_route(
+            self,
+            route_id: str
+    ) -> int:
+        if route_id in self.route_id_to_route_index:
+            return self.route_id_to_route_index[route_id]
+
+        route_index = len(self.route_ids)
+        self.route_ids.append(route_id)
+        self.route_id_to_route_index[route_id] = route_index
+
+        return route_index
+
     def _create_route_node(
             self,
             route: RouteCSV,
             heading_index: int,
             stop_index: int
-    ) -> NodeAndIndex:
-        route_index = len(self.route_ids)
-        self.route_ids.append(route.id)
-        self.stop_id_route_id_to_node_index[(stop_index, route.id, heading_index)] = route_index
+    ) -> pb.Node:
+        route_index = self._register_route(route.id)
 
         out = pb.Node()
         out.type = pb.NodeType.NODE_TYPE_STOP_ROUTE
@@ -268,7 +283,7 @@ class NetworkGraphGenerator(Writer):
         out.routeId = route_index
         out.headingId = heading_index
 
-        return NodeAndIndex(out, route_index)
+        return out
 
     def _register_service(
             self,
