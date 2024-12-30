@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - changes
-    if: ${{ needs.changes.outputs.api-changes != 'false' }}
+    if: ${{ needs.changes.outputs.api-changes }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
