@@ -13,6 +13,7 @@ from .component.route_list_generator import RouteListGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
 from .component.trip_timetable_generator import TripTimetableGeneratorComponent
 from .models import *
+from .raptor.byte_graph_generator import ByteNetworkGraphGenerator
 from .raptor.raptor_graph_generator import NetworkGraphGenerator
 from .time_helper import TimeHelper
 
@@ -107,7 +108,7 @@ class Generator:
             g.generate(output_folder)
 
     def network_graph(self, output_folder: Path):
-        g = NetworkGraphGenerator(
+        g = ByteNetworkGraphGenerator(
             flatten_parsed(self.stop_data),
             self.route_index,
             flatten_parsed(self.trip_data),
