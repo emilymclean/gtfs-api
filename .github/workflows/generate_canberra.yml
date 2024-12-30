@@ -11,7 +11,7 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      api-changes: ${{ !steps.changed-files-content.outputs.only_changed }}
+      api-changes: ${{ steps.changed-files-content.outputs.only_changed == 'false' }}
     steps:
       - uses: actions/checkout@v4
       - name: Get all test, doc and src files that have changed
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - changes
-    if: ${{ needs.changes.outputs.api-changes }}
+    if: ${{ needs.changes.outputs.api-changes != 'false' }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
