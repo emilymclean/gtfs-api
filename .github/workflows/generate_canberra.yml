@@ -19,9 +19,11 @@ jobs:
         uses: tj-actions/changed-files@v45
         with:
           files: |
-            *.pkl
+            **.pkl
           files_ignore: |
-            .github/workflows/*     
+            .github/workflows/**
+            README.md
+            LICENSE.md   
   build:
     runs-on: ubuntu-latest
     needs:

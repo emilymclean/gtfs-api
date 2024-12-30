@@ -11,7 +11,7 @@ pages = new Listing<Content> {
 
         While Sinatra doesn't include ticketing or full routing features, we focus on delivering the key info you need, fast and frustration-free.
 
-        Sinatra is open source! You can find and contribute to our codebase at [Github](https://github.com/emilymclean/sinatra).
+        Made with 🩷 in Canberra, Australia. You can find and contribute to our codebase at [Github](https://github.com/emilymclean/sinatra).
         """
         externalLinks = new {
             new ExternalLink {
