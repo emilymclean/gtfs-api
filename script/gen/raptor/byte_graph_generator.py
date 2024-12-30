@@ -205,6 +205,11 @@ class ByteNetworkGraphGenerator(Writer):
 
         for node_index, node in enumerate(self.nodes):
             associated_edges = self.edges[node_index] if node_index in self.edges else []
+            connective_edges = self.trip_stop_to_route_edges[node_index] if node_index in self.trip_stop_to_route_edges else {}
+
+            for k, vs in connective_edges.items():
+                associated_edges.append(vs)
+
             node_bytes.extend(node.build(len(edges_bytes), len(associated_edges)))
 
             for edge in associated_edges:
@@ -240,14 +245,6 @@ class ByteNetworkGraphGenerator(Writer):
 
             self.heading_to_heading_index[trip.trip_headsign] = len(self.headings)
             self.headings.append(trip.trip_headsign)
-
-    def _add_all_edges(self):
-        print("Adding all edges")
-        for stop_index, v in self.trip_stop_to_route_edges.items():
-            node = self.nodes[stop_index]
-            print(f"Adding edges for node {stop_index}")
-            for k, vs in v.items():
-                node.edges.append(vs.build(stop_index))
 
     def _generate_stop_nodes(self):
         for stop in self.stops:
