@@ -1,4 +1,4 @@
-typealias LicenseCode = "A2.0" | "MIT"
+typealias LicenseCode = "A2.0" | "MIT" | "ODbL"
 
 class License {
     name: String
@@ -13,6 +13,10 @@ local const licenses = new Mapping<LicenseCode, License> {
     ["MIT"] = new License {
         name = "MIT License"
         url = "https://opensource.org/license/mit"
+    }
+    ["ODbL"] = new License {
+        name = "Open Data Commons Open Database License 1.0"
+        url = "https://opendatacommons.org/licenses/odbl/"
     }
 }
 
@@ -45,6 +49,8 @@ class LicenseCollection {
         _content.toList().map((e) -> 
             if (e.attribution != null && e.year != null)
                 "* **\(e.name)**, Copyright (c) \(e.year) \(e.attribution)"
+            else if (e.attribution != null)
+                "* **\(e.name)**, Copyright (c) \(e.attribution)"
             else
                 "* **\(e.name)**"
         ).join("\n").trim()
@@ -149,6 +155,11 @@ hidden appLicense = new LicenseCollection {
             attribution = "Adriel Café"
             year = "2021"
             licenseCode = "MIT"
+        }
+        new {
+            name = "Address Information/Nominatim"
+            attribution = "OpenStreetMap contributors, [http://osm.org/copyright](http://osm.org/copyright)"
+            licenseCode = "ODbL"
         }
     }
 }
