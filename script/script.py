@@ -52,7 +52,7 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
         config
     )
 
-    # generator.generate(Path(output_folder))
+    generator.generate(Path(output_folder))
     generator.network_graph(Path(output_folder))
 
 
