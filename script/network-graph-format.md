@@ -25,6 +25,7 @@ All numbers are little endian. All strings are null terminated UTF-8 encoded.
 | Edges Start                       | 4      | uint32  | Points to the beginning of the edges collection.            |
 | Penalty Multiplier                | 4      | float32 | The number to multiply the penalty value by.                |
 | assumedWalkingSecondsPerKilometer | 4      | uint32  | Assumed number of seconds required to traverse a kilometer. |
+| Node count                        | 4      | uint32  | Total number of nodes                                       |
 
 # Mapping
 | Field         | Length   | Type     | Description                                  |

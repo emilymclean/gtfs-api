@@ -11,7 +11,7 @@ from ..component.base import Writer
 from ..component.intermediaries import StopCSV, RouteCSV, TripCSV, StopTimeCSV
 from ..time_helper import TimeHelper
 
-metadata_byte_format = "< 5s B B I I f I"
+metadata_byte_format = "< 5s B B I I f I I"
 
 mapping_count_byte_format = "< I I I I"
 
@@ -191,7 +191,7 @@ class ByteNetworkGraphGenerator(Writer):
             len(self.stops),
             len(self.route_ids),
             len(self.headings),
-            len(self.service_ids),
+            len(self.service_ids)
         ))
 
         for stop in self.stops:
@@ -223,7 +223,8 @@ class ByteNetworkGraphGenerator(Writer):
             metadata_size + mapping_size,
             metadata_size + mapping_size + nodes_size,
             1.0,
-            self.distance_time_multiplier
+            self.distance_time_multiplier,
+            len(self.nodes)
         )
 
         return metadata_bytes + mapping_bytes + node_bytes + edges_bytes
