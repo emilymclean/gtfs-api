@@ -1,5 +1,6 @@
 import json
 import math
+import struct
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
@@ -10,35 +11,135 @@ from ..component.base import Writer
 from ..component.intermediaries import StopCSV, RouteCSV, TripCSV, StopTimeCSV
 from ..time_helper import TimeHelper
 
+metadata_byte_format = "< 5s B B I I f I I"
 
-class SeparatedEdge(ABC):
+mapping_count_byte_format = "< I I I I"
+
+node_byte_format = "<I I I B I I"
+# Assumes that all services can be fit into three bytes
+edge_byte_format = "<I I I 3s B"
+
+
+def set_bits(bits: Set[int], size: int) -> bytes:
+    data = bytearray(size)
+    for bit in bits:
+        bit_index = bit % 8
+        byte_index = bit // 8
+        data[byte_index] = byte_index | (1 << bit_index)
+
+    return bytes(data)
+
+
+def str_to_bytes(s: str) -> bytes:
+    return s.encode('utf-8') + b'\x00'
+
+
+class Edge(ABC):
     @abstractmethod
-    def build(self, from_node_id: int) -> pb.Edge:
+    def build(self, from_node_index: int) -> bytes:
         pass
 
 
 @dataclass
-class TripRouteEdge(SeparatedEdge):
-    route_id: int
+class StopRouteEdge(Edge):
+    connected_route_node: int
     available_services: Set[int]
 
-    def build(self, from_node_id: int) -> pb.Edge:
-        out = pb.Edge()
-        out.toNodeId = self.route_id
-        out.type = pb.EdgeType.EDGE_TYPE_STOP_ROUTE
-        out.penalty = 0
-        out.availableServices.extend(self.available_services)
+    def build(self, from_node_index: int) -> bytes:
+        return struct.pack(
+            edge_byte_format,
+            self.connected_route_node,
+            0,
+            0,
+            set_bits(self.available_services, 3),
+            0b10
+        )
 
-        return out
+
+@dataclass
+class TravelEdge(Edge):
+    connected_route_node: int
+    departure_time: int
+    travel_time: int
+    available_services: Set[int]
+    wheelchair_accessible: bool
+    bikes_allowed: bool
+
+    def build(self, from_node_index: int) -> bytes:
+        return struct.pack(
+            edge_byte_format,
+            self.connected_route_node,
+            self.travel_time,
+            self.departure_time,
+            set_bits(self.available_services, 3),
+            0b00 | (int(self.wheelchair_accessible) << 2) | (int(self.bikes_allowed) << 3),
+        )
+
+
+@dataclass
+class TransferEdge(Edge):
+    connected_stop_node: int
+    travel_time: int
+
+    def build(self, from_node_index: int) -> bytes:
+        return struct.pack(
+            edge_byte_format,
+            self.connected_stop_node,
+            self.travel_time,
+            0,
+            bytes(bytearray(3)),
+            0b11,
+        )
+
+
+class Node(ABC):
+    @abstractmethod
+    def build(self, edge_position: int, edge_count: int) -> bytes:
+        pass
+
+
+@dataclass
+class StopNode(Node):
+    stop_index: int
+    wheelchair_accessible: bool
+
+    def build(self, edge_position: int, edge_count: int) -> bytes:
+        return struct.pack(
+            node_byte_format,
+            self.stop_index,
+            0,
+            0,
+            0b0 | (int(self.wheelchair_accessible) << 1),
+            edge_position,
+            edge_count
+        )
+
+
+@dataclass
+class RouteNode(Node):
+    stop_index: int
+    route_index: int
+    heading_index: int
+
+    def build(self, edge_position: int, edge_count: int) -> bytes:
+        return struct.pack(
+            node_byte_format,
+            self.stop_index,
+            self.route_index,
+            self.heading_index,
+            0b1,
+            edge_position,
+            edge_count
+        )
 
 
 @dataclass
 class NodeAndIndex:
-    node: pb.Node
+    node: Node
     index: int
 
 
-class NetworkGraphGenerator(Writer):
+class ByteNetworkGraphGenerator(Writer):
     distance_time_multiplier = 25 * 60 # 25 mins per kilometer
     distance_threshold_km = 2
 
@@ -70,77 +171,72 @@ class NetworkGraphGenerator(Writer):
         self.headings = []
         self.heading_to_heading_index = {}
 
-        self.trip_stop_to_route_edges: Dict[int, Dict[Tuple[int, int], TripRouteEdge]] = {}
+        self.edges: Dict[int, List[Edge]] = {}
+        self.trip_stop_to_route_edges: Dict[int, Dict[Tuple[int, int], StopRouteEdge]] = {}
 
         self.nodes = []
 
-    def _create_graph(self) -> pb.Graph:
+    def _create_graph(self) -> bytes:
         self._compute_headings()
         self._generate_stop_nodes()
         self._connect_stops_by_transfer()
         self._generate_route_nodes()
-        self._add_all_edges()
 
-        out = pb.Graph()
+        mapping_bytes = bytearray()
+        node_bytes = bytearray()
+        edges_bytes = bytearray()
 
-        for node in self.nodes:
-            out.nodes.append(node)
+        mapping_bytes.extend(struct.pack(
+            mapping_count_byte_format,
+            len(self.stops),
+            len(self.route_ids),
+            len(self.headings),
+            len(self.service_ids)
+        ))
 
-        out.config.penaltyMultiplier = 1
-        out.config.assumedWalkingSecondsPerKilometer = self.distance_time_multiplier
+        for stop in self.stops:
+            mapping_bytes.extend(str_to_bytes(stop.id))
+        for route_id in self.route_ids:
+            mapping_bytes.extend(str_to_bytes(route_id))
+        for headings in self.headings:
+            mapping_bytes.extend(str_to_bytes(headings))
+        for service_id in self.service_ids:
+            mapping_bytes.extend(str_to_bytes(service_id))
 
-        for k, v in self.stop_id_to_node_index.items():
-            out.mappings.stopNodes[k] = v
+        for node_index, node in enumerate(self.nodes):
+            associated_edges = self.edges[node_index] if node_index in self.edges else []
+            connective_edges = self.trip_stop_to_route_edges[node_index] if node_index in self.trip_stop_to_route_edges else {}
 
-        for s in self.stop_ids:
-            out.mappings.stopIds.append(s)
+            for k, vs in connective_edges.items():
+                associated_edges.append(vs)
 
-        for r in self.route_ids:
-            out.mappings.routeIds.append(r)
+            node_bytes.extend(node.build(len(edges_bytes), len(associated_edges)))
 
-        for s in self.service_ids:
-            out.mappings.serviceIds.append(s)
+            for edge in associated_edges:
+                edges_bytes.extend(edge.build(node_index))
 
-        for h in self.headings:
-            out.mappings.headings.append(h)
+        metadata_size = struct.calcsize(metadata_byte_format)
+        mapping_size = len(mapping_bytes)
+        nodes_size = len(node_bytes)
+        edges_size = len(edges_bytes)
 
-        return out
+        metadata_bytes = struct.pack(
+            metadata_byte_format,
+            'emily'.encode('ascii'),
+            1,
+            3,
+            metadata_size + mapping_size,
+            metadata_size + mapping_size + nodes_size,
+            1.0,
+            self.distance_time_multiplier,
+            len(self.nodes)
+        )
+
+        return metadata_bytes + mapping_bytes + node_bytes + edges_bytes
 
     def generate(self, output_folder: Path):
         graph = self._create_graph()
-        self._write(graph.SerializeToString(), output_folder.joinpath("network_graph.pb"))
-
-    def simple_graph(self, output_folder: Path):
-        graph = self._create_graph()
-        out = {
-            'nodes': {},
-            'edges': []
-        }
-
-        node_types = ["stop", "stop_route"]
-        edge_types = ["stop_route", "travel", "transfer", "transfer_non_adjustable"]
-
-        for i, node in enumerate(graph.nodes):
-            out['nodes'][i] = {
-                'nodeId': i,
-                'type': node_types[node.type],
-                'stopId': self.stop_ids[node.stopId],
-                'routeId': self.route_ids[node.routeId] if node.routeId is not None else None,
-                'heading': self.headings[node.headingId] if node.headingId is not None else None,
-            }
-            for edge in node.edges:
-                out['edges'].append(
-                    {
-                        'fromNodeId': i,
-                        'toNodeId': edge.toNodeId,
-                        'type': edge_types[edge.type],
-                        'departureTime': edge.departureTime if edge.departureTime is not None else None,
-                        'penalty': edge.penalty,
-                        'availableServices': [self.service_ids[s] for s in edge.availableServices],
-                    }
-                )
-
-        self._write(json.dumps(out, indent=2), output_folder.joinpath("network_graph.json"))
+        self._write(graph, output_folder.joinpath("network_graph.eng"))
 
     def _compute_headings(self):
         for trip in self.trips:
@@ -149,14 +245,6 @@ class NetworkGraphGenerator(Writer):
 
             self.heading_to_heading_index[trip.trip_headsign] = len(self.headings)
             self.headings.append(trip.trip_headsign)
-
-    def _add_all_edges(self):
-        print("Adding all edges")
-        for stop_index, v in self.trip_stop_to_route_edges.items():
-            node = self.nodes[stop_index]
-            print(f"Adding edges for node {stop_index}")
-            for k, vs in v.items():
-                node.edges.append(vs.build(stop_index))
 
     def _generate_stop_nodes(self):
         for stop in self.stops:
@@ -249,10 +337,10 @@ class NetworkGraphGenerator(Writer):
 
         print(f"Creating stop node {stop_index}")
 
-        out = pb.Node()
-        out.type = pb.NodeType.NODE_TYPE_STOP
-        out.stopId = stop_index
-        out.accessibilityFlags = 0b1 if stop.accessibility.wheelchair == 2 else 0b0
+        out = StopNode(
+            stop_index,
+            stop.accessibility.wheelchair == 2
+        )
 
         return NodeAndIndex(out, stop_index)
 
@@ -274,14 +362,14 @@ class NetworkGraphGenerator(Writer):
             route: RouteCSV,
             heading_index: int,
             stop_index: int
-    ) -> pb.Node:
+    ) -> RouteNode:
         route_index = self._register_route(route.id)
 
-        out = pb.Node()
-        out.type = pb.NodeType.NODE_TYPE_STOP_ROUTE
-        out.stopId = stop_index
-        out.routeId = route_index
-        out.headingId = heading_index
+        out = RouteNode(
+            stop_index,
+            route_index,
+            heading_index
+        )
 
         return out
 
@@ -299,6 +387,12 @@ class NetworkGraphGenerator(Writer):
         print(f"Registering service {service_id}")
         return service_index
 
+    def add_edge(self, node: int, edge: Edge):
+        if node in self.edges:
+            self.edges[node].append(edge)
+        else:
+            self.edges[node] = [edge]
+
     def _create_stop_to_route_edge(
             self,
             stop_index: int,
@@ -312,45 +406,38 @@ class NetworkGraphGenerator(Writer):
             stop_edges = self.trip_stop_to_route_edges[stop_index]
         else:
             stop_edges = {}
-
         k = (route_index, heading_index)
         if k in stop_edges:
             edge = stop_edges[k]
             edge.available_services.add(service_index)
         else:
-            edge = TripRouteEdge(route_index, {service_index})
+            edge = StopRouteEdge(route_index, {service_index})
 
         stop_edges[k] = edge
         self.trip_stop_to_route_edges[stop_index] = stop_edges
 
     def _create_trip_edge(
             self,
-            from_route_index: int,
-            to_route_index: int,
+            from_node_index: int,
+            to_node_index: int,
             departure_time: int,
             travel_time_sec: int,
             service_id: str,
             wheelchair_accessible: bool,
             bikes_allowed: bool,
     ):
-        from_route_node = self.nodes[from_route_index]
         service_index = self._register_service(service_id)
 
-        out = pb.Edge()
-        out.type = pb.EdgeType.EDGE_TYPE_TRAVEL
-        out.toNodeId = to_route_index
-        out.departureTime = departure_time
-        out.penalty = travel_time_sec
-        out.availableServices.append(service_index)
+        out = TravelEdge(
+            to_node_index,
+            departure_time,
+            travel_time_sec,
+            {service_index},
+            wheelchair_accessible,
+            bikes_allowed
+        )
 
-        accessibility = 0b0
-        if wheelchair_accessible:
-            accessibility |= 0b01
-        if bikes_allowed:
-            accessibility |= 0b10
-        out.accessibilityFlags = accessibility
-
-        from_route_node.edges.append(out)
+        self.add_edge(from_node_index, out)
 
     def _create_transfer_edge(
             self,
@@ -358,13 +445,13 @@ class NetworkGraphGenerator(Writer):
             stop2: StopCSV,
             distance: float,
     ):
-        stop1_node = self.nodes[self.stop_id_to_node_index[stop1.id]]
+        stop1_node_index = self.stop_id_to_node_index[stop1.id]
         stop2_node_index = self.stop_id_to_node_index[stop2.id]
 
-        out = pb.Edge()
-        out.type = pb.EdgeType.EDGE_TYPE_TRANSFER
-        out.toNodeId = stop2_node_index
-        out.penalty = int(distance * self.distance_time_multiplier)
+        out = TransferEdge(
+            stop2_node_index,
+            int(distance * self.distance_time_multiplier)
+        )
 
-        stop1_node.edges.append(out)
+        self.add_edge(stop1_node_index, out)
 
