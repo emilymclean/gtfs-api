@@ -71,4 +71,31 @@ route:
       color: "a8332f"
       onColor: light
 stops:
-  parent-stations:
+  city-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
+  belconnen-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
+  tuggeranong-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
+  woden-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
+  dickson-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
+  gungahlin-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
+  cohen-st-interchange:
+    show-on-zoom-out: true
+    show-on-zoom-in: false
+    show-children: true
