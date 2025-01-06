@@ -1,12 +1,12 @@
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import List, Optional
 
 import pandas as pd
 import yaml
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 
 
 @dataclass
@@ -70,6 +70,25 @@ def stop_list():
                 "parent_station_id": parent,
             })
     return stops
+
+
+@app.post("/group/create")
+def group_create():
+    json = request.json
+    existing = load_yaml()
+    existing.append(StopGrouping(
+        json["stop_id"],
+        json["name"],
+        json["children"]
+    ))
+
+    Path(os.environ["GROUPS_CONFIG_FILE"]).write_text(
+        yaml.dump({
+            "groupings": [asdict(x) for x in existing]
+        })
+    )
+    return jsonify({})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

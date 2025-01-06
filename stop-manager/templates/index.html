@@ -45,6 +45,7 @@
         <input type="text" id="suggested-id"/>
         <h3>Children:</h3>
         <p id="group-children"></p>
+        <button type="button" onclick="createGroup()">Create group</button>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
@@ -180,6 +181,24 @@
             document.getElementById("group-children").innerText = selectedStops.map((e) => e.name).join(", ")
 
             document.getElementById("create-group-popup").style.visibility='visible';
+        }
+
+        function createGroup() {
+            const selectedStops = stops.filter((e) => selectedMarkers.has(e.id));
+            axios.post(
+                "group/create",
+                {
+                    "stop_id": document.getElementById("suggested-id").value,
+                    "name": document.getElementById("suggested-title").value,
+                    "children": selectedStops.map((e) => e.id)
+                }
+            )
+
+            document.getElementById("create-group-popup").style.visibility='hidden';
+            selectedMarkers.forEach(sm => {
+                markers.find(m => m.options.id === sm).setIcon(greenIcon);
+            });
+            selectedMarkers.clear();
         }
     </script>
 </body>
