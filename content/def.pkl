@@ -1,0 +1,23 @@
+open module def;
+
+typealias Markdown = String
+
+abstract class Link {
+    title: String
+}
+
+class ContentLink extends Link {
+    contentId: String
+}
+
+class ExternalLink extends Link {
+    url: String
+}
+
+class Content {
+    id: String
+    title: String
+    content: Markdown
+    externalLinks: Listing<ExternalLink> = new Listing {}
+    contentLinks: Listing<ContentLink> = new Listing {}
+}

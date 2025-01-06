@@ -13,6 +13,8 @@ from .component.route_list_generator import RouteListGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
 from .component.trip_timetable_generator import TripTimetableGeneratorComponent
 from .models import *
+from .raptor.byte_graph_generator import ByteNetworkGraphGenerator
+from .raptor.raptor_graph_generator import NetworkGraphGenerator
 from .time_helper import TimeHelper
 
 T = TypeVar('T')
@@ -34,6 +36,7 @@ class Generator:
         self.config = config
         self.time_helper = TimeHelper(config.get("timezone", "UTC"))
 
+        print("Parsing data")
         self.stop_data = [ParsedCsv[List[StopCSV]](StopCSV.from_csv(p.data), p.distinguisher) for p in stop_csvs]
         self.route_data = [ParsedCsv[List[RouteCSV]](RouteCSV.from_csv(p.data), p.distinguisher) for p in route_csvs]
         self.calendar_data = [ParsedCsv[List[CalendarCSV]](CalendarCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in calendar_csvs]
@@ -41,6 +44,7 @@ class Generator:
         self.stop_time_data = [ParsedCsv[List[StopTimeCSV]](StopTimeCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in stop_time_csvs]
         self.trip_data = [ParsedCsv[List[TripCSV]](TripCSV.from_csv(p.data), p.distinguisher) for p in trip_csvs]
 
+        print("Generating indexes")
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
         self.stop_index_by_parent = self._create_list_index(filter(lambda x: x.parent_station is not None, flatten_parsed(self.stop_data)), lambda x: x.parent_station)
         self.stop_time_index = self._create_list_index(flatten_parsed(self.stop_time_data), lambda x: x.stop_id)
@@ -53,6 +57,7 @@ class Generator:
         self.calendar_exception_index = self._create_list_index(flatten_parsed(self.calendar_exception_data), lambda x: x.service_id)
 
         self.distinguishers = list(filter(lambda x: x is not None, [d.distinguisher for d in route_csvs]))
+        print("Finished generating indexes")
 
     def generate(self, output_folder: Path):
         generators = [
@@ -101,6 +106,16 @@ class Generator:
             g.config = self.config
             g.time_helper = self.time_helper
             g.generate(output_folder)
+
+    def network_graph(self, output_folder: Path):
+        g = ByteNetworkGraphGenerator(
+            flatten_parsed(self.stop_data),
+            self.route_index,
+            flatten_parsed(self.trip_data),
+            self.stop_time_index_by_trip
+        )
+        g.time_helper = self.time_helper
+        g.generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

@@ -57,7 +57,7 @@ class ProtoServiceListGeneratorFormat(ProtoGeneratorFormat[List[ServiceIntermedi
                 regular.thursday = c.days_of_week[3]
                 regular.friday = c.days_of_week[4]
                 regular.saturday = c.days_of_week[5]
-                regular.sunday = c.days_of_week[5]
+                regular.sunday = c.days_of_week[6]
                 regular.startDate = self.time_helper.output_date_iso(c.start_date)
                 regular.endDate = self.time_helper.output_date_iso(c.end_date)
                 service.regular.append(regular)
