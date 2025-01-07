@@ -20,9 +20,17 @@ message Content {
 message ExternalLink {
   required string title = 1;
   required string url = 2;
+  optional uint32 order = 3;
 }
 
 message ContentLink {
   required string title = 1;
   required string contentId = 2;
+  optional uint32 order = 3;
+}
+
+message PageLink {
+  required string title = 1;
+  required string nativeReference = 2;
+  optional uint32 order = 3;
 }

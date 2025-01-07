@@ -15,18 +15,26 @@ pages = new Listing<Content> {
         """
         externalLinks = new {
             new ExternalLink {
+                title = "Donate"
+                url = "https://ko-fi.com/emilymclean"
+                order = 1000
+            }
+            new ExternalLink {
                 title = "Terms and Conditions"
                 url = "https://emilym.cl/sinatra/terms"
+                order = 3000
             }
             new ExternalLink {
                 title = "Privacy Policy"
                 url = "https://emilym.cl/sinatra/privacy"
+                order = 4000
             }
         }
         contentLinks = new {
             new ContentLink {
                 title = "Third Party Notices"
                 contentId = "attribution"
+                order = 2000
             }
         }
     }

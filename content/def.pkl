@@ -4,6 +4,7 @@ typealias Markdown = String
 
 abstract class Link {
     title: String
+    order: Int
 }
 
 class ContentLink extends Link {
@@ -12,6 +13,10 @@ class ContentLink extends Link {
 
 class ExternalLink extends Link {
     url: String
+}
+
+class NativeLink extends Link {
+    nativeReference: String
 }
 
 class Content {
