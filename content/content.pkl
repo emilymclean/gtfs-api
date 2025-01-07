@@ -48,3 +48,5 @@ pages = new Listing<Content> {
         """
     }
 }
+
+banners = new Mapping<String, Banner> {}

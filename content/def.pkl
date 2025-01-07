@@ -25,4 +25,16 @@ class Content {
     content: Markdown
     externalLinks: Listing<ExternalLink> = new Listing {}
     contentLinks: Listing<ContentLink> = new Listing {}
+    nativeLinks: Listing<NativeLink> = new Listing {}
+}
+
+typealias BannerSeverity = "info" | "warning" | "severe"
+
+class Banner {
+    title: String
+    message: String?
+    severity: BannerSeverity = "info"
+    externalLinks: Listing<ExternalLink> = new Listing {}
+    contentLinks: Listing<ContentLink> = new Listing {}
+    nativeLinks: Listing<NativeLink> = new Listing {}
 }
