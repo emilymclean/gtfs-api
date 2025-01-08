@@ -70,32 +70,65 @@ route:
     - code: 10
       color: "a8332f"
       onColor: light
+  modifications:
+    NIS:
+      hidden: true
+      searchWeight: 0.2
+    X1:
+      hidden: true
+    X2:
+      hidden: true
+    X3:
+      hidden: true
+    X4:
+      hidden: true
+    1:
+      searchWeight: 1.7
+    2:
+      searchWeight: 1.7
+    3:
+      searchWeight: 1.7
+    4:
+      searchWeight: 1.7
+    5:
+      searchWeight: 1.7
+    6:
+      searchWeight: 1.7
+    7:
+      searchWeight: 1.7
+    8:
+      searchWeight: 1.7
+    9:
+      searchWeight: 1.7
+    10:
+      searchWeight: 1.7
 stops:
-  city-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
-  belconnen-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
-  tuggeranong-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
-  woden-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
-  dickson-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
-  gungahlin-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
-  cohen-st-interchange:
-    show-on-zoom-out: true
-    show-on-zoom-in: false
-    show-children: true
+  modifications:
+    city-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    belconnen-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    tuggeranong-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    woden-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    dickson-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    gungahlin-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    cohen-st-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
