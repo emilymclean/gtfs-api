@@ -51,9 +51,13 @@ message RouteServicesEndpoint {
 message Stop {
   required string id = 1;
   optional string parentStation = 5;
+  repeated string childStations = 6;
   required string name = 2;
   required Location location = 3;
   required StopAccessibility accessibility = 4;
+  optional bool showOnZoomOut = 7;
+  optional bool showOnZoomIn = 8;
+  optional bool showChildren = 9;
 }
 
 message StopAccessibility {
@@ -76,6 +80,8 @@ message Route {
   optional string designation = 7;
   required RouteType type = 4;
   optional string realTimeUrl = 8;
+  optional bool hidden = 9;
+  optional float searchWeight = 10;
 }
 
 message ColorPair {

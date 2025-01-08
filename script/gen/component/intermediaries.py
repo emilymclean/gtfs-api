@@ -43,14 +43,22 @@ class StopCSV(Intermediary):
     parent_station: Optional[str]
     location: LocationCSV
     accessibility: StopAccessibilityCSV
+    child_stations: List[str]
+    show_on_zoom_out: bool
+    show_on_zoom_in: bool
+    show_children: bool
 
     def to_json(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,
             "parent_station": self.parent_station,
+            "child_stations": self.child_stations,
             "location": self.location.to_json(),
-            "accessibility": self.accessibility.to_json()
+            "accessibility": self.accessibility.to_json(),
+            "showOnZoomOut": self.show_on_zoom_out,
+            "showOnZoomIn": self.show_on_zoom_in,
+            "showChildren": self.show_children,
         }
 
     def to_pb(self, stop: pb.Stop):
@@ -64,6 +72,11 @@ class StopCSV(Intermediary):
 
         stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[self.accessibility.wheelchair]
 
+        stop.childStations.extend(self.child_stations)
+        stop.showOnZoomOut = self.show_on_zoom_out
+        stop.showOnZoomIn = self.show_on_zoom_in
+        stop.showChildren = self.show_children
+
     @staticmethod
     def from_csv_row(row: pd.Series) -> "StopCSV":
         return StopCSV(
@@ -76,7 +89,11 @@ class StopCSV(Intermediary):
             ),
             StopAccessibilityCSV(
                 row['wheelchair_boarding']
-            )
+            ),
+            [],
+            False,
+            True,
+            False
         )
 
     @staticmethod
@@ -93,6 +110,7 @@ class RouteCSV(Intermediary):
     code: str
     name: str
     type: int
+
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "RouteCSV":
@@ -137,6 +155,8 @@ class RouteIntermediary(Intermediary):
     code_prefix: Optional[str]
     colors: Optional[ColorPair]
     real_time: Optional[str]
+    hidden: bool
+    search_weight: Optional[float]
 
     def to_json(self) -> dict:
         return {
@@ -148,6 +168,8 @@ class RouteIntermediary(Intermediary):
             "designation": self.designation,
             "colors": self.colors.to_json() if self.colors is not None else None,
             "realTimeUrl": self.real_time,
+            "hidden": self.hidden,
+            "searchWeight": self.search_weight,
         }
 
     def to_pb(self, route: pb.Route):
@@ -162,6 +184,9 @@ class RouteIntermediary(Intermediary):
             self.colors.to_pb(route.colors)
         if self.real_time is not None:
             route.realTimeUrl = self.real_time
+        route.hidden = self.hidden
+        if self.search_weight is not None:
+            route.searchWeight = self.search_weight
 
     @staticmethod
     def from_csv(route: RouteCSV, extras: Dict[str, Any]) -> "RouteIntermediary":
@@ -175,7 +200,9 @@ class RouteIntermediary(Intermediary):
             designation,
             _get_route_prefix(designation, extras) if designation is not None else None,
             ColorPair(*colors) if colors is not None else None,
-            _get_route_real_time(route.id, extras)
+            _get_route_real_time(route.id, extras),
+            False,
+            None
         )
 
 
