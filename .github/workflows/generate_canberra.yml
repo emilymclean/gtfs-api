@@ -72,7 +72,7 @@ jobs:
         run: |
           ./render-content.sh
           mkdir -p build/canberra/v1
-          cp content/content{.json,.json.sha,.pb,.pb.sha} build/canberra/v1
+          cp content/content{*.json,*.pb} build/canberra/v1
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v4
         with:
