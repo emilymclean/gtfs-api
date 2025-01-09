@@ -2,6 +2,8 @@ open module content;
 extends "def.pkl"
 import "licenses.pkl" as licenses
 
+const function isPlatform(platforms: List<Platform>) = platforms.contains(read?("env:platform"))
+
 pages = new Listing<Content> {
     new Content {
         id = "about"
@@ -14,11 +16,16 @@ pages = new Listing<Content> {
         Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
         externalLinks = new {
-            new ExternalLink {
-                title = "Donate"
-                url = "https://ko-fi.com/emilymclean"
-                order = 1000
-            }
+            ...(if (isPlatform(List("android"))) 
+                new Listing {
+                    new ExternalLink {
+                        title = "Donate"
+                        url = "https://ko-fi.com/emilymclean"
+                        order = 1000
+                    }
+                }
+            else
+                new Listing {})
             new ExternalLink {
                 title = "Terms and Conditions"
                 url = "https://emilym.cl/sinatra/terms"

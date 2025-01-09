@@ -38,3 +38,5 @@ class Banner {
     contentLinks: Listing<ContentLink> = new Listing {}
     nativeLinks: Listing<NativeLink> = new Listing {}
 }
+
+typealias Platform = "android" | "ios"
