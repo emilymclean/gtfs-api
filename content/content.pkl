@@ -15,11 +15,6 @@ pages = new Listing<Content> {
         """
         externalLinks = new {
             new ExternalLink {
-                title = "Donate"
-                url = "https://ko-fi.com/emilymclean"
-                order = 1000
-            }
-            new ExternalLink {
                 title = "Terms and Conditions"
                 url = "https://emilym.cl/sinatra/terms"
                 order = 3000
