@@ -1,8 +1,8 @@
-typealias LicenseCode = "A2.0" | "MIT" | "ODbL"
+typealias LicenseCode = "A2.0" | "MIT" | "ODbL" | "MISC"
 
 class License {
     name: String
-    url: String
+    url: String? = null
 }
 
 local const licenses = new Mapping<LicenseCode, License> {
@@ -17,6 +17,9 @@ local const licenses = new Mapping<LicenseCode, License> {
     ["ODbL"] = new License {
         name = "Open Data Commons Open Database License 1.0"
         url = "https://opendatacommons.org/licenses/odbl/"
+    }
+    ["MISC"] = new License {
+        name = "Miscellaneous"
     }
 }
 
@@ -60,12 +63,19 @@ class LicenseCollection {
         grouped.toList().map((e) -> 
             let(license = licenses[e.code])
             let(contentDescription = licensedContentDescription(e.content))
-            """
-            #### \(license.name)
-            The following components are licensed under the [\(license.name)](\(license.url)):
+            if (license.url != null)
+                """
+                #### \(license.name)
+                The following components are licensed under the [\(license.name)](\(license.url)):
 
-            \(contentDescription)
-            """
+                \(contentDescription)
+                """
+            else
+                """
+                #### \(license.name)
+
+                \(contentDescription)
+                """
         ).join("\n\n")
 
 }
@@ -157,9 +167,21 @@ hidden appLicense = new LicenseCollection {
             licenseCode = "MIT"
         }
         new {
+            name = "Autosize Text"
+            attribution = "Reda El Madini"
+            licenseCode = "MIT"
+        }
+        new {
             name = "Address Information/Nominatim"
             attribution = "OpenStreetMap contributors, [http://osm.org/copyright](http://osm.org/copyright)"
             licenseCode = "ODbL"
         }
+        new {
+            name = "Fibonacci Heap"
+            attribution = "[Keith Schwarz](https://www.keithschwarz.com/interesting/)"
+            year = "2010"
+            licenseCode = "MISC"
+        }
+
     }
 }
