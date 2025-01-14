@@ -10,3 +10,23 @@ content/content.Pages.textpb
 content/content.pb
 
 content/content.pb.sha
+
+content/content.android.json
+
+content/content.android.pb
+
+content/content.ios.json
+
+content/content.ios.pb
+
+content/content.json.android.sha
+
+content/content.json.ios.sha
+
+content/content.Pages.android.textpb
+
+content/content.Pages.ios.textpb
+
+content/content.pb.android.sha
+
+content/content.pb.ios.sha
