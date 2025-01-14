@@ -182,6 +182,11 @@ hidden appLicense = new LicenseCollection {
             year = "2010"
             licenseCode = "MISC"
         }
-
+        new {
+            name = "ECBExtensions"
+            attribution = "goto10"
+            year = "2010"
+            licenseCode = "MIT"
+        }
     }
 }
