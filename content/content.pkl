@@ -11,7 +11,11 @@ pages = new Listing<Content> {
         content = """
         Sinatra is a companion app for the Canberra MyWay+ network made by locals for locals. Our goal is to make it easier to find route and stop information, offering a fresh, streamlined experience alongside the official app.
 
+<<<<<<< HEAD
         Made with 🩷 in Canberra, Australia.\(if (isPlatform(List("android"))) " You can find and contribute to our codebase at [Github](https://github.com/emilymclean/sinatra)" else "")
+=======
+        Made with 🩷 in Canberra, Australia.
+>>>>>>> main
 
         Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
