@@ -1,0 +1,32 @@
+
+extends "def.pkl"
+import "pkl:protobuf" as protobuf
+
+config = new JourneySearchConfig {
+    maximumComputationTime = 30.s.toUnit("ms").value
+    options {
+        new {
+            maximumWalkingTime = 25.min.toUnit("ms").value
+            transferPenalty = 5.min.toUnit("ms").value
+            changeOverPenalty = 5.min.toUnit("ms").value
+        }
+        new {
+            maximumWalkingTime = 25.min.toUnit("ms").value
+            transferPenalty = 15.min.toUnit("ms").value
+            changeOverPenalty = 30.min.toUnit("ms").value
+        }
+    }
+}
+
+output {
+    files {
+        ["\(read("env:outputName")).json"] {
+            value = config
+            renderer = new JsonRenderer {}
+        }
+        ["\(read("env:outputName")).textpb"] {
+            value = config
+            renderer = new protobuf.Renderer {}
+        }
+    }
+}
