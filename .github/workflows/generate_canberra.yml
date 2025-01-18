@@ -20,10 +20,9 @@ jobs:
         with:
           files: |
             **.pkl
-          files_ignore: |
             .github/workflows/**
             README.md
-            LICENSE.md   
+            LICENSE.md
   build:
     runs-on: ubuntu-latest
     needs:
@@ -73,7 +72,6 @@ jobs:
           ./render-content.sh
           mkdir -p build/canberra/v1
           mkdir -p static-content
-          cp content/output/* build/canberra/v1
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v4
         with:
