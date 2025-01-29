@@ -6,14 +6,19 @@ config = new JourneySearchConfig {
     maximumComputationTime = 30.s.toUnit("ms").value
     options {
         new {
-            maximumWalkingTime = 25.min.toUnit("ms").value
+            maximumWalkingTime = 10.min.toUnit("ms").value
             transferPenalty = 5.min.toUnit("ms").value
             changeOverPenalty = 5.min.toUnit("ms").value
         }
         new {
             maximumWalkingTime = 25.min.toUnit("ms").value
             transferPenalty = 15.min.toUnit("ms").value
-            changeOverPenalty = 30.min.toUnit("ms").value
+            changeOverPenalty = 25.min.toUnit("ms").value
+        }
+        new {
+            maximumWalkingTime = 25.min.toUnit("ms").value
+            transferPenalty = 10.min.toUnit("ms").value
+            changeOverPenalty = 15.min.toUnit("ms").value
         }
     }
 }
