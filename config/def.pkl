@@ -1,0 +1,14 @@
+open module def;
+
+typealias Milliseconds = Int
+
+class JourneySearchConfig {
+    options: Listing<JourneySearchOption>
+    maximumComputationTime: Milliseconds
+}
+
+class JourneySearchOption {
+    maximumWalkingTime: Milliseconds
+    transferPenalty: Milliseconds
+    changeOverPenalty: Milliseconds
+}

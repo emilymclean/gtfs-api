@@ -1,11 +1,30 @@
 render () {
-    platform=$1 pkl eval content/content.pkl -f json -o content/content$2.json
-    platform=$1 pkl eval content/protobuf-render.pkl  -o content/content.Pages$2.textpb
-    protoc --encode=content.Pages content/format.proto < content/content.Pages$2.textpb > content/content$2.pb
-    sha256sum content/content$2.pb | cut -d " " -f 1 > content/content.pb$2.sha
-    sha256sum content/content$2.json | cut -d " " -f 1 > content/content.json$2.sha
+    local outputName="$1"
+    local jsonInput="$2"
+    local pklInput="$3"
+    local extension="$4"
+    local encode="$5"
+    local proto="$6"
+
+    if [ -z "${pklInput}" ]; then
+        outputName="${outputName}" pkl eval "${jsonInput}" -m .
+    else
+        pkl eval "${jsonInput}" -f json -o "${outputName}${extension}.json"
+        pkl eval "${pklInput}" -o "${outputName}${extension}.textpb"
+    fi
+    protoc "--encode=${encode}" "$proto" < "${outputName}${extension}.textpb" > "${outputName}${extension}.pb"
+    sha256sum "${outputName}${extension}.pb" | cut -d " " -f 1 > "${outputName}${extension}.pb.sha"
+    sha256sum "${outputName}${extension}.json" | cut -d " " -f 1 > "${outputName}${extension}.json.sha"
+
+    rm "${outputName}${extension}.textpb"
 }
 
-render
-render ios ".ios"
-render android ".android"
+renderContent () {
+    platform=$1 render "build/canberra/v1/content" "content/content.pkl" "content/protobuf-render.pkl" "$2" "content.Pages" "content/format.proto"
+}
+
+renderContent
+renderContent ios ".ios"
+renderContent android ".android"
+
+render "build/canberra/v1/journey-config" "config/journey-config.pkl" "" "" "proto.JourneySearchConfigEndpoint" "script/format.proto"
