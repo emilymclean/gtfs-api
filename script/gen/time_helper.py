@@ -1,9 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from time import mktime, strptime
 from typing import Any, List
 
 import pytz
-
 
 gt_date_format = "%Y%m%d"
 gt_time_format = "%H:%M:%S"

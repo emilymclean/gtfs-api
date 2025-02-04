@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
+    <style>
+        #map {
+            height: 100vh;
+        }
+        #control-bar {
+            width: 100%;
+            visibility: hidden;
+            position: fixed;
+            bottom:0%;
+            z-index: 10000;
+            background: white;
+            padding: 16px;
+        }
+        #create-group-popup {
+            width: 100vw;
+            height: 100vh;
+            z-index: 2000000;
+            background: white;
+            padding: 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="control-bar">
+        <button type="button" onclick="createGroupPopup()">Create group</button>
+    </div>
+    <div id="create-group-popup">
+        <h1>Create Group</h1>
+        <h3>Suggested title:</h3>
+        <input type="text" id="suggested-title"/>
+        <h3>Suggested id:</h3>
+        <input type="text" id="suggested-id"/>
+        <h3>Children:</h3>
+        <p id="group-children"></p>
+        <button type="button" onclick="createGroup()">Create group</button>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js"></script>
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([-35.2802, 149.1310], 12);
+
+        // Add a tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        const greenIcon = new L.Icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        const redIcon = new L.Icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        const yellowIcon = new L.Icon({
+          iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+        const markers = [];
+        var stops = [];
+
+        axios.get("stops/list").then((response) => {
+            stops = response.data;
+            response.data.forEach((stop) => {
+                const marker = L.marker(
+                    [stop.lat, stop.lng],
+                    {
+                        id: stop.id,
+                        icon: stop.parent_station_id == null ? redIcon : greenIcon,
+                    }
+                );
+                markers.push(marker.addTo(map))
+            });
+        })
+
+        // Track selected markers
+        const selectedMarkers = new Set();
+
+        // Add drag-to-select using Leaflet.PM
+        map.pm.addControls({
+            drawMarker: false,
+            drawPolygon: false,
+            drawPolyline: false,
+            drawRectangle: true,
+            editMode: false,
+            dragMode: false,
+            removalMode: false,
+        });
+
+        map.on('pm:create', function (e) {
+            if (e.shape === 'Rectangle') {
+                const bounds = e.layer.getBounds();
+                markers.forEach(marker => {
+                    if (bounds.contains(marker.getLatLng())) {
+                        const markerId = marker.options.id;
+                        selectedMarkers.add(markerId);
+                        marker.setIcon(yellowIcon);
+                    }
+                });
+                document.getElementById("control-bar").style.visibility='visible'
+
+                console.log('Selected Markers After Drag:', Array.from(selectedMarkers));
+                map.removeLayer(e.layer); // Remove the rectangle
+            }
+        });
+
+        function longestCommonPrefix(strings) {
+            if (!strings.length) return "";
+            let prefix = strings[0];
+
+            for (let i = 1; i < strings.length; i++) {
+                while (strings[i].indexOf(prefix) !== 0) {
+                    prefix = prefix.slice(0, -1);
+                    if (prefix === "") return "";
+                }
+            }
+
+            return prefix;
+        }
+
+        function longestCommonSuffix(strings) {
+            if (!strings.length) return "";
+
+            // Start with the first string as the suffix
+            let suffix = strings[0];
+
+            for (let i = 1; i < strings.length; i++) {
+                while (!strings[i].endsWith(suffix)) {
+                    // Reduce the suffix by removing the first character
+                    suffix = suffix.slice(1);
+                    if (suffix === "") return "";
+                }
+            }
+
+            return suffix;
+        }
+
+        function createSuggestedTitle(names) {
+            const prefix = longestCommonPrefix(names).trim();
+            const suffix = longestCommonSuffix(names).trim();
+
+            if (prefix === "" && suffix === "") return "";
+            if (suffix === "" || suffix === "St") return prefix;
+            return prefix + " at " + suffix;
+        }
+
+
+        function createGroupPopup() {
+            const selectedStops = stops.filter((e) => selectedMarkers.has(e.id));
+            const suggestedTitle = createSuggestedTitle(selectedStops.map((e) => e.name));
+            document.getElementById("suggested-title").value = suggestedTitle.trim();
+            document.getElementById("suggested-id").value = "manual-group-" +
+                selectedStops.map((e) => e.id).join("-");
+            document.getElementById("group-children").innerText = selectedStops.map((e) => e.name).join(", ")
+
+            document.getElementById("create-group-popup").style.visibility='visible';
+        }
+
+        function createGroup() {
+            const selectedStops = stops.filter((e) => selectedMarkers.has(e.id));
+            axios.post(
+                "group/create",
+                {
+                    "stop_id": document.getElementById("suggested-id").value,
+                    "name": document.getElementById("suggested-title").value,
+                    "children": selectedStops.map((e) => e.id)
+                }
+            )
+
+            document.getElementById("create-group-popup").style.visibility='hidden';
+            selectedMarkers.forEach(sm => {
+                markers.find(m => m.options.id === sm).setIcon(greenIcon);
+            });
+            selectedMarkers.clear();
+        }
+    </script>
+</body>
+</html>

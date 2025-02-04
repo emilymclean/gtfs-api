@@ -4,10 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-click = "*"
+flask = "*"
 pandas = "*"
-dataclasses = "*"
-protobuf = "==5.29.3"
 pyyaml = "*"
 
 [dev-packages]
