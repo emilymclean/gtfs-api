@@ -73,7 +73,7 @@ route:
   modifications:
     NIS:
       hidden: true
-      searchWeight: 0.2
+      search-weight: 0.2
     X1:
       hidden: true
     X2:
@@ -83,25 +83,25 @@ route:
     X4:
       hidden: true
     1:
-      searchWeight: 1.7
+      search-weight: 1.7
     2:
-      searchWeight: 1.7
+      search-weight: 1.7
     3:
-      searchWeight: 1.7
+      search-weight: 1.7
     4:
-      searchWeight: 1.7
+      search-weight: 1.7
     5:
-      searchWeight: 1.7
+      search-weight: 1.7
     6:
-      searchWeight: 1.7
+      search-weight: 1.7
     7:
-      searchWeight: 1.7
+      search-weight: 1.7
     8:
-      searchWeight: 1.7
+      search-weight: 1.7
     9:
-      searchWeight: 1.7
+      search-weight: 1.7
     10:
-      searchWeight: 1.7
+      search-weight: 1.7
 stops:
   modifications:
     city-interchange:

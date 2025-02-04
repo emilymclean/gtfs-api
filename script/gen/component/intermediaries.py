@@ -6,7 +6,9 @@ from typing import Dict, Any, List, Optional
 import pandas as pd
 
 from .consts import *
-from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors, _get_route_real_time
+from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors, _get_route_real_time, \
+    _get_show_on_zoom_out_stop, _get_show_on_zoom_in_stop, _get_show_children_stop, _get_search_weight_stop, \
+    _get_search_weight_route, _get_hidden_route
 from ..time_helper import TimeHelper
 
 
@@ -43,39 +45,6 @@ class StopCSV(Intermediary):
     parent_station: Optional[str]
     location: LocationCSV
     accessibility: StopAccessibilityCSV
-    child_stations: List[str]
-    show_on_zoom_out: bool
-    show_on_zoom_in: bool
-    show_children: bool
-
-    def to_json(self) -> dict:
-        return {
-            "id": self.id,
-            "name": self.name,
-            "parent_station": self.parent_station,
-            "child_stations": self.child_stations,
-            "location": self.location.to_json(),
-            "accessibility": self.accessibility.to_json(),
-            "showOnZoomOut": self.show_on_zoom_out,
-            "showOnZoomIn": self.show_on_zoom_in,
-            "showChildren": self.show_children,
-        }
-
-    def to_pb(self, stop: pb.Stop):
-        stop.id = self.id
-        if self.parent_station is not None:
-            stop.parentStation = self.parent_station
-        stop.name = self.name
-
-        stop.location.lat = self.location.lat
-        stop.location.lng = self.location.lng
-
-        stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[self.accessibility.wheelchair]
-
-        stop.childStations.extend(self.child_stations)
-        stop.showOnZoomOut = self.show_on_zoom_out
-        stop.showOnZoomIn = self.show_on_zoom_in
-        stop.showChildren = self.show_children
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "StopCSV":
@@ -89,11 +58,7 @@ class StopCSV(Intermediary):
             ),
             StopAccessibilityCSV(
                 row['wheelchair_boarding']
-            ),
-            [],
-            False,
-            True,
-            False
+            )
         )
 
     @staticmethod
@@ -102,6 +67,73 @@ class StopCSV(Intermediary):
         for i, r in df.iterrows():
             out.append(StopCSV.from_csv_row(r))
         return out
+
+
+@dataclass
+class StopIntermediary(Intermediary):
+    id: str
+    name: str
+    parent_station: Optional[str]
+    location: LocationCSV
+    accessibility: StopAccessibilityCSV
+    show_on_zoom_out: bool
+    show_on_zoom_in: bool
+    show_children: bool
+    search_weight: Optional[float]
+
+    def to_json(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "parent_station": self.parent_station,
+            "location": self.location.to_json(),
+            "accessibility": self.accessibility.to_json(),
+            "visibility": {
+                "visibleZoomedOut": self.show_on_zoom_out,
+                "visibleZoomedIn": self.show_on_zoom_in,
+                "showChildren": self.show_children,
+                "searchWeight": self.search_weight
+            }
+        }
+
+    def to_pb(self, stop: pb.Stop):
+        stop.id = self.id
+        if self.parent_station is not None:
+            stop.parentStation = self.parent_station
+        stop.name = self.name
+
+        stop.location.lat = self.location.lat
+        stop.location.lng = self.location.lng
+
+        stop.accessibility.stopWheelchairAccessible = wheelchair_boarding_options_pb[self.accessibility.wheelchair]
+
+        stop.visibility.visibleZoomedOut = self.show_on_zoom_out
+        stop.visibility.visibleZoomedIn = self.show_on_zoom_in
+        stop.visibility.showChildren = self.show_children
+        if self.search_weight is not None:
+            stop.visibility.searchWeight = self.search_weight
+
+    @staticmethod
+    def from_csv(
+            stop: StopCSV,
+            extras: Dict[str, Any]
+    ) -> "StopIntermediary":
+        show_on_zoom_out = _get_show_on_zoom_out_stop(stop.id, extras)
+        show_on_zoom_in = _get_show_on_zoom_in_stop(stop.id, extras)
+        show_children = _get_show_children_stop(stop.id, extras)
+        search_weight = _get_search_weight_stop(stop.id, extras)
+
+        return StopIntermediary(
+            stop.id,
+            stop.name,
+            stop.parent_station,
+            stop.location,
+            stop.accessibility,
+            show_on_zoom_out,
+            show_on_zoom_in,
+            show_children,
+            search_weight
+        )
 
 
 @dataclass
@@ -168,8 +200,10 @@ class RouteIntermediary(Intermediary):
             "designation": self.designation,
             "colors": self.colors.to_json() if self.colors is not None else None,
             "realTimeUrl": self.real_time,
-            "hidden": self.hidden,
-            "searchWeight": self.search_weight,
+            "visibility": {
+                "hidden": self.hidden,
+                "searchWeight": self.search_weight
+            }
         }
 
     def to_pb(self, route: pb.Route):
@@ -184,14 +218,17 @@ class RouteIntermediary(Intermediary):
             self.colors.to_pb(route.colors)
         if self.real_time is not None:
             route.realTimeUrl = self.real_time
-        route.hidden = self.hidden
+        route.routeVisibility.hidden = self.hidden
         if self.search_weight is not None:
-            route.searchWeight = self.search_weight
+            route.routeVisibility.searchWeight = self.search_weight
 
     @staticmethod
     def from_csv(route: RouteCSV, extras: Dict[str, Any]) -> "RouteIntermediary":
         designation = _get_route_designation(route.code, extras)
         colors = _get_route_colors(route.code, extras)
+        search_weight = _get_search_weight_route(route.id, extras)
+        hidden = _get_hidden_route(route.id, extras)
+
         return RouteIntermediary(
             route.id,
             route.code,
@@ -201,8 +238,8 @@ class RouteIntermediary(Intermediary):
             _get_route_prefix(designation, extras) if designation is not None else None,
             ColorPair(*colors) if colors is not None else None,
             _get_route_real_time(route.id, extras),
-            False,
-            None
+            hidden,
+            search_weight
         )
 
 

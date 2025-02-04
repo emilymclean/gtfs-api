@@ -4,14 +4,14 @@ from typing import List, Optional, Any, Dict
 
 from ..models import GtfsCsv, stops_endpoint, ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
 from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
-from .intermediaries import StopCSV
+from .intermediaries import StopCSV, StopIntermediary
 from .. import format_pb2 as pb
 
 
 @dataclass
 class StopDetail:
-    stop: StopCSV
-    children: List[StopCSV]
+    stop: StopIntermediary
+    children: List[StopIntermediary]
 
 
 class JsonStopDetailGeneratorFormat(JsonGeneratorFormat[StopDetail]):
@@ -66,8 +66,11 @@ class StopDetailGeneratorComponent(FormatGeneratorComponent[StopDetail]):
 
         for stop in stops:
             out.append(StopDetail(
-                stop,
-                self.stop_index_by_parent[stop.id] if stop.id in self.stop_index_by_parent else [],
+                StopIntermediary.from_csv(stop, self.config),
+                [
+                    StopIntermediary.from_csv(x, self.config)
+                    for x in (self.stop_index_by_parent[stop.id] if stop.id in self.stop_index_by_parent else [])
+                ],
             ))
 
         return out
