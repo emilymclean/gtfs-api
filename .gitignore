@@ -1,12 +1,5 @@
 .idea/
 __pycache__/
 script/output/
-content/content.json
-
-content/content.json.sha
-
-content/content.Pages.textpb
-
-content/content.pb
-
-content/content.pb.sha
+content/output/
+build/
