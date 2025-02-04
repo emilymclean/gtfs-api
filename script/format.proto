@@ -1,8 +1,8 @@
 syntax = "proto2";
 
-package proto;
-
 option java_package = "cl.emilym.gtfs";
+
+package proto;
 
 message StopEndpoint {
   repeated Stop stop = 1;
@@ -48,20 +48,36 @@ message RouteServicesEndpoint {
   repeated string serviceIds = 1;
 }
 
+message JourneySearchConfigEndpoint {
+  required int32 maximumComputationTime = 1;
+  repeated JourneySearchOption options = 2;
+}
+
+message JourneySearchOption {
+  optional int32 maximumWalkingTime = 1;
+  optional int32 transferPenalty = 2;
+  optional int32 changeOverPenalty = 3;
+}
+
 message Stop {
   required string id = 1;
   optional string parentStation = 5;
-  repeated string childStations = 6;
   required string name = 2;
+  optional string simpleName = 7;
   required Location location = 3;
   required StopAccessibility accessibility = 4;
-  optional bool showOnZoomOut = 7;
-  optional bool showOnZoomIn = 8;
-  optional bool showChildren = 9;
+  optional StopVisibility visibility = 6;
 }
 
 message StopAccessibility {
   required WheelchairStopAccessibility stopWheelchairAccessible = 1;
+}
+
+message StopVisibility {
+  optional bool visibleZoomedOut = 1;
+  optional bool visibleZoomedIn = 2;
+  optional bool showChildren = 3;
+  optional double searchWeight = 4;
 }
 
 enum WheelchairStopAccessibility {
@@ -80,8 +96,12 @@ message Route {
   optional string designation = 7;
   required RouteType type = 4;
   optional string realTimeUrl = 8;
-  optional bool hidden = 9;
-  optional float searchWeight = 10;
+  optional RouteVisibility routeVisibility = 9;
+}
+
+message RouteVisibility {
+  optional bool hidden = 1;
+  optional double searchWeight = 2;
 }
 
 message ColorPair {
@@ -179,7 +199,6 @@ message RouteTripInformation {
 
 message RouteTripStop {
   required string stopId = 1;
-  optional string childStopId = 5;
   optional string arrivalTime = 2;
   optional string departureTime = 3;
   required uint32 sequence = 4;
