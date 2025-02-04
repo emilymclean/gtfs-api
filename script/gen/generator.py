@@ -77,6 +77,13 @@ class Generator:
             midpoint = LocationHelper.midpoint([s.location for s in children_stop])
             wheelchair_accessibility = min([s.accessibility.wheelchair for s in children_stop])
 
+            for child in children_stop:
+                for p in self.stop_data:
+                    child_stop = next(filter(lambda x: x.id == child.id, p.data), None)
+                    if child_stop is None:
+                        continue
+                    child_stop.parent_station = stop_id
+
             stop = StopCSV(
                 stop_id,
                 name,
