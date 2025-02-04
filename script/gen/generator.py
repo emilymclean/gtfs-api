@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List, Dict, Callable, Any
 
+from .component.extras_helper import _get_name_stop
 from .component.route_canonical_timetable_generator import RouteCanonicalTimetableGeneratorComponent
 from .component.route_detail_generator import RouteDetailGeneratorComponent
 from .component.route_service_generator import RouteServiceGeneratorComponent
@@ -54,6 +55,21 @@ class Generator:
 
     def _modify(self):
         print("Modifying data")
+
+        # Rename stops
+        # This should really generically apply all stops
+        for p in self.stop_data:
+            for s in p.data:
+                s: StopCSV = s
+                rename = _get_name_stop(s.id, self.config)
+                if rename is None:
+                    continue
+                s.name = rename
+
+        # Setup groups
+        self._add_groupings()
+
+    def _add_groupings(self):
         tmp_stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
 
         groupings: List[Dict[str, Any]] | None = self.groups.get("groupings", None) if self.groups is not None else None
@@ -97,7 +113,8 @@ class Generator:
             added_stops.append(stop)
 
             self.stop_index[stop_id] = stop
-            self.stop_index_by_parent = self.stop_index_by_parent | self._create_list_index(children_stop, lambda s: stop_id)
+            self.stop_index_by_parent = self.stop_index_by_parent | self._create_list_index(children_stop,
+                                                                                            lambda s: stop_id)
 
         self.stop_data.append(ParsedCsv(added_stops, "added"))
 
