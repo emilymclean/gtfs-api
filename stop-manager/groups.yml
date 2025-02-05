@@ -48,6 +48,7 @@ groupings:
   - 7011
   - 7012
   - 7016
+  - DKN
   name: Gungahlin Interchange
   stop_id: gungahlin-interchange
 - children:
@@ -60,6 +61,7 @@ groupings:
   - 2768
   - 2769
   - 2770
+  - GGN
   name: Woden Interchange
   stop_id: woden-interchange
 - children:

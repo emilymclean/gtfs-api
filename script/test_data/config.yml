@@ -106,6 +106,8 @@ stops:
   modifications:
     "959":
       name: Cohen St Interchange (Stop)
+    "DKN":
+      name: Dickson Interchange (Stop)
     city-interchange:
       show-on-zoom-out: true
       show-on-zoom-in: false
@@ -134,3 +136,59 @@ stops:
       show-on-zoom-out: true
       show-on-zoom-in: false
       show-children: true
+    "8100":
+      show-on-zoom-in: false
+    "8101":
+      show-on-zoom-in: false
+    "8104":
+      show-on-zoom-in: false
+    "8105":
+      show-on-zoom-in: false
+    "8106":
+      show-on-zoom-in: false
+    "8107":
+      show-on-zoom-in: false
+    "8108":
+      show-on-zoom-in: false
+    "8109":
+      show-on-zoom-in: false
+    "8110":
+      show-on-zoom-in: false
+    "8111":
+      show-on-zoom-in: false
+    "8112":
+      show-on-zoom-in: false
+    "8113":
+      show-on-zoom-in: false
+    "8114":
+      show-on-zoom-in: false
+    "8115":
+      show-on-zoom-in: false
+    "8116":
+      show-on-zoom-in: false
+    "8117":
+      show-on-zoom-in: false
+    "8118":
+      show-on-zoom-in: false
+    "8119":
+      show-on-zoom-in: false
+    "8120":
+      show-on-zoom-in: false
+    "8121":
+      show-on-zoom-in: false
+    "8122":
+      show-on-zoom-in: false
+    "8123":
+      show-on-zoom-in: false
+    "8124":
+      show-on-zoom-in: false
+    "8125":
+      show-on-zoom-in: false
+    "8126":
+      show-on-zoom-in: false
+    "8127":
+      show-on-zoom-in: false
+    "8128":
+      show-on-zoom-in: false
+    "8129":
+      show-on-zoom-in: false
