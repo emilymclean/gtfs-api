@@ -28,12 +28,12 @@ pages = new Listing<Content> {
                 new Listing {})
             new ExternalLink {
                 title = "Terms and Conditions"
-                url = "https://emilym.cl/sinatra/terms"
+                url = "https://sinatra-transport.com/terms"
                 order = 3000
             }
             new ExternalLink {
                 title = "Privacy Policy"
-                url = "https://emilym.cl/sinatra/privacy"
+                url = "https://sinatra-transport.com/privacy"
                 order = 4000
             }
         }
