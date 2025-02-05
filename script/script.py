@@ -29,8 +29,9 @@ def read_csv(path: str, folders: List[str], distinguisher: List[str]) -> list[Gt
 @click.option('--input-folder', '-i', multiple=True, required=True)
 @click.option('--distinguisher', '-d', multiple=True, required=False)
 @click.option('--config', '-c', required=True)
-@click.option('--output-folder', '-o')
-def generate(input_folder: List[str], distinguisher: List[str], config: str, output_folder: str):
+@click.option('--groups', '-g', required=False)
+@click.option('--output-folder', '-o', required=True)
+def generate(input_folder: List[str], distinguisher: List[str], config: str, output_folder: str, groups: Optional[str]):
     stop_csvs = read_csv("stops.txt", input_folder, distinguisher)
     route_csvs = read_csv("routes.txt", input_folder, distinguisher)
     calendar_csvs = read_csv("calendar.txt", input_folder, distinguisher)
@@ -40,6 +41,9 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
     trips_csvs = read_csv("trips.txt", input_folder, distinguisher)
     with Path(config).open('r') as f:
         config = yaml.safe_load(f.read())
+    if groups is not None:
+        with Path(groups).open('r') as f:
+            groups = yaml.safe_load(f.read())
 
     generator = Generator(
         stop_csvs,
@@ -49,7 +53,8 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
         shape_csvs,
         stop_time_csvs,
         trips_csvs,
-        config
+        config,
+        groups,
     )
 
     generator.generate(Path(output_folder))

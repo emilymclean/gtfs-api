@@ -32,8 +32,6 @@ class TripStops(Intermediary):
 
     def to_pb(self, stop: pb.RouteTripStop, time_helper: TimeHelper):
         stop.stopId = self.stop_id
-        if self.child_stop_id is not None:
-            stop.childStopId = self.child_stop_id
         if self.arrival_time is not None:
             stop.arrivalTime = time_helper.output_time_iso(self.arrival_time)
         if self.departure_time is not None:

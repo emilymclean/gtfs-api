@@ -70,3 +70,67 @@ route:
     - code: 10
       color: "a8332f"
       onColor: light
+  modifications:
+    NIS:
+      hidden: true
+      search-weight: 0.2
+    X1:
+      hidden: true
+    X2:
+      hidden: true
+    X3:
+      hidden: true
+    X4:
+      hidden: true
+    1:
+      search-weight: 1.7
+    2:
+      search-weight: 1.7
+    3:
+      search-weight: 1.7
+    4:
+      search-weight: 1.7
+    5:
+      search-weight: 1.7
+    6:
+      search-weight: 1.7
+    7:
+      search-weight: 1.7
+    8:
+      search-weight: 1.7
+    9:
+      search-weight: 1.7
+    10:
+      search-weight: 1.7
+stops:
+  modifications:
+    "959":
+      name: Cohen St Interchange (Stop)
+    city-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    belconnen-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    tuggeranong-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    woden-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    dickson-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    gungahlin-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true
+    cohen-st-interchange:
+      show-on-zoom-out: true
+      show-on-zoom-in: false
+      show-children: true

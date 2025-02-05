@@ -39,3 +39,66 @@ def _get_route_colors(code: str, extras: Dict[str, Any]) -> Optional[Tuple[str, 
             return color["color"], color["onColor"]
 
     return None
+
+
+def _get_search_weight_route(route_id: str, extras: Dict[str, Any]) -> Optional[float]:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+
+    if modifications is None:
+        return None
+
+    return modifications["search-weight"] if "search-weight" in modifications else None
+
+
+def _get_hidden_route(route_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+
+    if modifications is None:
+        return False
+
+    return modifications["hidden"] if "hidden" in modifications else False
+
+
+def _get_show_on_zoom_out_stop(stop_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return False
+
+    return modifications["show-on-zoom-out"] if "show-on-zoom-out" in modifications else False
+
+
+def _get_show_on_zoom_in_stop(stop_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return True
+
+    return modifications["show-on-zoom-in"] if "show-on-zoom-in" in modifications else True
+
+
+def _get_show_children_stop(stop_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return False
+
+    return modifications["show-children"] if "show-children" in modifications else False
+
+
+def _get_search_weight_stop(stop_id: str, extras: Dict[str, Any]) -> Optional[float]:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return None
+
+    return modifications["search-weight"] if "search-weight" in modifications else None
+
+
+def _get_name_stop(stop_id: str, extras: Dict[str, Any]) -> Optional[str]:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return None
+
+    return modifications["name"] if "name" in modifications else None
