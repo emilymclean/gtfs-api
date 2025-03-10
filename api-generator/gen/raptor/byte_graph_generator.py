@@ -236,7 +236,9 @@ class ByteNetworkGraphGenerator(Writer):
 
     def generate(self, output_folder: Path):
         graph = self._create_graph()
+        # Legacy because I'm dumb
         self._write(graph, output_folder.joinpath("network_graph.eng"))
+        self._write(graph, output_folder.joinpath("network-graph.eng"))
 
     def _compute_headings(self):
         for trip in self.trips:
