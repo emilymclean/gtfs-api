@@ -7,18 +7,24 @@ config = new JourneySearchConfig {
     options {
         new {
             maximumWalkingTime = 10.min.toUnit("ms").value
-            transferPenalty = 5.min.toUnit("ms").value
-            changeOverPenalty = 5.min.toUnit("ms").value
+            transferTime = 5.min.toUnit("ms").value
+            transferPenalty = 5 * 60 * 100
+            changeOverTime = 5.min.toUnit("ms").value
+            changeOverPenalty = 5 * 60 * 100
         }
         new {
             maximumWalkingTime = 25.min.toUnit("ms").value
-            transferPenalty = 15.min.toUnit("ms").value
-            changeOverPenalty = 25.min.toUnit("ms").value
+            transferTime = 5.min.toUnit("ms").value
+            transferPenalty = 5 * 60 * 100
+            changeOverTime = 5.min.toUnit("ms").value
+            changeOverPenalty = 5 * 60 * 100
         }
         new {
             maximumWalkingTime = 25.min.toUnit("ms").value
-            transferPenalty = 10.min.toUnit("ms").value
-            changeOverPenalty = 15.min.toUnit("ms").value
+            transferTime = 10.min.toUnit("ms").value
+            transferPenalty = 10 * 60 * 100
+            changeOverTime = 10.min.toUnit("ms").value
+            changeOverPenalty = 10 * 60 * 100
         }
     }
 }
