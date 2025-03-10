@@ -20,11 +20,11 @@ render () {
 }
 
 renderContent () {
-    platform=$1 render "build/canberra/v1/content" "content/content.pkl" "content/protobuf-render.pkl" "$2" "content.Pages" "content/format.proto"
+    platform=$1 render "build/canberra/v1/content" "content/content.pkl" "content/protobuf-render.pkl" "$2" "content.Pages" "spec/content.proto"
 }
 
 renderContent
 renderContent ios ".ios"
 renderContent android ".android"
 
-render "build/canberra/v1/journey-config" "config/journey-config.pkl" "" "" "proto.JourneySearchConfigEndpoint" "script/format.proto"
+render "build/canberra/v1/journey-config" "config/journey-config.pkl" "" "" "proto.JourneySearchConfigEndpoint" "spec/gtfs-api.proto"
