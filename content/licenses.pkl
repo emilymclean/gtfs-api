@@ -188,5 +188,10 @@ hidden appLicense = new LicenseCollection {
             year = "2010"
             licenseCode = "MIT"
         }
+        new {
+            name = "Kotlin Natural Sort"
+            attribution = "MajorTanya"
+            licenseCode = "A2.0"
+        }
     }
 }

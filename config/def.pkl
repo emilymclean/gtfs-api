@@ -9,6 +9,8 @@ class JourneySearchConfig {
 
 class JourneySearchOption {
     maximumWalkingTime: Milliseconds
-    transferPenalty: Milliseconds
-    changeOverPenalty: Milliseconds
+    transferTime: Milliseconds
+    transferPenalty: Int
+    changeOverTime: Milliseconds
+    changeOverPenalty: Int
 }
