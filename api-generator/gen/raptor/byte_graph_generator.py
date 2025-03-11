@@ -172,15 +172,19 @@ class ByteNetworkGraphGenerator(Writer):
         self.heading_to_heading_index = {}
 
         self.edges: Dict[int, List[Edge]] = {}
+        self.reverse_edges: Dict[int, List[Edge]] = {}
         self.trip_stop_to_route_edges: Dict[int, Dict[Tuple[int, int], StopRouteEdge]] = {}
 
         self.nodes = []
 
-    def _create_graph(self) -> bytes:
+    def _compute_graph(self):
         self._compute_headings()
         self._generate_stop_nodes()
         self._connect_stops_by_transfer()
         self._generate_route_nodes()
+
+    def _connect_graph(self, reverse=False) -> bytes:
+        edges = self.edges if not reverse else self.reverse_edges
 
         mapping_bytes = bytearray()
         node_bytes = bytearray()
@@ -204,8 +208,9 @@ class ByteNetworkGraphGenerator(Writer):
             mapping_bytes.extend(str_to_bytes(service_id))
 
         for node_index, node in enumerate(self.nodes):
-            associated_edges = self.edges[node_index] if node_index in self.edges else []
-            connective_edges = self.trip_stop_to_route_edges[node_index] if node_index in self.trip_stop_to_route_edges else {}
+            associated_edges = edges[node_index] if node_index in edges else []
+            connective_edges = self.trip_stop_to_route_edges[
+                node_index] if node_index in self.trip_stop_to_route_edges else {}
 
             for k, vs in connective_edges.items():
                 associated_edges.append(vs)
@@ -235,10 +240,14 @@ class ByteNetworkGraphGenerator(Writer):
         return metadata_bytes + mapping_bytes + node_bytes + edges_bytes
 
     def generate(self, output_folder: Path):
-        graph = self._create_graph()
+        self._compute_graph()
+        graph = self._connect_graph(reverse=False)
         # Legacy because I'm dumb
         self._write(graph, output_folder.joinpath("network_graph.eng"))
         self._write(graph, output_folder.joinpath("network-graph.eng"))
+
+        reverse_graph = self._connect_graph(reverse=True)
+        self._write(reverse_graph, output_folder.joinpath("network-graph-reverse.eng"))
 
     def _compute_headings(self):
         for trip in self.trips:
@@ -389,11 +398,17 @@ class ByteNetworkGraphGenerator(Writer):
         print(f"Registering service {service_id}")
         return service_index
 
-    def add_edge(self, node: int, edge: Edge):
-        if node in self.edges:
-            self.edges[node].append(edge)
+    def add_edge(self, node: int, edge: Edge, reverse: bool = False):
+        if not reverse:
+            if node in self.edges:
+                self.edges[node].append(edge)
+            else:
+                self.edges[node] = [edge]
         else:
-            self.edges[node] = [edge]
+            if node in self.reverse_edges:
+                self.reverse_edges[node].append(edge)
+            else:
+                self.reverse_edges[node] = [edge]
 
     def _create_stop_to_route_edge(
             self,
@@ -440,6 +455,7 @@ class ByteNetworkGraphGenerator(Writer):
         )
 
         self.add_edge(from_node_index, out)
+        self.add_edge(to_node_index, out, reverse=True)
 
     def _create_transfer_edge(
             self,
@@ -456,4 +472,5 @@ class ByteNetworkGraphGenerator(Writer):
         )
 
         self.add_edge(stop1_node_index, out)
+        self.add_edge(stop1_node_index, out, reverse=True)
 
