@@ -455,6 +455,16 @@ class ByteNetworkGraphGenerator(Writer):
         )
 
         self.add_edge(from_node_index, out)
+
+        out = TravelEdge(
+            from_node_index,
+            departure_time,
+            travel_time_sec,
+            {service_index},
+            wheelchair_accessible,
+            bikes_allowed
+        )
+
         self.add_edge(to_node_index, out, reverse=True)
 
     def _create_transfer_edge(
