@@ -307,6 +307,37 @@ class ByteNetworkGraphGenerator(Writer):
                         trip.bikes_allowed == 1
                     )
 
+            # UGLY!!! CLEAN UP LAter :/
+            for i, stop_time in enumerate(stop_times):
+                stop_index = self.stop_id_to_node_index[stop_time.stop_id]
+                route_id = trip.route_id
+                heading_index = self.heading_to_heading_index[trip.trip_headsign]
+
+                index = self.stop_id_route_id_to_node_index[(stop_index, route_id, heading_index)]
+                route_node = NodeAndIndex(self.nodes[index], index)
+
+                if i + 1 < len(stop_times) and stop_time.stop_sequence > 0:
+                    next_stop_time = stop_times[i + 1]
+                    next_route_index = self.stop_id_route_id_to_node_index[(
+                        self.stop_id_to_node_index[next_stop_time.stop_id],
+                        route_id,
+                        heading_index
+                    )]
+                    next_departure_time = self.time_helper.output_time_seconds(next_stop_time.departure_time)
+                    if next_route_index == route_node.index:
+                        continue
+
+                    self._create_trip_edge(
+                        next_route_index,
+                        route_node.index,
+                        next_departure_time,
+                        next_departure_time - self.time_helper.output_time_seconds(stop_time.arrival_time),
+                        trip.service_id,
+                        trip.wheelchair_accessible == 1,
+                        trip.bikes_allowed == 1,
+                        reverse=True
+                    )
+
     @staticmethod
     def _distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
         lat1 = math.radians(lat1)
@@ -442,6 +473,7 @@ class ByteNetworkGraphGenerator(Writer):
             service_id: str,
             wheelchair_accessible: bool,
             bikes_allowed: bool,
+            reverse: bool = False
     ):
         service_index = self._register_service(service_id)
 
@@ -454,18 +486,7 @@ class ByteNetworkGraphGenerator(Writer):
             bikes_allowed
         )
 
-        self.add_edge(from_node_index, out)
-
-        out = TravelEdge(
-            from_node_index,
-            departure_time,
-            travel_time_sec,
-            {service_index},
-            wheelchair_accessible,
-            bikes_allowed
-        )
-
-        self.add_edge(to_node_index, out, reverse=True)
+        self.add_edge(from_node_index, out, reverse)
 
     def _create_transfer_edge(
             self,
