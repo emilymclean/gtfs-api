@@ -16,6 +16,11 @@ pages = new Listing<Content> {
         Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
         externalLinks = new {
+            new ExternalLink {
+                title = "Service Updates"
+                url = "https://www.transport.act.gov.au/news/service-alerts-and-updates"
+                order = 500
+            }
             ...(if (isPlatform(List("android"))) 
                 new Listing {
                     new ExternalLink {
