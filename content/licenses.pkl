@@ -1,4 +1,4 @@
-typealias LicenseCode = "A2.0" | "MIT" | "ODbL" | "MISC"
+typealias LicenseCode = "A2.0" | "MIT" | "ODbL" | "MISC" | "CCBY4.0"
 
 class License {
     name: String
@@ -21,12 +21,17 @@ local const licenses = new Mapping<LicenseCode, License> {
     ["MISC"] = new License {
         name = "Miscellaneous"
     }
+    ["CCBY4.0"] = new License {
+        name = "Creative Commons Attribution 4.0 International"
+        url = "https://creativecommons.org/licenses/by/4.0/"
+    }
 }
 
 class LicensedContent {
     name: String
     attribution: String? = null
     year: String? = null
+    note: String? = null
     licenseCode: LicenseCode
 }
 
@@ -50,12 +55,22 @@ class LicenseCollection {
 
     local function licensedContentDescription(_content: Listing<LicensedContent>): String =
         _content.toList().map((e) -> 
-            if (e.attribution != null && e.year != null)
-                "* **\(e.name)**, Copyright (c) \(e.year) \(e.attribution)"
-            else if (e.attribution != null)
-                "* **\(e.name)**, Copyright (c) \(e.attribution)"
-            else
-                "* **\(e.name)**"
+            let (
+                copyright = if (e.attribution != null && e.year != null)
+                    "Copyright (c) \(e.year) \(e.attribution)"
+                else if (e.attribution != null)
+                    "Copyright (c) \(e.attribution)"
+                else if (e.year != null)
+                    "Copyright (c) \(e.year)"
+                else null
+            )
+            new Listing {
+                "* "
+                if (e.note == null) "**\(e.name)**" else null
+                if (e.note != null) "\(e.note)" else null
+                if (e.note == null && copyright != null) ", " else null
+                if (copyright != null) " \(copyright)" else null
+            }.toList().filterNonNull().join("")
         ).join("\n").trim()
 
     function description(): String = 
@@ -82,6 +97,13 @@ class LicenseCollection {
 
 hidden appLicense = new LicenseCollection {
     content = new {
+        new {
+            name = "Transport Canberra Data"
+            attribution = "Transport Canberra & the ACT Government"
+            year = "2025"
+            licenseCode = "CCBY4.0"
+            note = "This application uses transport network data provided by Transport Canberra under the Creative Commons Attribution 4.0 International (CC BY 4.0) License. The data includes bus routes, timetables, stop locations, service alerts, and real-time information."
+        }
         new {
             name = "Koin"
             attribution = "Arnaud GIULIANI, Laurent BARESSE"
