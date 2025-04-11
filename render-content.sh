@@ -26,7 +26,5 @@ renderContent () {
 renderContent
 renderContent ios ".ios"
 renderContent android ".android"
-version=0.9.0 renderContent ios ".ios.0.9.0"
-version=0.9.0 renderContent android ".android.0.9.0"
 
 render "build/canberra/v1/journey-config" "config/journey-config.pkl" "" "" "proto.JourneySearchConfigEndpoint" "spec/gtfs-api.proto"
