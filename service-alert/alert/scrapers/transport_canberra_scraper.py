@@ -26,15 +26,15 @@ class TransportCanberraAlertScraper(AlertScraper):
             regions = []
             match region:
                 case "Belconnen":
-                    regions.append(ServiceAlertRegion.SERVICE_ALERT_REGION_BELCONNEN)
+                    regions.append(ServiceAlertRegion.BELCONNEN)
                 case "Central Canberra":
-                    regions.append(ServiceAlertRegion.SERVICE_ALERT_REGION_CENTRAL_CANBERRA)
+                    regions.append(ServiceAlertRegion.CENTRAL_CANBERRA)
                 case "Gungahlin":
-                    regions.append(ServiceAlertRegion.SERVICE_ALERT_REGION_GUNGAHLIN)
+                    regions.append(ServiceAlertRegion.GUNGAHLIN)
                 case "Tuggeranong":
-                    regions.append(ServiceAlertRegion.SERVICE_ALERT_REGION_TUGGERANONG)
+                    regions.append(ServiceAlertRegion.TUGGERANONG)
                 case "Woden, Weston Creek and Molonglo":
-                    regions.append(ServiceAlertRegion.SERVICE_ALERT_REGION_WODEN_WESTON_CREEK_MOLONGLO)
+                    regions.append(ServiceAlertRegion.WODEN_WESTON_CREEK_MOLONGLO)
 
             alerts.append(ServiceAlert(
                 id=f"{'/'.join(url.split('/')[-2:])}/{date.strftime('%d-%m-%Y')}",
