@@ -41,7 +41,7 @@ class ServiceAlertParser:
 
         self._write(
             service_alert_endpoint.SerializeToString(),
-            Path(path).joinpath("service_alert.pb")
+            Path(path).joinpath("service-alert.pb")
         )
 
         # Json
@@ -57,7 +57,7 @@ class ServiceAlertParser:
 
         self._write(
             json.dumps(output),
-            Path(path).joinpath("service_alert.json")
+            Path(path).joinpath("service-alert.json")
         )
 
     def _write(self, data: bytes | str, path: str | PathLike):
