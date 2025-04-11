@@ -2,7 +2,19 @@ open module content;
 extends "def.pkl"
 import "licenses.pkl" as licenses
 
+const function parseVersion(version: String) = 
+    let(split = version.split("."))
+    1_000_000 * split[0].toInt() +
+    10_000    * split[1].toInt() +
+    1         * split[2].takeWhile((x) -> x.matches(Regex(#"^\d*$"#))).toInt()
+
 const function isPlatform(platforms: List<Platform>) = platforms.contains(read?("env:platform"))
+const function versionGEQ(version: String) = 
+    let(envVersion = read?("env:version"))
+    if (envVersion == null)
+        false
+    else
+        parseVersion(envVersion) >= parseVersion(version)
 
 pages = new Listing<Content> {
     new Content {
@@ -16,11 +28,17 @@ pages = new Listing<Content> {
         Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
         externalLinks = new {
-            new ExternalLink {
-                title = "Service Updates"
-                url = "https://www.transport.act.gov.au/news/service-alerts-and-updates"
-                order = 500
-            }
+            ...(if (!versionGEQ("0.9.0"))
+                new Listing {
+                    new ExternalLink {
+                        title = "Service Updates"
+                        url = "https://www.transport.act.gov.au/news/service-alerts-and-updates"
+                        order = 500
+                    }
+                }
+            else
+                new Listing {}
+            )
             ...(if (isPlatform(List("android"))) 
                 new Listing {
                     new ExternalLink {
@@ -48,6 +66,19 @@ pages = new Listing<Content> {
                 contentId = "attribution"
                 order = 2000
             }
+        }
+        nativeLinks = new {
+            ...(if (versionGEQ("0.9.0"))
+                new Listing {
+                    new NativeLink {
+                        title = "Service Updates"
+                        nativeReference = "service-updates"
+                        order = 500
+                    }
+                }
+            else
+                new Listing {}
+            )
         }
     }
     new Content {
