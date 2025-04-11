@@ -2,5 +2,6 @@
 __pycache__/
 script/output/
 api-generator/output/
+service-alert/output/
 content/output/
 build/
