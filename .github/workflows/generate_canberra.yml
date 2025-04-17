@@ -3,6 +3,8 @@ name: Generate for Canberra
 on:
   push:
     branches: [ "main", "develop" ]
+  pull_request:
+    branches: "main"
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
