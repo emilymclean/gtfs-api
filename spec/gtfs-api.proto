@@ -48,6 +48,10 @@ message RouteServicesEndpoint {
   repeated string serviceIds = 1;
 }
 
+message RouteHeadingsEndpoint {
+  repeated string headings = 1;
+}
+
 message JourneySearchConfigEndpoint {
   required int32 maximumComputationTime = 1;
   repeated JourneySearchOption options = 2;

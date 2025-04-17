@@ -4,6 +4,7 @@ from typing import List, Dict, Callable, Any
 from .component.extras_helper import _get_name_stop
 from .component.route_canonical_timetable_generator import RouteCanonicalTimetableGeneratorComponent
 from .component.route_detail_generator import RouteDetailGeneratorComponent
+from .component.route_headings_generator import RouteHeadingsGeneratorComponent
 from .component.route_service_generator import RouteServiceGeneratorComponent
 from .component.route_timetable_generator import RouteTimetableGeneratorComponent
 from .component.service_list_generator import ServiceListGeneratorComponent
@@ -74,12 +75,13 @@ class Generator:
 
         groupings: List[Dict[str, Any]] | None = self.groups.get("groupings", None) if self.groups is not None else None
 
+        self.stop_index_by_parent = {}
+        self.stop_index = {}
+
         if groupings is None:
             return
 
         added_stops = []
-        self.stop_index_by_parent = {}
-        self.stop_index = {}
 
         for g in groupings:
             name: str | None = g.get("name", None)
@@ -162,6 +164,11 @@ class Generator:
                 self.distinguishers
             ),
             RouteServiceGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.distinguishers
+            ),
+            RouteHeadingsGeneratorComponent(
                 self.route_data,
                 self.trip_index_by_route,
                 self.distinguishers
