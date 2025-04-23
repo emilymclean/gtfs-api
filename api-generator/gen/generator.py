@@ -1,24 +1,25 @@
 from pathlib import Path
-from typing import List, Dict, Callable, Any
+from typing import Dict, Callable, Any
 
 from .component.extras_helper import _get_name_stop
+from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV, \
+    StopAccessibilityCSV
 from .component.route_canonical_timetable_generator import RouteCanonicalTimetableGeneratorComponent
 from .component.route_detail_generator import RouteDetailGeneratorComponent
+from .component.route_headings_generator import RouteHeadingsGeneratorComponent
+from .component.route_list_generator import RouteListGeneratorComponent
 from .component.route_service_generator import RouteServiceGeneratorComponent
 from .component.route_timetable_generator import RouteTimetableGeneratorComponent
 from .component.service_list_generator import ServiceListGeneratorComponent
 from .component.stop_detail_generator import StopDetailGeneratorComponent
 from .component.stop_list_generator import StopListGeneratorComponent
-from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV, \
-    StopAccessibilityCSV
-from .component.route_list_generator import RouteListGeneratorComponent
+from .component.stop_routes_generator import StopRoutesGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
 from .component.trip_timetable_generator import TripTimetableGeneratorComponent
+from .location_helper import LocationHelper
 from .models import *
 from .raptor.byte_graph_generator import ByteNetworkGraphGenerator
-from .raptor.raptor_graph_generator import NetworkGraphGenerator
 from .time_helper import TimeHelper
-from .location_helper import LocationHelper
 
 T = TypeVar('T')
 
@@ -74,12 +75,13 @@ class Generator:
 
         groupings: List[Dict[str, Any]] | None = self.groups.get("groupings", None) if self.groups is not None else None
 
+        self.stop_index_by_parent = {}
+        self.stop_index = {}
+
         if groupings is None:
             return
 
         added_stops = []
-        self.stop_index_by_parent = {}
-        self.stop_index = {}
 
         for g in groupings:
             name: str | None = g.get("name", None)
@@ -140,6 +142,7 @@ class Generator:
         generators = [
             StopListGeneratorComponent(self.stop_data, self.distinguishers),
             StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
+            StopRoutesGeneratorComponent(self.stop_time_data, self.trip_index, self.distinguishers),
             RouteListGeneratorComponent(self.route_data, self.distinguishers),
             RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
             RouteTimetableGeneratorComponent(
@@ -162,6 +165,11 @@ class Generator:
                 self.distinguishers
             ),
             RouteServiceGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.distinguishers
+            ),
+            RouteHeadingsGeneratorComponent(
                 self.route_data,
                 self.trip_index_by_route,
                 self.distinguishers
