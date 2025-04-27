@@ -108,6 +108,8 @@ message Route {
   optional ColorPair colors = 6;
   required string name = 3;
   optional string designation = 7;
+  optional string extraInformation = 10;
+  optional CallToAction callToAction = 11;
   required RouteType type = 4;
   optional string realTimeUrl = 8;
   optional RouteVisibility routeVisibility = 9;
@@ -116,6 +118,7 @@ message Route {
 message RouteVisibility {
   optional bool hidden = 1;
   optional double searchWeight = 2;
+  optional bool special = 3;
 }
 
 message ColorPair {
@@ -237,4 +240,9 @@ message ServiceAlert {
   optional string date = 3;
   optional string url = 4;
   repeated ServiceAlertRegion regions = 5;
+}
+
+message CallToAction {
+  required string link = 1;
+  optional string text = 2;
 }
