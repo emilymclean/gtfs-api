@@ -52,7 +52,7 @@ class TransportCanberraAlertScraper(AlertScraper):
 
             alerts.append(ServiceAlert(
                 id=f"{'/'.join(url.split('/')[-2:])}/{date.strftime('%d-%m-%Y')}",
-                title=title,
+                title=title.strip(),
                 url=url,
                 date=date,
                 regions=regions
