@@ -32,6 +32,6 @@ class TransportCanberraHomeScraper(AlertScraper):
                 title=title.strip(),
                 url=url,
                 date=date,
-                regions=[]
+                regions=[ServiceAlertRegion.CENTRAL_CANBERRA]
             )
         ]
