@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import List
 from zoneinfo import ZoneInfo
 
@@ -32,6 +32,7 @@ class TransportCanberraHomeScraper(AlertScraper):
                 title=title.strip(),
                 url=url,
                 date=date,
-                regions=[ServiceAlertRegion.CENTRAL_CANBERRA]
+                regions=[ServiceAlertRegion.CENTRAL_CANBERRA],
+                highlightDuration=timedelta(days=16),
             )
         ]
