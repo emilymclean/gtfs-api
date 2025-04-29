@@ -6,14 +6,18 @@ from typing import List, Optional
 
 from .models import ServiceAlert, service_alert_region_str, service_alert_region_pb
 from .scrapers.base import AlertScraper
-from .scrapers.transport_canberra_scraper import TransportCanberraAlertScraper
+from .scrapers.transport_canberra_home_scraper import TransportCanberraHomeScraper
+from .scrapers.transport_canberra_alert_scraper import TransportCanberraAlertScraper
 from . import format_pb2 as pb
 
 
 class ServiceAlertParser:
 
     def __init__(self, scrapers: Optional[List[AlertScraper]] = None):
-        self.scrapers = [TransportCanberraAlertScraper()] if scrapers is None else scrapers
+        self.scrapers = [
+            TransportCanberraHomeScraper(),
+            TransportCanberraAlertScraper(),
+        ] if scrapers is None else scrapers
 
     def parse(self) -> List[ServiceAlert]:
         alerts = []

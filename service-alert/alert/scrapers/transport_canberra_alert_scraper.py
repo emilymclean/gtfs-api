@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import List
+from typing import List, Optional
 from zoneinfo import ZoneInfo
 
 from alert.models import ServiceAlert, ServiceAlertRegion
@@ -7,6 +7,15 @@ from alert.scrapers.base import AlertScraper
 
 
 class TransportCanberraAlertScraper(AlertScraper):
+
+    def fallback_title(self, href: str) -> Optional[str]:
+        document = self._fetch_content(href)
+        title = document.find("h1", {"id": "page_title"}).text
+
+        if title.isspace() or title == "":
+            return None
+
+        return title
 
     def scrape(self) -> List[ServiceAlert]:
         document = self._fetch_content("https://www.transport.act.gov.au/news/service-alerts-and-updates")
@@ -18,6 +27,11 @@ class TransportCanberraAlertScraper(AlertScraper):
             url = article.find("a")["href"]
             date = article.find("date").text.replace("Posted: ", "").strip()
             region = article.find("br").next_sibling.text.replace("Region: ", "").strip()
+
+            if title.isspace() or title == "":
+                title = self.fallback_title(url)
+            if title is None:
+                title = "No title provided"
 
             date = (datetime.strptime(date, "%d %b %Y")
                     .replace(tzinfo=ZoneInfo("Australia/Sydney"))
@@ -38,7 +52,7 @@ class TransportCanberraAlertScraper(AlertScraper):
 
             alerts.append(ServiceAlert(
                 id=f"{'/'.join(url.split('/')[-2:])}/{date.strftime('%d-%m-%Y')}",
-                title=title,
+                title=title.strip(),
                 url=url,
                 date=date,
                 regions=regions
