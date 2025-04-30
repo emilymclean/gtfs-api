@@ -4,6 +4,8 @@ from os import PathLike
 from pathlib import Path
 from typing import List, Optional
 
+import isodate
+
 from .models import ServiceAlert, service_alert_region_str, service_alert_region_pb
 from .scrapers.base import AlertScraper
 from .scrapers.transport_canberra_home_scraper import TransportCanberraHomeScraper
@@ -38,6 +40,7 @@ class ServiceAlertParser:
             pb_alert.title = alert.title
             pb_alert.url = alert.url
             pb_alert.date = alert.date.isoformat()
+            pb_alert.highlightDuration = isodate.duration_isoformat(alert.highlightDuration)
             for region in alert.regions:
                 pb_alert.regions.append(service_alert_region_pb[region.value])
 
@@ -57,6 +60,7 @@ class ServiceAlertParser:
                 "url": alert.url,
                 "date": alert.date.isoformat(),
                 "regions": [service_alert_region_str[x.value] for x in alert.regions],
+                "highlightDuration": isodate.duration_isoformat(alert.highlightDuration),
             })
 
         self._write(

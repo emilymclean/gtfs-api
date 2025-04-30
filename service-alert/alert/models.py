@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import List
 from . import format_pb2 as pb
@@ -32,3 +32,4 @@ class ServiceAlert:
     date: datetime
     url: str
     regions: List[ServiceAlertRegion]
+    highlightDuration: timedelta
