@@ -40,7 +40,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
-      - run: aws s3 sync build s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
+      - run: aws s3 cp -r build s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
   build-content:
     runs-on: ubuntu-latest
     steps:
@@ -62,8 +62,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
-      - run: aws s3 sync build s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
-      - run: aws s3 sync static s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
+      - run: aws s3 cp -r build s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
+      - run: aws s3 cp -r static s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
   keep-alive:
     permissions:
       actions: write
