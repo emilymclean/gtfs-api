@@ -18,14 +18,36 @@ const function versionGEQ(version: String) =
 
 pages = new Listing<Content> {
     new Content {
+        id = "more"
+        title = "More"
+        content = ""
+        contentLinks = new {
+            new ContentLink {
+                title = "Service Updates"
+                contentId = "service-alerts"
+                order = 1000
+            }
+            new ContentLink {
+                title = "About this App"
+                contentId = "about"
+                order = 2000
+            }
+        }
+        nativeLinks = new {
+            new NativeLink {
+                title = "Settings"
+                nativeReference = "preferences"
+                order = 500
+            }
+        }
+    }
+    new Content {
         id = "about"
         title = "About"
         content = """
         Sinatra is a companion app for the Canberra MyWay+ network made by locals for locals. Our goal is to make it easier to find route and stop information, offering a fresh, streamlined experience alongside the official app.
 
         Made with 🩷 in Canberra, Australia.\(if (isPlatform(List("android"))) " You can find and contribute to our codebase on [Github](https://github.com/emilymclean/sinatra)." else "")
-
-        Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
         externalLinks = new {
             ...(if (isPlatform(List("android"))) 
@@ -51,18 +73,10 @@ pages = new Listing<Content> {
         }
         contentLinks = new {
             new ContentLink {
-                title = "Service Updates"
-                contentId = "service-alerts"
-                order = 500
-            }
-            new ContentLink {
                 title = "Third Party Notices"
                 contentId = "attribution"
                 order = 2000
             }
-        }
-        nativeLinks = new {
-            
         }
     }
     new Content {
@@ -72,6 +86,8 @@ pages = new Listing<Content> {
         The following sets forth attribution notices for third party software that may be contained in portions of this app.
 
         \(licenses.appLicense.description())
+
+        Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
     }
     new Content {
