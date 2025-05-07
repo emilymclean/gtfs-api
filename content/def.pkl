@@ -39,4 +39,16 @@ class Banner {
     nativeLinks: Listing<NativeLink> = new Listing {}
 }
 
+class Translated {
+    default: String
+    zh: String? = null
+
+    function pick() = 
+        let(language = read?("env:language"))
+        if (language == "zh" && zh != null)
+            zh
+        else
+            default
+}
+
 typealias Platform = "android" | "ios"

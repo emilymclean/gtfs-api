@@ -26,5 +26,11 @@ renderContent () {
 renderContent
 renderContent ios ".ios"
 renderContent android ".android"
+language=zh renderContent ios ".zh.ios"
+language=zh renderContent android ".zh.android"
+version=0.10.0 renderContent ios "-0.10.0.ios"
+version=0.10.0 renderContent android "-0.10.0.android"
+version=0.10.0 language=zh renderContent ios "-0.10.0.zh.ios"
+version=0.10.0 language=zh renderContent android "-0.10.0.zh.android"
 
 render "build/canberra/v1/journey-config" "config/journey-config.pkl" "" "" "proto.JourneySearchConfigEndpoint" "spec/gtfs-api.proto"
