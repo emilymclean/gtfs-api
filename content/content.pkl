@@ -2,6 +2,8 @@ open module content;
 extends "def.pkl"
 import "licenses.pkl" as licenses
 
+hidden const isDefault = read?("env:default") == "true"
+
 const function parseVersion(version: String) = 
     let(split = version.split("."))
     1_000_000 * split[0].toInt() +
@@ -12,7 +14,7 @@ const function isPlatform(platforms: List<Platform>) = platforms.contains(read?(
 const function versionGEQ(version: String) = 
     let(envVersion = read?("env:version"))
     if (envVersion == null)
-        false
+        isDefault
     else
         parseVersion(envVersion) >= parseVersion(version)
 const function versionL(version: String) = 
@@ -84,12 +86,18 @@ pages = new Listing<Content> {
             else
                 new Listing {})
             new ExternalLink {
-                title = "Terms and Conditions"
+                title = new Translated {
+                    default = "Terms and Conditions"
+                    zh = "条款和条件"
+                }.pick()
                 url = "https://sinatra-transport.com/terms"
                 order = 3000
             }
             new ExternalLink {
-                title = "Privacy Policy"
+                title = new Translated {
+                    default = "Privacy Policy"
+                    zh = "隐私政策"
+                }.pick()
                 url = "https://sinatra-transport.com/privacy"
                 order = 4000
             }
