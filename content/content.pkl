@@ -15,32 +15,55 @@ const function versionGEQ(version: String) =
         false
     else
         parseVersion(envVersion) >= parseVersion(version)
+const function versionL(version: String) = 
+    let(envVersion = read?("env:version"))
+    if (envVersion == null)
+        true
+    else
+        parseVersion(envVersion) < parseVersion(version)
 
 pages = new Listing<Content> {
-    new Content {
-        id = "more"
-        title = "More"
-        content = ""
-        contentLinks = new {
-            new ContentLink {
-                title = "Service Updates"
-                contentId = "service-alerts"
-                order = 1000
-            }
-            new ContentLink {
-                title = "About this App"
-                contentId = "about"
-                order = 2000
-            }
-        }
-        nativeLinks = new {
-            new NativeLink {
-                title = "Settings"
-                nativeReference = "preferences"
-                order = 500
-            }
-        }
-    }
+    ...(if (versionGEQ("0.10.0"))
+                new Listing {
+                    new Content {
+                        id = "more"
+                        title = new Translated {
+                            default = "More"
+                            zh = "更多"
+                        }.pick()
+                        content = ""
+                        contentLinks = new {
+                            new ContentLink {
+                                title = new Translated {
+                                    default = "Service Updates"
+                                    zh = "服务警报"
+                                }.pick()
+                                contentId = "service-alerts"
+                                order = 1000
+                            }
+                            new ContentLink {
+                                title = new Translated {
+                                    default = "About this App"
+                                    zh = "关于这个应用程序"
+                                }.pick()
+                                contentId = "about"
+                                order = 2000
+                            }
+                        }
+                        nativeLinks = new {
+                            new NativeLink {
+                                title = new Translated {
+                                    default = "Settings"
+                                    zh = "设置"
+                                }.pick()
+                                nativeReference = "preferences"
+                                order = 500
+                            }
+                        }
+                    }
+                }
+            else
+                new Listing {})
     new Content {
         id = "about"
         title = "About"
@@ -72,6 +95,19 @@ pages = new Listing<Content> {
             }
         }
         contentLinks = new {
+            ...(if (versionL("0.10.0"))
+                new Listing {
+                    new ContentLink {
+                        title = new Translated {
+                            default = "Service Updates"
+                            zh = "服务警报"
+                        }.pick()
+                        contentId = "service-alerts"
+                        order = 500
+                    }
+                }
+            else
+                new Listing {})
             new ContentLink {
                 title = "Third Party Notices"
                 contentId = "attribution"
