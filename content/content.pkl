@@ -25,7 +25,7 @@ const function versionL(version: String) =
         parseVersion(envVersion) < parseVersion(version)
 
 pages = new Listing<Content> {
-    ...(if (versionGEQ("0.10.0"))
+    ...(if (versionGEQ("0.11.0"))
                 new Listing {
                     new Content {
                         id = "more"
@@ -103,7 +103,7 @@ pages = new Listing<Content> {
             }
         }
         contentLinks = new {
-            ...(if (versionL("0.10.0"))
+            ...(if (versionL("0.11.0"))
                 new Listing {
                     new ContentLink {
                         title = new Translated {
