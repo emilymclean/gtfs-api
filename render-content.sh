@@ -23,8 +23,14 @@ renderContent () {
     platform=$1 render "build/canberra/v1/content" "content/content.pkl" "content/protobuf-render.pkl" "$2" "content.Pages" "spec/content.proto"
 }
 
-renderContent
-renderContent ios ".ios"
-renderContent android ".android"
+default=true renderContent
+language=en renderContent ios ".ios"
+language=en renderContent android ".android"
+language=zh renderContent ios ".zh.ios"
+language=zh renderContent android ".zh.android"
+version=0.11.0 language=en renderContent ios "-0.11.0.ios"
+version=0.11.0 language=en renderContent android "-0.11.0.android"
+version=0.11.0 language=zh renderContent ios "-0.11.0.zh.ios"
+version=0.11.0 language=zh renderContent android "-0.11.0.zh.android"
 
 render "build/canberra/v1/journey-config" "config/journey-config.pkl" "" "" "proto.JourneySearchConfigEndpoint" "spec/gtfs-api.proto"
