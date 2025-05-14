@@ -75,16 +75,6 @@ pages = new Listing<Content> {
         Made with 🩷 in Canberra, Australia.\(if (isPlatform(List("android"))) " You can find and contribute to our codebase on [Github](https://github.com/emilymclean/sinatra)." else "")
         """
         externalLinks = new {
-            ...(if (isPlatform(List("android"))) 
-                new Listing {
-                    new ExternalLink {
-                        title = "Donate"
-                        url = "https://ko-fi.com/emilymclean"
-                        order = 1000
-                    }
-                }
-            else
-                new Listing {})
             new ExternalLink {
                 title = new Translated {
                     default = "Terms and Conditions"
