@@ -93,7 +93,9 @@ class Generator:
             if name is None or stop_id is None or len(children) == 0:
                 continue
 
-            children_stop = [tmp_stop_index[f"{s}"] for s in children]
+            children_stop = [tmp_stop_index[f"{s}"] for s in children if f"{s}" in tmp_stop_index]
+            if len(children_stop) == 0:
+                continue
             midpoint = LocationHelper.midpoint([s.location for s in children_stop])
             wheelchair_accessibility = min([s.accessibility.wheelchair for s in children_stop])
 
