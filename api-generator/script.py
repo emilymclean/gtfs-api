@@ -25,6 +25,11 @@ def read_csv(path: str, folders: List[str], distinguisher: List[str]) -> list[Gt
     ) for i, f in enumerate(folders)]
 
 
+@click.group()
+def cli() -> None:
+    pass
+
+
 @click.command()
 @click.option('--input-folder', '-i', multiple=True, required=True)
 @click.option('--distinguisher', '-d', multiple=True, required=False)
@@ -98,4 +103,6 @@ def trip_index(input_folder: List[str], distinguisher: List[str], config: str, o
 
 if __name__ == '__main__':
     sys.setrecursionlimit(2500)
-    generate()
+    cli.add_command(generate)
+    cli.add_command(trip_index)
+    cli()
