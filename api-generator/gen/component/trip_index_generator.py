@@ -34,8 +34,13 @@ class ProtoTripIndexGeneratorFormat(ProtoGeneratorFormat[TripIndexIntermediary])
         index = pb.TripIndex()
 
         for trip in intermediary.information:
-            index.trips[trip.trip_id].routeId = trip.route_id
-            index.trips[trip.trip_id].stopIds.extend(trip.stop_ids)
+            info = pb.TripInformation()
+
+            info.tripId = trip.trip_id
+            info.routeId = trip.route_id
+            info.stopIds.extend(trip.stop_ids)
+
+            index.trips.append(info)
 
         return index
 
