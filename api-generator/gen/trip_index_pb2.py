@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10trip-index.proto\x12\ntrip_index\"\x87\x01\n\tTripIndex\x12/\n\x05trips\x18\x01 \x03(\x0b\x32 .trip_index.TripIndex.TripsEntry\x1aI\n\nTripsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.trip_index.TripInformation:\x02\x38\x01\"3\n\x0fTripInformation\x12\x0f\n\x07routeId\x18\x01 \x02(\t\x12\x0f\n\x07stopIds\x18\x02 \x03(\tB\x1a\n\x18\x63l.emilym.gtfs.tripindex')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10trip-index.proto\x12\ntrip_index\"7\n\tTripIndex\x12*\n\x05trips\x18\x01 \x03(\x0b\x32\x1b.trip_index.TripInformation\"C\n\x0fTripInformation\x12\x0e\n\x06tripId\x18\x01 \x02(\t\x12\x0f\n\x07routeId\x18\x02 \x02(\t\x12\x0f\n\x07stopIds\x18\x03 \x03(\tB\x1a\n\x18\x63l.emilym.gtfs.tripindex')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,12 +32,8 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'trip_index_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\030cl.emilym.gtfs.tripindex'
-  _globals['_TRIPINDEX_TRIPSENTRY']._loaded_options = None
-  _globals['_TRIPINDEX_TRIPSENTRY']._serialized_options = b'8\001'
-  _globals['_TRIPINDEX']._serialized_start=33
-  _globals['_TRIPINDEX']._serialized_end=168
-  _globals['_TRIPINDEX_TRIPSENTRY']._serialized_start=95
-  _globals['_TRIPINDEX_TRIPSENTRY']._serialized_end=168
-  _globals['_TRIPINFORMATION']._serialized_start=170
-  _globals['_TRIPINFORMATION']._serialized_end=221
+  _globals['_TRIPINDEX']._serialized_start=32
+  _globals['_TRIPINDEX']._serialized_end=87
+  _globals['_TRIPINFORMATION']._serialized_start=89
+  _globals['_TRIPINFORMATION']._serialized_end=156
 # @@protoc_insertion_point(module_scope)
