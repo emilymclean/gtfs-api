@@ -61,6 +61,41 @@ def generate(input_folder: List[str], distinguisher: List[str], config: str, out
     generator.network_graph(Path(output_folder))
 
 
+@click.command()
+@click.option('--input-folder', '-i', multiple=True, required=True)
+@click.option('--distinguisher', '-d', multiple=True, required=False)
+@click.option('--config', '-c', required=True)
+@click.option('--groups', '-g', required=False)
+@click.option('--output-folder', '-o', required=True)
+def trip_index(input_folder: List[str], distinguisher: List[str], config: str, output_folder: str, groups: Optional[str]):
+    stop_csvs = read_csv("stops.txt", input_folder, distinguisher)
+    route_csvs = read_csv("routes.txt", input_folder, distinguisher)
+    calendar_csvs = read_csv("calendar.txt", input_folder, distinguisher)
+    calendar_date_csvs = read_csv("calendar_dates.txt", input_folder, distinguisher)
+    shape_csvs = read_csv("shapes.txt", input_folder, distinguisher)
+    stop_time_csvs = read_csv("stop_times.txt", input_folder, distinguisher)
+    trips_csvs = read_csv("trips.txt", input_folder, distinguisher)
+    with Path(config).open('r') as f:
+        config = yaml.safe_load(f.read())
+    if groups is not None:
+        with Path(groups).open('r') as f:
+            groups = yaml.safe_load(f.read())
+
+    generator = Generator(
+        stop_csvs,
+        route_csvs,
+        calendar_csvs,
+        calendar_date_csvs,
+        shape_csvs,
+        stop_time_csvs,
+        trips_csvs,
+        config,
+        groups,
+    )
+
+    generator.generate_trip_index(Path(output_folder))
+
+
 if __name__ == '__main__':
     sys.setrecursionlimit(2500)
     generate()

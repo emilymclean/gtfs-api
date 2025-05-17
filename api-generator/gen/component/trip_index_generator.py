@@ -1,0 +1,79 @@
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Optional, Any
+
+from .base import FormatGeneratorComponent, GeneratorFormat, JsonGeneratorFormat, ProtoGeneratorFormat
+from .intermediaries import RouteCSV, TripCSV, StopTimeCSV
+from .. import trip_index_pb2 as pb
+from ..models import ParsedCsv, filter_parsed_by_distinguisher, flatten_parsed
+
+
+@dataclass
+class TripInformation:
+    trip_id: str
+    route_id: str
+    stop_ids: List[str]
+
+
+@dataclass
+class TripIndexIntermediary:
+    information: List[TripInformation]
+
+
+class JsonTripIndexGeneratorFormat(JsonGeneratorFormat[TripIndexIntermediary]):
+
+    def parse(self, intermediary: TripIndexIntermediary, distinguisher: Optional[str]) -> Any:
+        return {
+            'route': intermediary.to_json()
+        }
+
+
+class ProtoTripIndexGeneratorFormat(ProtoGeneratorFormat[TripIndexIntermediary]):
+
+    def parse(self, intermediary: TripIndexIntermediary, distinguisher: Optional[str]) -> Any:
+        index = pb.TripIndex()
+
+        for trip in intermediary.information:
+            index.trips[trip.trip_id].routeId = trip.route_id
+            index.trips[trip.trip_id].stopIds.extend(trip.stop_ids)
+
+        return index
+
+
+class TripIndexGeneratorComponent(FormatGeneratorComponent[TripIndexIntermediary]):
+
+    def __init__(
+            self,
+            trip_data: List[ParsedCsv[List[TripCSV]]],
+            route_index: dict[str, RouteCSV],
+            stop_time_index_by_trip: dict[str, List[StopTimeCSV]],
+            distinguishers: List[str]
+    ) -> None:
+        self.trip_data = trip_data
+        self.route_index = route_index
+        self.stop_time_index_by_trip = stop_time_index_by_trip
+        self.distinguishers = distinguishers
+
+    def _formats(self) -> List[GeneratorFormat[TripIndexIntermediary]]:
+        return [
+            # JsonTripIndexGeneratorFormat(),
+            ProtoTripIndexGeneratorFormat()
+        ]
+
+    def _path(self, output_folder: Path, intermediary: TripIndexIntermediary, extension: str) -> Path:
+        return output_folder.joinpath(f"trip-index.{extension}")
+
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[TripIndexIntermediary]:
+        return [TripIndexIntermediary(
+            [
+                TripInformation(
+                    t.id,
+                    t.route_id,
+                    list({
+                        s.stop_id
+                        for s in self.stop_time_index_by_trip[t.id]
+                    })
+                )
+                for t in flatten_parsed(filter_parsed_by_distinguisher(self.trip_data, distinguisher))
+            ]
+        )]
