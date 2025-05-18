@@ -73,6 +73,11 @@ message JourneySearchOption {
   optional int32 changeOverPenalty = 5;
 }
 
+message RealtimeEndpoint {
+    repeated RealtimeUpdate updates = 1;
+    optional string expireTimestamp = 2;
+}
+
 message Stop {
   required string id = 1;
   optional string parentStation = 5;
@@ -238,4 +243,9 @@ message ServiceAlert {
   optional string url = 4;
   repeated ServiceAlertRegion regions = 5;
   optional string highlightDuration = 6;
+}
+
+message RealtimeUpdate {
+    required string tripId = 1;
+    optional int32 delay = 2;
 }
