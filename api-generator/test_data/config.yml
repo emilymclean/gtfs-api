@@ -76,12 +76,16 @@ route:
       search-weight: 0.2
     X1:
       hidden: true
+      has-realtime: true
     X2:
       hidden: true
+      has-realtime: true
     X3:
       hidden: true
     X4:
       hidden: true
+    ACTO001:
+      has-realtime: true
     1:
       search-weight: 1.7
     2:

@@ -71,13 +71,17 @@ route:
       color: "a8332f"
       onColor: light
   modifications:
+    ACTO001:
+      has-realtime: true
     NIS:
       hidden: true
       search-weight: 0.2
     X1:
       hidden: true
+      has-realtime: true
     X2:
       hidden: true
+      has-realtime: true
     X3:
       hidden: true
     X4:

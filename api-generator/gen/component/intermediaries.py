@@ -8,7 +8,7 @@ import pandas as pd
 from .consts import *
 from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors, _get_route_real_time, \
     _get_show_on_zoom_out_stop, _get_show_on_zoom_in_stop, _get_show_children_stop, _get_search_weight_stop, \
-    _get_search_weight_route, _get_hidden_route
+    _get_search_weight_route, _get_hidden_route, _get_route_has_realtime
 from ..time_helper import TimeHelper
 
 
@@ -187,6 +187,7 @@ class RouteIntermediary(Intermediary):
     code_prefix: Optional[str]
     colors: Optional[ColorPair]
     real_time: Optional[str]
+    has_realtime: bool
     hidden: bool
     search_weight: Optional[float]
 
@@ -200,6 +201,7 @@ class RouteIntermediary(Intermediary):
             "designation": self.designation,
             "colors": self.colors.to_json() if self.colors is not None else None,
             "realTimeUrl": self.real_time,
+            "hasRealtime": self.has_realtime,
             "visibility": {
                 "hidden": self.hidden,
                 "searchWeight": self.search_weight
@@ -218,6 +220,7 @@ class RouteIntermediary(Intermediary):
             self.colors.to_pb(route.colors)
         if self.real_time is not None:
             route.realTimeUrl = self.real_time
+        route.hasRealtime = self.has_realtime
         route.routeVisibility.hidden = self.hidden
         if self.search_weight is not None:
             route.routeVisibility.searchWeight = self.search_weight
@@ -238,6 +241,7 @@ class RouteIntermediary(Intermediary):
             _get_route_prefix(designation, extras) if designation is not None else None,
             ColorPair(*colors) if colors is not None else None,
             _get_route_real_time(route.id, extras),
+            _get_route_has_realtime(route.id, extras),
             hidden,
             search_weight
         )
