@@ -114,7 +114,9 @@ message Route {
   required string name = 3;
   optional string designation = 7;
   required RouteType type = 4;
+  // Deprecated
   optional string realTimeUrl = 8;
+  optional bool hasRealtime = 10;
   optional RouteVisibility routeVisibility = 9;
 }
 
