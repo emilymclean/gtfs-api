@@ -205,7 +205,13 @@ class Generator:
 
     def generate_trip_index(self, output_folder: Path):
         generators = [
-            TripIndexGeneratorComponent(self.trip_data, self.route_index, self.stop_time_index_by_trip, self.distinguishers)
+            TripIndexGeneratorComponent(
+                self.trip_data,
+                self.route_index,
+                self.stop_time_index_by_trip,
+                self.stop_index,
+                self.distinguishers
+            )
         ]
 
         self._do_generation(generators, output_folder)

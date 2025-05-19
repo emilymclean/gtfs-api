@@ -110,3 +110,12 @@ def _get_name_stop(stop_id: str, extras: Dict[str, Any]) -> Optional[str]:
         return None
 
     return modifications["name"] if "name" in modifications else None
+
+
+def _get_has_realtime_stop(stop_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return False
+
+    return modifications["has-realtime"] if "has-realtime" in modifications else False

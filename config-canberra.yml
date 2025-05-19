@@ -242,10 +242,38 @@ stops:
       name: Cohen St Interchange (Stop)
     "DKN":
       name: Dickson Interchange (Stop)
+      has-realtime: true
+    "GGN":
+      has-realtime: true
+    "MCK":
+      has-realtime: true
+    "MPN":
+      has-realtime: true
+    "NLR":
+      has-realtime: true
+    "WSN":
+      has-realtime: true
+    "SFD":
+      has-realtime: true
+    "EPC":
+      has-realtime: true
+    "PLP":
+      has-realtime: true
+    "SWN":
+      has-realtime: true
+    "MCR":
+      has-realtime: true
+    "IPA":
+      has-realtime: true
+    "ELA":
+      has-realtime: true
+    "ALG":
+      has-realtime: true
     city-interchange:
       show-on-zoom-out: true
       show-on-zoom-in: false
       show-children: true
+      has-realtime: true
     belconnen-interchange:
       show-on-zoom-out: true
       show-on-zoom-in: false
@@ -266,63 +294,92 @@ stops:
       show-on-zoom-out: true
       show-on-zoom-in: false
       show-children: true
+      has-realtime: true
     cohen-st-interchange:
       show-on-zoom-out: true
       show-on-zoom-in: false
       show-children: true
     "8100":
       show-on-zoom-in: false
+      has-realtime: true
     "8101":
       show-on-zoom-in: false
+      has-realtime: true
     "8104":
       show-on-zoom-in: false
+      has-realtime: true
     "8105":
       show-on-zoom-in: false
+      has-realtime: true
     "8106":
       show-on-zoom-in: false
+      has-realtime: true
     "8107":
       show-on-zoom-in: false
+      has-realtime: true
     "8108":
       show-on-zoom-in: false
+      has-realtime: true
     "8109":
       show-on-zoom-in: false
+      has-realtime: true
     "8110":
       show-on-zoom-in: false
+      has-realtime: true
     "8111":
       show-on-zoom-in: false
+      has-realtime: true
     "8112":
       show-on-zoom-in: false
+      has-realtime: true
     "8113":
       show-on-zoom-in: false
+      has-realtime: true
     "8114":
       show-on-zoom-in: false
+      has-realtime: true
     "8115":
       show-on-zoom-in: false
+      has-realtime: true
     "8116":
       show-on-zoom-in: false
+      has-realtime: true
     "8117":
       show-on-zoom-in: false
+      has-realtime: true
     "8118":
       show-on-zoom-in: false
+      has-realtime: true
     "8119":
       show-on-zoom-in: false
+      has-realtime: true
     "8120":
       show-on-zoom-in: false
+      has-realtime: true
     "8121":
       show-on-zoom-in: false
+      has-realtime: true
     "8122":
       show-on-zoom-in: false
+      has-realtime: true
     "8123":
       show-on-zoom-in: false
+      has-realtime: true
     "8124":
       show-on-zoom-in: false
+      has-realtime: true
     "8125":
       show-on-zoom-in: false
+      has-realtime: true
     "8126":
       show-on-zoom-in: false
+      has-realtime: true
     "8127":
       show-on-zoom-in: false
+      has-realtime: true
     "8128":
       show-on-zoom-in: false
+      has-realtime: true
     "8129":
       show-on-zoom-in: false
+      has-realtime: true
