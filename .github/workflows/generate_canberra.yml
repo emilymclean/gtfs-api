@@ -85,7 +85,7 @@ jobs:
           unzip google_transit_lr.zip -d canberra/lr
       - name: Run script
         run: |
-          python api-generator/script.py trip-index -c config-canberra.yml -i canberra/lr -o build
+          python api-generator/script.py trip-index -c config-canberra.yml -g stop-manager/groups.yml -i canberra/lr -o build
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v4
         with:
