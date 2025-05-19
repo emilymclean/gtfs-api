@@ -79,7 +79,7 @@ jobs:
           pip install -r api-generator/requirements.txt
       - name: Download data
         run: |
-          wget -q https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
+          wget https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
           
           mkdir canberra
           unzip google_transit_lr.zip -d canberra/lr
