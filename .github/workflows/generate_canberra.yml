@@ -25,8 +25,8 @@ jobs:
           pip install -r api-generator/requirements.txt
       - name: Download data
         run: |
-          wget https://www.transport.act.gov.au/googletransit/google_transit.zip
-          wget https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
+          wget --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36" https://www.transport.act.gov.au/googletransit/google_transit.zip
+          wget --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36" https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
           
           mkdir canberra
           unzip google_transit.zip -d canberra/normal
@@ -79,7 +79,7 @@ jobs:
           pip install -r api-generator/requirements.txt
       - name: Download data
         run: |
-          wget https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
+          wget --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36" https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
           
           mkdir canberra
           unzip google_transit_lr.zip -d canberra/lr
