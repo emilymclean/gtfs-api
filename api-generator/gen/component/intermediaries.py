@@ -8,7 +8,7 @@ import pandas as pd
 from .consts import *
 from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors, _get_route_real_time, \
     _get_show_on_zoom_out_stop, _get_show_on_zoom_in_stop, _get_show_children_stop, _get_search_weight_stop, \
-    _get_search_weight_route, _get_hidden_route, _get_route_has_realtime
+    _get_search_weight_route, _get_hidden_route, _get_route_has_realtime, _get_has_realtime_stop
 from ..time_helper import TimeHelper
 
 
@@ -80,6 +80,7 @@ class StopIntermediary(Intermediary):
     show_on_zoom_in: bool
     show_children: bool
     search_weight: Optional[float]
+    hasRealtime: bool
 
     def to_json(self) -> dict:
         return {
@@ -93,7 +94,8 @@ class StopIntermediary(Intermediary):
                 "visibleZoomedIn": self.show_on_zoom_in,
                 "showChildren": self.show_children,
                 "searchWeight": self.search_weight
-            }
+            },
+            "hasRealtime": self.hasRealtime,
         }
 
     def to_pb(self, stop: pb.Stop):
@@ -112,6 +114,7 @@ class StopIntermediary(Intermediary):
         stop.visibility.showChildren = self.show_children
         if self.search_weight is not None:
             stop.visibility.searchWeight = self.search_weight
+        stop.hasRealtime = self.hasRealtime
 
     @staticmethod
     def from_csv(
@@ -122,6 +125,7 @@ class StopIntermediary(Intermediary):
         show_on_zoom_in = _get_show_on_zoom_in_stop(stop.id, extras)
         show_children = _get_show_children_stop(stop.id, extras)
         search_weight = _get_search_weight_stop(stop.id, extras)
+        has_realtime = _get_has_realtime_stop(stop.id, extras)
 
         return StopIntermediary(
             stop.id,
@@ -132,7 +136,8 @@ class StopIntermediary(Intermediary):
             show_on_zoom_out,
             show_on_zoom_in,
             show_children,
-            search_weight
+            search_weight,
+            has_realtime
         )
 
 
