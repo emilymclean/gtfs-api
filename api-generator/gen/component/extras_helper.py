@@ -54,7 +54,7 @@ def _get_route_description(route_id: str, extras: Dict[str, Any]) -> Optional[st
     if modifications is None:
         return None
 
-    return modifications["description"] if "description" in modifications else None
+    return modifications["description"].strip() if "description" in modifications else None
 
 
 def _get_route_has_realtime(route_id: str, extras: Dict[str, Any]) -> bool:
