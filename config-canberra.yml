@@ -244,6 +244,8 @@ route:
       approximate-timings: true
       event-route: true
       description: |
+        EXPERIMENTAL TEST: DO NOT USE
+
         Floriade, Australia's Biggest Celebration of Spring, returns to Commonwealth Park.
 
         Floriade is a flower and entertainment festival held annually in Canberra's Commonwealth Park on the shores of Lake Burley Griffin. It features extensive displays of flowering bulbs with integrated sculptures and other artistic features.
