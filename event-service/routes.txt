@@ -1,0 +1,2 @@
+route_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url,agency_id
+floriade_2025_test,F1,TEST Floriade 2025 Free Shuttle Loop,3,dc177a,FFFFFF,https://www.transport.act.gov.au/getting-around/timetables/routes-by-number,TC

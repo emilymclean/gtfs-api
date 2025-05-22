@@ -1,0 +1,3 @@
+stop_id,stop_name,stop_lat,stop_lon,location_type,wheelchair_boarding,parent_station
+temp_floriade_mooseheads,Floriade Temporary Stop: Mooseheads,-35.279548,149.129740,0,0,
+temp_floriade_regatta,Floriade Temporary Stop: Regatta Point,-35.289301,149.130032,0,0,

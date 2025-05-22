@@ -70,6 +70,9 @@ route:
     - code: 10
       color: "a8332f"
       onColor: light
+    - code: F1
+      color: "dc177a"
+      onColor: light
   modifications:
     ACTO001:
       has-realtime: true
@@ -236,6 +239,17 @@ route:
       hidden: true
     903-10647:
       hidden: true
+    floriade_2025_test:
+      show-on-browse: true
+      approximate-timings: true
+      event-route: true
+      description: |
+        EXPERIMENTAL TEST: DO NOT USE
+
+        Floriade, Australia's Biggest Celebration of Spring, returns to Commonwealth Park.
+
+        Floriade is a flower and entertainment festival held annually in Canberra's Commonwealth Park on the shores of Lake Burley Griffin. It features extensive displays of flowering bulbs with integrated sculptures and other artistic features.
+      more-link: https://events.canberra.com.au/whats-on/66399c89e45a397e21dffe32/floriade-2025
 stops:
   modifications:
     "959":
@@ -383,3 +397,9 @@ stops:
     "8129":
       show-on-zoom-in: false
       has-realtime: true
+    temp_floriade_mooseheads:
+      show-on-zoom-out: false
+      show-on-zoom-in: false
+    temp_floriade_regatta:
+      show-on-zoom-out: false
+      show-on-zoom-in: false
