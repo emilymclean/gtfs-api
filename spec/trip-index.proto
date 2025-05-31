@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option java_package = "cl.emilym.gtfs.tripindex";
+
+package trip_index;
+
+message TripIndex {
+    repeated TripInformation trips = 1;
+}
+
+message TripInformation {
+    required string tripId = 1;
+    required string routeId = 2;
+    repeated string stopIds = 3;
+}

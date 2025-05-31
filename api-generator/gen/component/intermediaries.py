@@ -8,7 +8,9 @@ import pandas as pd
 from .consts import *
 from .extras_helper import _get_route_designation, _get_route_prefix, _get_route_colors, _get_route_real_time, \
     _get_show_on_zoom_out_stop, _get_show_on_zoom_in_stop, _get_show_children_stop, _get_search_weight_stop, \
-    _get_search_weight_route, _get_hidden_route
+    _get_search_weight_route, _get_hidden_route, _get_route_has_realtime, _get_has_realtime_stop, \
+    _get_route_description, _get_route_show_on_browse, _get_route_approximate_timings, _get_route_event_route, \
+    _get_route_link_url
 from ..time_helper import TimeHelper
 
 
@@ -80,6 +82,7 @@ class StopIntermediary(Intermediary):
     show_on_zoom_in: bool
     show_children: bool
     search_weight: Optional[float]
+    hasRealtime: bool
 
     def to_json(self) -> dict:
         return {
@@ -93,7 +96,8 @@ class StopIntermediary(Intermediary):
                 "visibleZoomedIn": self.show_on_zoom_in,
                 "showChildren": self.show_children,
                 "searchWeight": self.search_weight
-            }
+            },
+            "hasRealtime": self.hasRealtime,
         }
 
     def to_pb(self, stop: pb.Stop):
@@ -112,6 +116,7 @@ class StopIntermediary(Intermediary):
         stop.visibility.showChildren = self.show_children
         if self.search_weight is not None:
             stop.visibility.searchWeight = self.search_weight
+        stop.hasRealtime = self.hasRealtime
 
     @staticmethod
     def from_csv(
@@ -122,6 +127,7 @@ class StopIntermediary(Intermediary):
         show_on_zoom_in = _get_show_on_zoom_in_stop(stop.id, extras)
         show_children = _get_show_children_stop(stop.id, extras)
         search_weight = _get_search_weight_stop(stop.id, extras)
+        has_realtime = _get_has_realtime_stop(stop.id, extras)
 
         return StopIntermediary(
             stop.id,
@@ -132,7 +138,8 @@ class StopIntermediary(Intermediary):
             show_on_zoom_out,
             show_on_zoom_in,
             show_children,
-            search_weight
+            search_weight,
+            has_realtime
         )
 
 
@@ -182,13 +189,19 @@ class RouteIntermediary(Intermediary):
     id: str
     code: str
     name: str
+    description: Optional[str]
     type: int
     designation: Optional[str]
     code_prefix: Optional[str]
     colors: Optional[ColorPair]
     real_time: Optional[str]
+    has_realtime: bool
     hidden: bool
     search_weight: Optional[float]
+    show_on_browse: bool
+    approximate_timings: bool
+    event_route: bool
+    link_url: Optional[str]
 
     def to_json(self) -> dict:
         return {
@@ -196,13 +209,19 @@ class RouteIntermediary(Intermediary):
             "name": self.name,
             "code": self.code,
             "displayCode": self.code if self.code_prefix is None else f"{self.code_prefix}{self.code}",
+            "description": self.description if self.description is not None else None,
+            "moreLink": self.link_url if self.link_url is not None else None,
             "type": route_type_options[self.type],
             "designation": self.designation,
             "colors": self.colors.to_json() if self.colors is not None else None,
             "realTimeUrl": self.real_time,
+            "hasRealtime": self.has_realtime,
+            "approximateTimings": self.approximate_timings,
+            "eventRoute": self.event_route,
             "visibility": {
                 "hidden": self.hidden,
-                "searchWeight": self.search_weight
+                "searchWeight": self.search_weight,
+                "showOnBrowse": self.show_on_browse,
             }
         }
 
@@ -218,9 +237,17 @@ class RouteIntermediary(Intermediary):
             self.colors.to_pb(route.colors)
         if self.real_time is not None:
             route.realTimeUrl = self.real_time
+        route.hasRealtime = self.has_realtime
         route.routeVisibility.hidden = self.hidden
         if self.search_weight is not None:
             route.routeVisibility.searchWeight = self.search_weight
+        route.routeVisibility.showOnBrowse = self.show_on_browse
+        route.approximateTimings = self.approximate_timings
+        route.eventRoute = self.event_route
+        if self.description is not None:
+            route.description = self.description
+        if self.link_url is not None:
+            route.moreLink = self.link_url
 
     @staticmethod
     def from_csv(route: RouteCSV, extras: Dict[str, Any]) -> "RouteIntermediary":
@@ -233,13 +260,19 @@ class RouteIntermediary(Intermediary):
             route.id,
             route.code,
             route.name,
+            _get_route_description(route.id, extras),
             route.type,
             designation,
             _get_route_prefix(designation, extras) if designation is not None else None,
             ColorPair(*colors) if colors is not None else None,
             _get_route_real_time(route.id, extras),
+            _get_route_has_realtime(route.id, extras),
             hidden,
-            search_weight
+            search_weight,
+            _get_route_show_on_browse(route.id, extras),
+            _get_route_approximate_timings(route.id, extras),
+            _get_route_event_route(route.id, extras),
+            _get_route_link_url(route.id, extras),
         )
 
 

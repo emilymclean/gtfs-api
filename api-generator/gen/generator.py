@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Callable, Any
 
+from .component import GeneratorComponent
 from .component.extras_helper import _get_name_stop
 from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV, \
     StopAccessibilityCSV
@@ -15,6 +16,7 @@ from .component.stop_detail_generator import StopDetailGeneratorComponent
 from .component.stop_list_generator import StopListGeneratorComponent
 from .component.stop_routes_generator import StopRoutesGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
+from .component.trip_index_generator import TripIndexGeneratorComponent
 from .component.trip_timetable_generator import TripTimetableGeneratorComponent
 from .location_helper import LocationHelper
 from .models import *
@@ -91,7 +93,9 @@ class Generator:
             if name is None or stop_id is None or len(children) == 0:
                 continue
 
-            children_stop = [tmp_stop_index[f"{s}"] for s in children]
+            children_stop = [tmp_stop_index[f"{s}"] for s in children if f"{s}" in tmp_stop_index]
+            if len(children_stop) == 0:
+                continue
             midpoint = LocationHelper.midpoint([s.location for s in children_stop])
             wheelchair_accessibility = min([s.accessibility.wheelchair for s in children_stop])
 
@@ -187,10 +191,7 @@ class Generator:
             ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
         ]
 
-        for g in generators:
-            g.config = self.config
-            g.time_helper = self.time_helper
-            g.generate(output_folder)
+        self._do_generation(generators, output_folder)
 
     def network_graph(self, output_folder: Path):
         g = ByteNetworkGraphGenerator(
@@ -201,6 +202,25 @@ class Generator:
         )
         g.time_helper = self.time_helper
         g.generate(output_folder)
+
+    def generate_trip_index(self, output_folder: Path):
+        generators = [
+            TripIndexGeneratorComponent(
+                self.trip_data,
+                self.route_index,
+                self.stop_time_index_by_trip,
+                self.stop_index,
+                self.distinguishers
+            )
+        ]
+
+        self._do_generation(generators, output_folder)
+
+    def _do_generation(self, generators: List[GeneratorComponent], output_folder: Path):
+        for g in generators:
+            g.config = self.config
+            g.time_helper = self.time_helper
+            g.generate(output_folder)
 
     @staticmethod
     def _create_index(data: List[T], key: Callable[[T], str]) -> Dict[str, T]:

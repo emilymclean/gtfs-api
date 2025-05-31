@@ -17,6 +17,54 @@ def _get_route_prefix(designation: str, extras: Dict[str, Any]) -> Optional[str]
     return extras.get("designations", {}).get(designation, {}).get("prefix", None)
 
 
+def _get_route_show_on_browse(route_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return False
+
+    return modifications["show-on-browse"] if "show-on-browse" in modifications else False
+
+
+def _get_route_event_route(route_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return False
+
+    return modifications["event-route"] if "event-route" in modifications else False
+
+
+def _get_route_approximate_timings(route_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return False
+
+    return modifications["approximate-timings"] if "approximate-timings" in modifications else False
+
+
+def _get_route_link_url(route_id: str, extras: Dict[str, Any]) -> Optional[str]:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return None
+
+    return modifications["more-link"] if "more-link" in modifications else None
+
+
+def _get_route_description(route_id: str, extras: Dict[str, Any]) -> Optional[str]:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return None
+
+    return modifications["description"].strip() if "description" in modifications else None
+
+
+def _get_route_has_realtime(route_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return False
+
+    return modifications["has-realtime"] if "has-realtime" in modifications else False
+
+
 def _get_route_real_time(id: str, extras: Dict[str, Any]) -> Optional[str]:
     rt: List = extras.get("route", {}).get("real-time", None)
     if rt is None:
@@ -102,3 +150,12 @@ def _get_name_stop(stop_id: str, extras: Dict[str, Any]) -> Optional[str]:
         return None
 
     return modifications["name"] if "name" in modifications else None
+
+
+def _get_has_realtime_stop(stop_id: str, extras: Dict[str, Any]) -> bool:
+    modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
+
+    if modifications is None:
+        return False
+
+    return modifications["has-realtime"] if "has-realtime" in modifications else False

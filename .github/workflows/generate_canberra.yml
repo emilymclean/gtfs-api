@@ -2,9 +2,12 @@ name: Generate for Canberra
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: 
+      - "main"
+      - "develop"
   pull_request:
-    branches: "main"
+    branches: 
+      - "main"
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
@@ -33,7 +36,7 @@ jobs:
           unzip google_transit_lr.zip -d canberra/lr
       - name: Run script
         run: |
-          python api-generator/script.py -c config-canberra.yml -i canberra/normal -i canberra/lr -g stop-manager/groups.yml -o build/canberra/v1
+          python api-generator/script.py generate -c config-canberra.yml -i canberra/normal -i canberra/lr -i event-service -g stop-manager/groups.yml -o build/canberra/v1
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -64,6 +67,40 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
       - run: aws s3 cp --recursive build s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
       - run: aws s3 cp --recursive static s3://${{ github.ref == 'refs/heads/main' && vars.AWS_BUCKET || vars.AWS_DEVELOP_BUCKET }}
+  build-trip-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10.13'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r api-generator/requirements.txt
+      - name: Download data
+        run: |
+          wget -q https://www.transport.act.gov.au/googletransit/google_transit_lr.zip
+          
+          mkdir canberra
+          unzip google_transit_lr.zip -d canberra/lr
+      - name: Run script
+        run: |
+          python api-generator/script.py trip-index -c config-canberra.yml -g stop-manager/groups.yml -i canberra/lr -o build
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - run: aws s3 cp --recursive build s3://${{ vars.AWS_PRIVATE_BUCKET }}
+  test-site:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          wget --content-on-error -qO - https://www.transport.act.gov.au/news/service-alerts-and-updates
   keep-alive:
     permissions:
       actions: write
