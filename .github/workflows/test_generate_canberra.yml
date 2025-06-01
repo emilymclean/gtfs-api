@@ -34,8 +34,8 @@ jobs:
         run: |
           mkdir out
           docker run \ 
-            -v "./build:/build"
-            -v "./out:/out"
+            -v "./build:/build" \
+            -v "./out:/out" \
             --rm -t ghcr.io/sinatra-transport/s3-sync-utility:0.1.1 \ 
             build -i /build -o /out/index.pb
       - name: Print changes
