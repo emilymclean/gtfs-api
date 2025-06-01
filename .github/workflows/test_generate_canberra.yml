@@ -36,5 +36,5 @@ jobs:
           docker run -v "./build:/build" -v "./out:/out" --rm -t ghcr.io/sinatra-transport/s3-sync-utility:0.1.1 build -i /build -o /out/index.pb
       - name: Print changes
         run: |
-          docker run -e "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -e "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -e "AWS_REGION=ap-southeast-2" -v "./out:/out" --rm -t ghcr.io/sinatra-transport/s3-sync-utility:0.1.1 changes -o "s3://${{ vars.AWS_PRIVATE_BUCKET }}/file-index-develop.pb" -n /out/index.pb
+          docker run -e "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" -e "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -e "AWS_REGION=ap-southeast-2" -v "./out:/out" --rm -t ghcr.io/sinatra-transport/s3-sync-utility:0.1.1 compare -o "s3://${{ vars.AWS_PRIVATE_BUCKET }}/file-index-develop.pb" -n /out/index.pb
                 
