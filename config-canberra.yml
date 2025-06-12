@@ -401,3 +401,7 @@ stops:
     "3402":
       show-on-zoom-in: false
       name: City Interchange Plt 11 Departures
+    "5517":
+      name: Belconnen Interchange Arrivals South
+    "5518":
+      name: Belconnen Interchange Arrivals North
