@@ -386,3 +386,13 @@ stops:
     "8129":
       show-on-zoom-in: false
       has-realtime: true
+    "1801":
+      show-on-zoom-in: false
+    "7011":
+      show-on-zoom-in: false
+      name: Gungahlin Place Plt 3 Departures
+    "7012":
+      show-on-zoom-in: false
+    "7016":
+      show-on-zoom-in: false
+      name: Gungahlin Place Plt 4 Departures
