@@ -45,10 +45,18 @@ groupings:
   name: Dickson Interchange
   stop_id: dickson-interchange
 - children:
-  - 1801
-  - 7011
-  - 7012
-  - 7016
+    - 1801
+    - 7011
+  name: Gungahlin Place Plt 3
+  stop_id: gungahlin-place-3-synthetic
+- children:
+    - 7012
+    - 7016
+  name: Gungahlin Place Plt 4
+  stop_id: gungahlin-place-4-synthetic
+- children:
+  - gungahlin-place-3-synthetic
+  - gungahlin-place-4-synthetic
   - GGN
   name: Gungahlin Interchange
   stop_id: gungahlin-interchange
