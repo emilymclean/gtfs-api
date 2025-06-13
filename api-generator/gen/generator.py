@@ -73,12 +73,10 @@ class Generator:
         self._add_groupings()
 
     def _add_groupings(self):
-        tmp_stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
+        self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
+        self.stop_index_by_parent = {}
 
         groupings: List[Dict[str, Any]] | None = self.groups.get("groupings", None) if self.groups is not None else None
-
-        self.stop_index_by_parent = {}
-        self.stop_index = {}
 
         if groupings is None:
             return
@@ -92,16 +90,17 @@ class Generator:
 
             if name is None or stop_id is None or len(children) == 0:
                 continue
-
-            children_stop = [tmp_stop_index[f"{s}"] for s in children if f"{s}" in tmp_stop_index]
+            
+            children_stop = [self.stop_index[f"{s}"] for s in children if f"{s}" in self.stop_index]
             if len(children_stop) == 0:
                 continue
             midpoint = LocationHelper.midpoint([s.location for s in children_stop])
             wheelchair_accessibility = min([s.accessibility.wheelchair for s in children_stop])
 
             for child in children_stop:
-                for p in self.stop_data:
-                    child_stop = next(filter(lambda x: x.id == child.id, p.data), None)
+                all_stops: List[List[StopCSV]] = ([d.data for d in self.stop_data] + [added_stops])
+                for p in all_stops:
+                    child_stop = next(filter(lambda x: x.id == child.id, p), None)
                     if child_stop is None:
                         continue
                     child_stop.parent_station = stop_id

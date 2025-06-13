@@ -1,11 +1,14 @@
 groupings:
 - children:
-  - 1708
   - 1721
+  - 3402
+  name: City Interchange Plt 11
+  stop_id: city-interchange-11-synthetic
+- children:
+  - 1708
   - 1723
   - 3000
   - 3401
-  - 3402
   - 3404
   - 3406
   - 3409
@@ -15,6 +18,7 @@ groupings:
   - 3419
   - 3420
   - ALG
+  - city-interchange-11-synthetic
   name: City Interchange
   stop_id: city-interchange
 - children:
@@ -47,8 +51,16 @@ groupings:
 - children:
   - 1801
   - 7011
+  name: Gungahlin Place Plt 3
+  stop_id: gungahlin-place-3-synthetic
+- children:
   - 7012
   - 7016
+  name: Gungahlin Place Plt 4
+  stop_id: gungahlin-place-4-synthetic
+- children:
+  - gungahlin-place-3-synthetic
+  - gungahlin-place-4-synthetic
   - GGN
   name: Gungahlin Interchange
   stop_id: gungahlin-interchange
