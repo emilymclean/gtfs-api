@@ -58,7 +58,7 @@ class StopDetailGeneratorComponent(FormatGeneratorComponent[StopDetail]):
         ]
 
     def _path(self, output_folder: Path, intermediary: StopDetail, extension: str) -> Path:
-        return output_folder.joinpath(f"stop/{intermediary.stop.id}/details.{extension}")
+        return output_folder.joinpath(f"v1/stop/{intermediary.stop.id}/details.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopDetail]:
         stops = flatten_parsed(filter_parsed_by_distinguisher(self.csvs, distinguisher))

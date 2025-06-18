@@ -71,7 +71,7 @@ class RouteCanonicalTimetableGeneratorComponent(FormatGeneratorComponent[RouteCa
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteCanonicalServiceInformation, extension: str) -> Path:
-        return output_folder.joinpath(f"route/{intermediary.route_id}/service/{intermediary.service_id}/canonical.{extension}")
+        return output_folder.joinpath(f"v1/route/{intermediary.route_id}/service/{intermediary.service_id}/canonical.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteCanonicalServiceInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))
