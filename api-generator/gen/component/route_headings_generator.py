@@ -57,7 +57,7 @@ class RouteHeadingsGeneratorComponent(FormatGeneratorComponent[RouteHeadingInfor
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteHeadingInformation, extension: str) -> Path:
-        return output_folder.joinpath(f"route/{intermediary.route_id}/headings.{extension}")
+        return output_folder.joinpath(f"v1/route/{intermediary.route_id}/headings.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteHeadingInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_csvs, distinguisher))

@@ -135,9 +135,9 @@ class IndexedGeneratorComponent(Generic[T], FormatGeneratorComponent[IndexedWrap
     def _path(self, output_folder: Path, intermediary: IndexedWrapper[T], extension: str) -> Path:
         name = self._name()
         if intermediary.index is None:
-            return output_folder.joinpath(f"{name}.{extension}")
+            return output_folder.joinpath(f"v1/{name}.{extension}")
         else:
-            return output_folder.joinpath(f"index/{name}/{intermediary.index}/{name}.{extension}")
+            return output_folder.joinpath(f"v1/index/{name}/{intermediary.index}/{name}.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[IndexedWrapper[T]]:
         idx = {key: [] for key in "abcdefghijklmnopqrstuvwxyz0123456789"}

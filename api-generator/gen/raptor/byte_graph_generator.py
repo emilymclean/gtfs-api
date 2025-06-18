@@ -243,11 +243,11 @@ class ByteNetworkGraphGenerator(Writer):
         self._compute_graph()
         graph = self._connect_graph(reverse=False)
         # Legacy because I'm dumb
-        self._write(graph, output_folder.joinpath("network_graph.eng"))
-        self._write(graph, output_folder.joinpath("network-graph.eng"))
+        self._write(graph, output_folder.joinpath("v1/network_graph.eng"))
+        self._write(graph, output_folder.joinpath("v1/network-graph.eng"))
 
         reverse_graph = self._connect_graph(reverse=True)
-        self._write(reverse_graph, output_folder.joinpath("network-graph-reverse.eng"))
+        self._write(reverse_graph, output_folder.joinpath("v1/network-graph-reverse.eng"))
 
     def _compute_headings(self):
         for trip in self.trips:

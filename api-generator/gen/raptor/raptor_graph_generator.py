@@ -108,7 +108,7 @@ class NetworkGraphGenerator(Writer):
 
     def generate(self, output_folder: Path):
         graph = self._create_graph()
-        self._write(graph.SerializeToString(), output_folder.joinpath("network_graph.pb"))
+        self._write(graph.SerializeToString(), output_folder.joinpath("v1/network_graph.pb"))
 
     def simple_graph(self, output_folder: Path):
         graph = self._create_graph()
