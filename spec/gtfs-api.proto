@@ -41,6 +41,11 @@ message RouteCanonicalTimetableEndpoint {
   required RouteTripInformation trip = 3;
 }
 
+message RouteCanonicalTimetableEndpointV2 {
+  repeated RouteTripInformation trips = 3;
+}
+
+
 message RouteTripTimetableEndpoint {
   required string routeId = 1;
   required string serviceId = 2;
