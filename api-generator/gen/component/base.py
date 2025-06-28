@@ -13,7 +13,9 @@ R = TypeVar("R")
 
 
 class Writer(ABC):
-    def _write(self, data: bytes | str, path: str | PathLike):
+    def _write(self, data: bytes | str, path: str | PathLike | None):
+        if path is None:
+            return
         if ".json" in str(path):
             return
         path = Path(path)
@@ -139,7 +141,8 @@ class IndexedGeneratorComponent(Generic[T], FormatGeneratorComponent[IndexedWrap
         if intermediary.index is None:
             return output_folder.joinpath(f"v1/{name}.{extension}")
         else:
-            return output_folder.joinpath(f"v1/index/{name}/{intermediary.index}/{name}.{extension}")
+            return None
+            # return output_folder.joinpath(f"v1/index/{name}/{intermediary.index}/{name}.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[IndexedWrapper[T]]:
         idx = {key: [] for key in "abcdefghijklmnopqrstuvwxyz0123456789"}
