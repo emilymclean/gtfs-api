@@ -25,66 +25,54 @@ const function versionL(version: String) =
         parseVersion(envVersion) < parseVersion(version)
 
 pages = new Listing<Content> {
-    ...(if (versionGEQ("0.11.0"))
-                new Listing {
-                    new Content {
-                        id = "more"
-                        title = new Translated {
-                            default = "More"
-                            zh = "更多"
-                        }.pick()
-                        content = ""
-                        contentLinks = new {
-                            new ContentLink {
-                                title = new Translated {
-                                    default = "Service Updates"
-                                    zh = "服务警报"
-                                }.pick()
-                                contentId = "service-alerts"
-                                order = 1000
-                            }
-                            new ContentLink {
-                                title = new Translated {
-                                    default = "About this App"
-                                    zh = "关于这个应用程序"
-                                }.pick()
-                                contentId = "about"
-                                order = 2000
-                            }
-                        }
-                        nativeLinks = new {
-                            new NativeLink {
-                                title = new Translated {
-                                    default = "Settings"
-                                    zh = "设置"
-                                }.pick()
-                                nativeReference = "preferences"
-                                order = 500
-                            }
-                        }
-                    }
-                }
-            else
-                new Listing {})
+    new Content {
+        id = "more"
+        title = new Translated {
+            default = "More"
+            zh = "更多"
+        }.pick()
+        content = ""
+        contentLinks = new {
+            new ContentLink {
+                title = new Translated {
+                    default = "Service Updates"
+                    zh = "服务警报"
+                }.pick()
+                contentId = "service-alerts"
+                order = 1000
+            }
+            new ContentLink {
+                title = new Translated {
+                    default = "About this App"
+                    zh = "关于这个应用程序"
+                }.pick()
+                contentId = "about"
+                order = 2000
+            }
+        }
+        nativeLinks = new {
+            new NativeLink {
+                title = new Translated {
+                    default = "Settings"
+                    zh = "设置"
+                }.pick()
+                nativeReference = "preferences"
+                order = 500
+            }
+        }
+    }
     new Content {
         id = "about"
-        title = "About"
+        title = new Translated {
+            default = "About"
+            zh = "关于"
+        }.pick()
         content = """
         Sinatra is a companion app for the Canberra MyWay+ network made by locals for locals. Our goal is to make it easier to find route and stop information, offering a fresh, streamlined experience alongside the official app.
 
         Made with 🩷 in Canberra, Australia.\(if (isPlatform(List("android"))) " You can find and contribute to our codebase on [Github](https://github.com/emilymclean/sinatra)." else "")
         """
         externalLinks = new {
-            ...(if (isPlatform(List("android"))) 
-                new Listing {
-                    new ExternalLink {
-                        title = "Donate"
-                        url = "https://ko-fi.com/emilymclean"
-                        order = 1000
-                    }
-                }
-            else
-                new Listing {})
             new ExternalLink {
                 title = new Translated {
                     default = "Terms and Conditions"
@@ -117,7 +105,10 @@ pages = new Listing<Content> {
             else
                 new Listing {})
             new ContentLink {
-                title = "Third Party Notices"
+                title = new Translated {
+                    default = "Third Party Notices"
+                    zh = "第三方许可信息"
+                }.pick()
                 contentId = "attribution"
                 order = 2000
             }
@@ -125,7 +116,10 @@ pages = new Listing<Content> {
     }
     new Content {
         id = "attribution"
-        title = "Third Party Notices"
+        title = new Translated {
+            default = "Third Party Notices"
+            zh = "第三方许可信息"
+        }.pick()
         content = """
         The following sets forth attribution notices for third party software that may be contained in portions of this app.
 
@@ -136,7 +130,10 @@ pages = new Listing<Content> {
     }
     new Content {
         id = "service-alerts"
-        title = "Service Alerts"
+        title = new Translated {
+            default = "Service Updates"
+            zh = "服务警报"
+        }.pick()
         content = "Update to the latest version of Sinatra to view service alerts and updates, or visit Transport Canberra's website at [transport.act.gov.au](https://www.transport.act.gov.au/news/service-alerts-and-updates)."
     }
 }
