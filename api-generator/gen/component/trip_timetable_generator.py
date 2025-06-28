@@ -72,7 +72,7 @@ class TripTimetableGeneratorComponent(FormatGeneratorComponent[RouteTripInformat
 
     def _path(self, output_folder: Path, intermediary: RouteTripInformation, extension: str) -> Path:
         return output_folder.joinpath(
-            f"route/{intermediary.route_id}/service/{intermediary.service_id}/trip/{intermediary.trip_id}/timetable.{extension}")
+            f"v1/route/{intermediary.route_id}/service/{intermediary.service_id}/trip/{intermediary.trip_id}/timetable.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteTripInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))

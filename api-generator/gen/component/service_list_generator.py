@@ -99,7 +99,7 @@ class ServiceListGeneratorComponent(FormatGeneratorComponent[List[ServiceInterme
         ]
 
     def _path(self, output_folder: Path, intermediary: List[ServiceIntermediary], extension: str) -> Path:
-        return output_folder.joinpath(f"services.{extension}")
+        return output_folder.joinpath(f"v1/services.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[List[ServiceIntermediary]]:
         calendar = flatten_parsed(filter_parsed_by_distinguisher(self.calendar_data, distinguisher))

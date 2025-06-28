@@ -58,7 +58,7 @@ class RouteServiceGeneratorComponent(FormatGeneratorComponent[RouteServiceInform
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteServiceInformation, extension: str) -> Path:
-        return output_folder.joinpath(f"route/{intermediary.route_id}/services.{extension}")
+        return output_folder.joinpath(f"v1/route/{intermediary.route_id}/services.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteServiceInformation]:
         routes = flatten_parsed(filter_parsed_by_distinguisher(self.route_data, distinguisher))

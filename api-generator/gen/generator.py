@@ -18,6 +18,7 @@ from .component.stop_routes_generator import StopRoutesGeneratorComponent
 from .component.stop_timetable_generator import StopTimetableGeneratorComponent
 from .component.trip_index_generator import TripIndexGeneratorComponent
 from .component.trip_timetable_generator import TripTimetableGeneratorComponent
+from .component.v2.route_canonical_timetable_generator_v2 import RouteCanonicalTimetableGeneratorV2Component
 from .location_helper import LocationHelper
 from .models import *
 from .raptor.byte_graph_generator import ByteNetworkGraphGenerator
@@ -155,6 +156,13 @@ class Generator:
                 self.distinguishers
             ),
             RouteCanonicalTimetableGeneratorComponent(
+                self.route_data,
+                self.trip_index_by_route,
+                self.stop_time_index_by_trip,
+                self.stop_index,
+                self.distinguishers
+            ),
+            RouteCanonicalTimetableGeneratorV2Component(
                 self.route_data,
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,

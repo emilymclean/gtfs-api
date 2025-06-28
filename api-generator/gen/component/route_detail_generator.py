@@ -38,7 +38,7 @@ class RouteDetailGeneratorComponent(FormatGeneratorComponent[RouteIntermediary])
         ]
 
     def _path(self, output_folder: Path, intermediary: RouteIntermediary, extension: str) -> Path:
-        return output_folder.joinpath(f"route/{intermediary.id}/details.{extension}")
+        return output_folder.joinpath(f"v1/route/{intermediary.id}/details.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteIntermediary]:
         return [

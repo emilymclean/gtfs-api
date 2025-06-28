@@ -56,7 +56,7 @@ class StopRoutesGeneratorComponent(FormatGeneratorComponent[StopRoutes]):
         ]
 
     def _path(self, output_folder: Path, intermediary: StopRoutes, extension: str) -> Path:
-        return output_folder.joinpath(f"stop/{intermediary.stop_id}/routes.{extension}")
+        return output_folder.joinpath(f"v1/stop/{intermediary.stop_id}/routes.{extension}")
 
     def _read_intermediary(self, distinguisher: Optional[str]) -> List[StopRoutes]:
         stop_times = flatten_parsed(filter_parsed_by_distinguisher(self.stop_time_data, distinguisher))
