@@ -13,7 +13,9 @@ R = TypeVar("R")
 
 
 class Writer(ABC):
-    def _write(self, data: bytes|str, path: str | PathLike):
+    def _write(self, data: bytes | str, path: str | PathLike):
+        if ".json" in str(path):
+            return
         path = Path(path)
         sha_path = Path(f"{path}.sha")
         path.parent.mkdir(parents=True, exist_ok=True)
