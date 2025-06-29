@@ -50,6 +50,7 @@ class TripInformation(Intermediary):
     bikes_allowed: int
     stops: List[TripStops]
     heading: Optional[str] = None
+    shape: Optional[str] = None
 
     def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
@@ -61,6 +62,7 @@ class TripInformation(Intermediary):
                 "wheelchairAccessible": service_wheelchair_accessible[self.wheelchair_accessible],
             },
             "heading": self.heading,
+            "shape": self.shape,
         }
 
     def to_pb(self, info: pb.RouteTripInformation, time_helper: TimeHelper):
@@ -73,6 +75,9 @@ class TripInformation(Intermediary):
 
         if self.heading is not None:
             info.heading = self.heading
+
+        if self.shape is not None:
+            info.shape = self.shape
 
         for stop in self.stops:
             p = pb.RouteTripStop()
@@ -130,11 +135,13 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInfo
             route_data: List[ParsedCsv[List[RouteCSV]]],
             trip_index_by_route: Dict[str, List[TripCSV]],
             stop_time_index_by_trip: Dict[str, List[StopTimeCSV]],
+            shape_lines: Dict[str, str],
             distinguishers: List[str]
     ):
         self.route_data = route_data
         self.trip_index_by_route = trip_index_by_route
         self.stop_time_index_by_trip = stop_time_index_by_trip
+        self.shape_lines = shape_lines
         self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[RouteServiceInformation]]:
@@ -168,6 +175,7 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInfo
             for service_id, service_trips in service_index.items():
                 trips_for_service = []
                 for t in service_trips:
+                    shape = self.shape_lines[t.shape_id]
                     stops_for_trip = [
                         TripStops(
                             s.stop_id,
@@ -184,7 +192,8 @@ class RouteTimetableGeneratorComponent(FormatGeneratorComponent[RouteServiceInfo
                             t.wheelchair_accessible,
                             t.bikes_allowed,
                             stops_for_trip,
-                            t.trip_headsign
+                            t.trip_headsign,
+                            shape
                         )
                     )
                 out.append(

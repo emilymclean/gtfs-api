@@ -313,6 +313,7 @@ class TripCSV(Intermediary):
     id: str
     route_id: str
     service_id: str
+    shape_id: str
     trip_headsign: str
     direction_id: int
     wheelchair_accessible: int
@@ -324,6 +325,7 @@ class TripCSV(Intermediary):
             f"{row['trip_id']}",
             f"{row['route_id']}",
             f"{row['service_id']}",
+            f"{row['shape_id']}",
             f"{row['trip_headsign']}",
             row['direction_id'],
             row['wheelchair_accessible'],

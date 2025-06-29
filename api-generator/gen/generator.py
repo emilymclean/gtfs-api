@@ -85,8 +85,6 @@ class Generator:
                 for x in sorted(v, key=lambda x: x.shape_pt_sequence)
             ])
 
-        print(self.shape_lines)
-
     def _add_groupings(self):
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)
         self.stop_index_by_parent = {}
@@ -167,6 +165,7 @@ class Generator:
                 self.route_data,
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,
+                self.shape_lines,
                 self.distinguishers
             ),
             RouteCanonicalTimetableGeneratorComponent(
@@ -181,12 +180,14 @@ class Generator:
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,
                 self.stop_index,
+                self.shape_lines,
                 self.distinguishers
             ),
             TripTimetableGeneratorComponent(
                 self.route_data,
                 self.trip_index_by_route,
                 self.stop_time_index_by_trip,
+                self.shape_lines,
                 self.distinguishers
             ),
             RouteServiceGeneratorComponent(

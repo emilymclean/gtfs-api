@@ -50,12 +50,14 @@ class RouteCanonicalTimetableGeneratorV2Component(FormatGeneratorComponent[Route
             trip_index_by_route: Dict[str, List[TripCSV]],
             stop_time_index_by_trip: Dict[str, List[StopTimeCSV]],
             stop_index: Dict[str, StopCSV],
+            shape_line: Dict[str, str],
             distinguishers: List[str]
     ):
         self.route_data = route_data
         self.trip_index_by_route = trip_index_by_route
         self.stop_time_index_by_trip = stop_time_index_by_trip
         self.stop_index = stop_index
+        self.shape_line = shape_line
         self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[RouteCanonicalServiceInformationV2]]:
@@ -95,6 +97,7 @@ class RouteCanonicalTimetableGeneratorV2Component(FormatGeneratorComponent[Route
             for service_id, service_trips in service_index.items():
                 trips_for_service = {}
                 for t in service_trips:
+                    shape = self.shape_line[t.shape_id]
                     stops_for_trip = []
                     for s in self.stop_time_index_by_trip[t.id]:
                         parent_stop = self._parent_stop(s.stop_id).id
@@ -115,7 +118,8 @@ class RouteCanonicalTimetableGeneratorV2Component(FormatGeneratorComponent[Route
                             t.wheelchair_accessible,
                             t.bikes_allowed,
                             stops_for_trip,
-                            t.trip_headsign
+                            t.trip_headsign,
+                            shape
                         )
                     )
                     

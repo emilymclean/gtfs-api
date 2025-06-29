@@ -57,11 +57,13 @@ class TripTimetableGeneratorComponent(FormatGeneratorComponent[RouteTripInformat
             route_data: List[ParsedCsv[List[RouteCSV]]],
             trip_index_by_route: Dict[str, List[TripCSV]],
             stop_time_index_by_trip: Dict[str, List[StopTimeCSV]],
+            shape_line: Dict[str, str],
             distinguishers: List[str]
     ):
         self.route_data = route_data
         self.trip_index_by_route = trip_index_by_route
         self.stop_time_index_by_trip = stop_time_index_by_trip
+        self.shape_line = shape_line
         self.distinguishers = distinguishers
 
     def _formats(self) -> List[GeneratorFormat[RouteTripInformation]]:
@@ -94,6 +96,7 @@ class TripTimetableGeneratorComponent(FormatGeneratorComponent[RouteTripInformat
 
             for service_id, service_trips in service_index.items():
                 for t in service_trips:
+                    shape = self.shape_line[t.shape_id]
                     stops_for_trip = [
                         TripStops(
                             s.stop_id,
@@ -114,7 +117,8 @@ class TripTimetableGeneratorComponent(FormatGeneratorComponent[RouteTripInformat
                                 t.wheelchair_accessible,
                                 t.bikes_allowed,
                                 stops_for_trip,
-                                t.trip_headsign
+                                t.trip_headsign,
+                                shape
                             )
                         )
                     )
