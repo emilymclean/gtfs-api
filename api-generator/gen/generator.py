@@ -1,10 +1,12 @@
 from pathlib import Path
 from typing import Dict, Callable, Any
 
+import polyline
+
 from .component import GeneratorComponent
 from .component.extras_helper import _get_name_stop
 from .component.intermediaries import StopCSV, RouteCSV, CalendarCSV, CalendarExceptionCSV, StopTimeCSV, TripCSV, \
-    StopAccessibilityCSV
+    StopAccessibilityCSV, ShapeCSV
 from .component.route_canonical_timetable_generator import RouteCanonicalTimetableGeneratorComponent
 from .component.route_detail_generator import RouteDetailGeneratorComponent
 from .component.route_headings_generator import RouteHeadingsGeneratorComponent
@@ -52,6 +54,7 @@ class Generator:
         self.calendar_exception_data = [ParsedCsv[List[CalendarExceptionCSV]](CalendarExceptionCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in calendar_date_csvs]
         self.stop_time_data = [ParsedCsv[List[StopTimeCSV]](StopTimeCSV.from_csv(p.data, self.time_helper), p.distinguisher) for p in stop_time_csvs]
         self.trip_data = [ParsedCsv[List[TripCSV]](TripCSV.from_csv(p.data), p.distinguisher) for p in trip_csvs]
+        self.shape_data = [ParsedCsv[List[ShapeCSV]](ShapeCSV.from_csv(p.data), p.distinguisher) for p in shape_csvs]
 
         # self._index(route_csvs)
         self._modify()
@@ -72,6 +75,17 @@ class Generator:
 
         # Setup groups
         self._add_groupings()
+
+        shape_by_id = self._create_list_index(flatten_parsed(self.shape_data), lambda x: x.shape_id)
+        self.shape_lines = {}
+
+        for k, v in shape_by_id.items():
+            self.shape_lines[k] = polyline.encode([
+                (x.shape_pt_lat, x.shape_pt_lng)
+                for x in sorted(v, key=lambda x: x.shape_pt_sequence)
+            ])
+
+        print(self.shape_lines)
 
     def _add_groupings(self):
         self.stop_index = self._create_index(flatten_parsed(self.stop_data), lambda x: x.id)

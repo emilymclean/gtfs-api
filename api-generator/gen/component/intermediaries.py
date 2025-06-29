@@ -410,3 +410,27 @@ class CalendarExceptionCSV(Intermediary):
         for i, r in df.iterrows():
             out.append(CalendarExceptionCSV.from_csv_row(r, time_helper))
         return out
+
+
+@dataclass
+class ShapeCSV(Intermediary):
+    shape_id: str
+    shape_pt_lat: float
+    shape_pt_lng: float
+    shape_pt_sequence: int
+
+    @staticmethod
+    def from_csv_row(row: pd.Series) -> "ShapeCSV":
+        return ShapeCSV(
+            f"{int(row['shape_id'])}",
+            row["shape_pt_lat"],
+            row["shape_pt_lon"],
+            row["shape_pt_sequence"],
+        )
+
+    @staticmethod
+    def from_csv(df: pd.DataFrame) -> List["ShapeCSV"]:
+        out = []
+        for i, r in df.iterrows():
+            out.append(ShapeCSV.from_csv_row(r))
+        return out
