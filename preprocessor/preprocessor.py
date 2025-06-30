@@ -31,7 +31,6 @@ def process(
     input_folder: str,
     output_folder: str,
 ):
-    print("Test")
     stop_csv = pd.read_csv(Path(input_folder).joinpath("stops.txt"), keep_default_na=False)
     route_csv = pd.read_csv(Path(input_folder).joinpath("routes.txt"), keep_default_na=False)
     calendar_csv = pd.read_csv(Path(input_folder).joinpath("calendar.txt"), keep_default_na=False)
