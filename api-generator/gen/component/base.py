@@ -16,8 +16,8 @@ class Writer(ABC):
     def _write(self, data: bytes | str, path: str | PathLike | None):
         if path is None:
             return
-        if ".json" in str(path):
-            return
+        # if ".json" in str(path):
+        #     return
         path = Path(path)
         sha_path = Path(f"{path}.sha")
         path.parent.mkdir(parents=True, exist_ok=True)

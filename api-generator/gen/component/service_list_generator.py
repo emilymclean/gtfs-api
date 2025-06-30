@@ -113,8 +113,8 @@ class ServiceListGeneratorComponent(FormatGeneratorComponent[List[ServiceInterme
                 accessibility_counts = [{0: 0, 1: 0, 2: 0}, {0: 0, 1: 0, 2: 0}]
 
                 for trip in trips:
-                    accessibility_counts[0][trip.wheelchair_accessible] += 1
-                    accessibility_counts[1][trip.bikes_allowed] += 1
+                    accessibility_counts[0][0 if trip.wheelchair_accessible == '' else trip.wheelchair_accessible] += 1
+                    accessibility_counts[1][0 if trip.bikes_allowed == '' else trip.bikes_allowed] += 1
 
                 selected = []
                 applies_to_all = []
