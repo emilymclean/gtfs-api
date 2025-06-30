@@ -363,7 +363,7 @@ class ByteNetworkGraphGenerator(Writer):
                 if distance > self.distance_threshold_km:
                     continue
 
-                print(f"Connecting {stop1.id} to {stop2.id} (distance = {distance})")
+                # print(f"Connecting {stop1.id} to {stop2.id} (distance = {distance})")
 
                 self._create_transfer_edge(stop1, stop2, distance)
                 self._create_transfer_edge(stop2, stop1, distance)
@@ -377,7 +377,7 @@ class ByteNetworkGraphGenerator(Writer):
         self.stop_ids.append(stop.id)
         self.stop_id_to_node_index[stop.id] = stop_index
 
-        print(f"Creating stop node {stop_index}")
+        # print(f"Creating stop node {stop_index}")
 
         out = StopNode(
             stop_index,
