@@ -86,6 +86,7 @@ route:
       search-weight: 1.7
     5-10657:
       search-weight: 1.7
+      name: Lanyon to City ANU via Erindale & Woden
     6-10657:
       search-weight: 1.7
     7-10657:
@@ -96,6 +97,14 @@ route:
       search-weight: 1.7
     10-10657:
       search-weight: 1.7
+    41-10657:
+      name: Fraser to Belconnen via Charnwood
+    47-10657:
+      name: Belconnen to Denman Prospect via Whitlam
+    80-10657:
+      name: Lanyon Marketplace to Tuggeranong via Banks
+    81-10657:
+      name: Lanyon Marketplace to Tuggeranong via Gordon
 stops:
   modifications:
     "959":
