@@ -92,7 +92,7 @@ jobs:
           python preprocessor/preprocessor.py -i canberra/raw -o canberra/normal
       - name: Run script
         run: |
-          python api-generator/script.py trip-index -c config-canberra.yml -g groups.yml -i canberra/lr -o build
+          python api-generator/script.py trip-index -c config-canberra.yml -g groups.yml -i canberra/normal -o build
       - name: Setup AWS CLI
         uses: aws-actions/configure-aws-credentials@v4
         with:
