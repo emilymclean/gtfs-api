@@ -34,7 +34,7 @@ jobs:
           unzip google_transit.zip -d canberra/raw
       - name: Preprocess
         run: |
-          python preprocessor/preprocessor.py -i canberra/raw -o canberra/normal
+          python preprocessor/preprocessor.py process -i canberra/raw -o canberra/normal
       - name: Run script
         run: |
           python api-generator/script.py generate -c config-canberra.yml -i canberra/normal -i event-service -g groups.yml -o build/canberra
@@ -89,7 +89,7 @@ jobs:
           unzip google_transit.zip -d canberra/raw
       - name: Preprocess
         run: |
-          python preprocessor/preprocessor.py -i canberra/raw -o canberra/normal
+          python preprocessor/preprocessor.py process -i canberra/raw -o canberra/normal
       - name: Run script
         run: |
           python api-generator/script.py trip-index -c config-canberra.yml -g groups.yml -i canberra/normal -o build
