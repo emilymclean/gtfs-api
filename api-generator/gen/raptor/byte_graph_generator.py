@@ -345,8 +345,13 @@ class ByteNetworkGraphGenerator(Writer):
         lat2 = math.radians(lat2)
         lng2 = math.radians(lng2)
 
-        return math.acos((math.sin(lat1) * math.sin(lat2)) +
-                         (math.cos(lat1) * math.cos(lat2) * math.cos(lng2 - lng1))) * 6371.0
+        parameters = ((math.sin(lat1) * math.sin(lat2)) +
+                      (math.cos(lat1) * math.cos(lat2) * math.cos(lng2 - lng1)))
+        if parameters < -1:
+            parameters = -1
+        if parameters > 1:
+            parameters = 1
+        return math.acos(parameters) * 6371.0
 
     def _connect_stops_by_transfer(self):
         visited_stops = {}
@@ -504,4 +509,3 @@ class ByteNetworkGraphGenerator(Writer):
 
         self.add_edge(stop1_node_index, out)
         self.add_edge(stop1_node_index, out, reverse=True)
-
