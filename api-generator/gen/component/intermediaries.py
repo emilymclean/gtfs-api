@@ -32,7 +32,7 @@ class LocationCSV(Intermediary):
 
 @dataclass
 class StopAccessibilityCSV(Intermediary):
-    wheelchair: int
+    wheelchair: Optional[int]
 
     def to_json(self) -> Dict[str, Any]:
         return {
@@ -347,13 +347,13 @@ class CalendarCSV(Intermediary):
 
     def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
-            'monday': self.days_of_week[0],
-            'tuesday': self.days_of_week[1],
-            'wednesday': self.days_of_week[2],
-            'thursday': self.days_of_week[3],
-            'friday': self.days_of_week[4],
-            'saturday': self.days_of_week[5],
-            'sunday': self.days_of_week[6],
+            'monday': bool(self.days_of_week[0]),
+            'tuesday': bool(self.days_of_week[1]),
+            'wednesday': bool(self.days_of_week[2]),
+            'thursday': bool(self.days_of_week[3]),
+            'friday': bool(self.days_of_week[4]),
+            'saturday': bool(self.days_of_week[5]),
+            'sunday': bool(self.days_of_week[6]),
             'start_date': time_helper.output_date_iso(self.start_date),
             'end_date': time_helper.output_date_iso(self.end_date),
         }

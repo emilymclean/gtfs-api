@@ -1,12 +1,16 @@
 from .. import format_pb2 as pb
 
 wheelchair_boarding_options = {
+    None: "none",
+    '': "none",
     0: "none",
     1: "partial",
     2: "full"
 }
 
 wheelchair_boarding_options_pb = {
+    None: pb.WheelchairStopAccessibility.WHEELCHAIR_STOP_ACCESSIBILITY_NONE,
+    '': pb.WheelchairStopAccessibility.WHEELCHAIR_STOP_ACCESSIBILITY_NONE,
     0: pb.WheelchairStopAccessibility.WHEELCHAIR_STOP_ACCESSIBILITY_NONE,
     1: pb.WheelchairStopAccessibility.WHEELCHAIR_STOP_ACCESSIBILITY_PARTIAL,
     2: pb.WheelchairStopAccessibility.WHEELCHAIR_STOP_ACCESSIBILITY_FULL
@@ -39,30 +43,35 @@ timetable_service_exception_type_pb = {
 }
 
 service_wheelchair_accessible = {
+    '': "unknown",
     0: "unknown",
     1: "accessible",
     2: "inaccessible"
 }
 
 service_wheelchair_accessible_pb = {
+    '': pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN,
     0: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN,
     1: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE,
     2: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE,
 }
 
 service_bikes_allowed = {
+    '': "unknown",
     0: "unknown",
     1: "allowed",
     2: "disallowed"
 }
 
 service_wheelchair_accessible_pb = {
+    '': pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN,
     0: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_UNKNOWN,
     1: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_ACCESSIBLE,
     2: pb.ServiceWheelchairAccessible.SERVICE_WHEELCHAIR_ACCESSIBLE_INACCESSIBLE,
 }
 
 service_bikes_allowed_pb = {
+    '': pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_UNKNOWN,
     0: pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_UNKNOWN,
     1: pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_ALLOWED,
     2: pb.ServiceBikesAllowed.SERVICE_BIKES_ALLOWED_DISALLOWED,
