@@ -6,10 +6,16 @@ package trip_index;
 
 message TripIndex {
     repeated TripInformation trips = 1;
+    map<string, AssociatedTrips> tripsByRoute = 2;
+    map<string, AssociatedTrips> tripsByStop = 3;
 }
 
 message TripInformation {
     required string tripId = 1;
     required string routeId = 2;
     repeated string stopIds = 3;
+}
+
+message AssociatedTrips {
+    repeated string tripId = 1;
 }
