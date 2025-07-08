@@ -1,66 +1,116 @@
-route_id,route_short_name,route_long_name,route_desc,route_type,route_color,route_text_color,route_url
-2-10647,2,"Fraser to Fyshwick via Belconnen & City",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-3-10647,3,"Spence to CBR Airport via City & Brindabella Park",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-4-10647,4,"Belconnen to Tuggeranong via City & Woden",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-5-10647,5,"Lanyon to City ANU via Erindale & Woden",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-6-10647,6,"Woden to City ANU via Kingston",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-7-10647,7,"Duffy to City ANU via Cooleman Court",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-8-10647,8,"Gunghalin to Belconnen",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-9-10647,9,"Belconnen to Watson via Bruce & Dickson",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-10-10647,10,"Denman Prospect to City ANU",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-18-10647,18,"Gungahlin to Dickson via Franklin & Mitchell",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-19-10647,19,"Bonner Loop via Forde & Amaroo",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-20-10647,20,"Bonner Loop via Amaroo & Forde",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-21-10647,21,"Throsby Loop via Palmerston & Harrison",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-22-10647,22,"Throsby Loop via Harrison & Palmerston",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-23-10647,23,"Gungahlin to Belconnen via Crace & Giralang",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-24-10647,24,"Gungahlin to Belconnen via Nicholls & McKellar",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-25-10647,25,"Taylor Loop via Amaroo & Moncrieff",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-26-10647,26,"Taylor Loop via Moncrieff & Amaroo",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-27-10647,27,"Casey to Gungahlin via Ngunnawal & Moncrieff",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-28-10647,28,"Casey to Gungahlin via Ngunnawal",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-30-10647,30,"Belconnen to Dickson via Giralang & Kaleen North",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-31-10647,31,"Belconnen to City via Kaleen South & Dickson",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-32-10647,32,"Belconnen to City via Jamison & Aranda",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-40-10647,40,"Fraser Loop via Kippax & Charnwood",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-41-10647,41,"Fraser to Belconnen via Flynn & Melba",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-42-10647,42,"Fraser Loop via Charnwood & Kippax",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-43-10647,43,"Spence to Belconnen via Evatt & McKellar",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-44-10647,44,"Kippax to Belconnen via West Macgregor & Higgins",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-45-10647,45,"Kippax to Belconnen via Hawker & Weetangera",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-46-10647,46,"Kippax to Belconnen via Latham & Florey",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-47-10647,47,"Whitlam Denman Loop",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-50-10647,50,"Watson to City via Dickson & Lyneham",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-51-10647,51,"Dickson to City via North Lyneham & O'Connor",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-53-10647,53,"Dickson to National Museum via Hackett & Ainslie",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-54-10647,54,"Majura Park Loop via Campbell Park",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-55-10647,55,"ADFA Loop via Campbell & Reid",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-56-10647,56,"Fyshwick to City via Red Hill & Kingston",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-57-10647,57,"Woden to City via Hughes & Yarralumla",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-58-10647,58,"Woden to City via Curtin & Deakin",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-59-10647,59,"Woden to City ANU via Barton & Russell",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-60-10647,60,"Mawson Loop via O'Malley & Farrer",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-61-10647,61,"Mawson Loop via Farrer & O'Malley",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-62-10647,62,"Torrens Loop via Lyons & Pearce",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-63-10647,63,"Cooleman Court to Woden via Stirling & Fisher",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-64-10647,64,"Chapman to Woden via Rivett & Cooleman Court",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-65-10647,65,"Duffy to Woden via Holder & Cooleman Court",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-66-10647,66,"Cooleman Court to Woden via Denman Prospect",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-70-10647,70,"Tuggeranong to Woden via Kambah West & Cooleman Ct",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-71-10647,71,"Tuggeranong to Woden via Kambah East & Cooleman Ct",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-72-10647,72,"Tuggeranong to Woden via Oxley & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-73-10647,73,"Tuggeranong to Woden via Monash & Wanniassa",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-74-10647,74,"Chisholm Loop via Erindale & Richardson",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-75-10647,75,"Chisholm Loop via Richardson & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-76-10647,76,"Tuggeranong to Woden via Calwell & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-77-10647,77,"Tuggeranong to Woden via Gowrie & Erindale",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-78-10647,78,"Richardson Loop via Chisholm",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-79-10647,79,"Calwell to Tuggeranong via Theodore",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-80-10647,80,"Lanyon Marketplace to Tuggeranong via Banks",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-81-10647,81,"Lanyon Marketplace to Tuggeranong via Gordon",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-180-10647,180,"Lanyon Marketplace to City ANU via Banks & Conder",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-181-10647,181,"Lanyon Marketplace to City ANU via Banks & Gordon",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-182-10647,182,"Lanyon Marketplace to City ANU via Calwell",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-901-10647,901,"Bruce Shuttle via UC Hospital & CIT Bruce",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-902-10647,902,"Woden to Hume Loop via AMC",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
-903-10647,903,"Strathnairn Loop",,3,0042AC,FFFFFF,http://www.transport.act.gov.au/routes-and-timetables/timetables/
+﻿route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+10_8965_2_3,TC,10,Denman Prospect to City ANU,,3,,0042AC,FFFFFF
+180_4553_1_3,TC,180,City ANU to Lanyon via Condor & Banks,,3,,0042AC,FFFFFF
+180_4553_2_3,TC,180,City ANU to Lanyon via Condor & Banks,,3,,0042AC,FFFFFF
+181_4394_1_3,TC,181,City ANU to Lanyon via Gordon & Banks,,3,,0042AC,FFFFFF
+181_4394_2_3,TC,181,City ANU to Lanyon via Gordon & Banks,,3,,0042AC,FFFFFF
+182_3329_1_3,TC,182,City ANU to Lanyon via Chisholm & Calwell,,3,,0042AC,FFFFFF
+182_3329_2_3,TC,182,City ANU to Lanyon via Chisholm & Calwell,,3,,0042AC,FFFFFF
+18_4199_1_3,TC,18,Dickson to Gungahlin via Mitchell & Franklin,,3,,0042AC,FFFFFF
+18_4199_2_3,TC,18,Dickson to Gungahlin via Mitchell & Franklin,,3,,0042AC,FFFFFF
+19_5750_4_3,TC,19,Bonner to Gungahlin via Amaroo,,3,,0042AC,FFFFFF
+1_8674_1_0,TC,1,Alinga Street - Gungahlin Place,,0,,BD0021,FFFFFF
+1_8674_2_0,TC,1,Alinga Street - Gungahlin Place,,0,,BD0021,FFFFFF
+20_3046_3_3,TC,20,Bonner Loop via Amaroo & Forde,,3,,0042AC,FFFFFF
+21_7852_4_3,TC,21,Harrison Loop via Palmerston & Throsby,,3,,0042AC,FFFFFF
+22_6706_3_3,TC,22,Palmerston to Gungahlin,,3,,0042AC,FFFFFF
+23_7000_1_3,TC,23,Gungahlin to Belconnen via Crace & Giralang,,3,,0042AC,FFFFFF
+23_7000_2_3,TC,23,Gungahlin to Belconnen via Crace & Giralang,,3,,0042AC,FFFFFF
+24_5162_1_3,TC,24,Belconnen to Gungahlin via McKellar & Nicholls,,3,,0042AC,FFFFFF
+24_5162_2_3,TC,24,Belconnen to Gungahlin via McKellar & Nicholls,,3,,0042AC,FFFFFF
+25_8548_4_3,TC,25,Taylor Loop via Amaroo & Moncrieff,,3,,0042AC,FFFFFF
+26_4232_3_3,TC,26,Taylor Loop via Moncrieff & Amaroo,,3,,0042AC,FFFFFF
+27_6523_1_3,TC,27,Gungahlin to Casey via Moncrieff & Ngunnawal,,3,,0042AC,FFFFFF
+27_6523_2_3,TC,27,Gungahlin to Casey via Moncrieff & Ngunnawal,,3,,0042AC,FFFFFF
+28_9124_1_3,TC,28,Gungahlin to Casey via Ngunnawal,,3,,0042AC,FFFFFF
+28_9124_2_3,TC,28,Gungahlin to Casey via Ngunnawal,,3,,0042AC,FFFFFF
+2_0026_1_3,TC,2,Belconnen to Fyshwick,,3,,0042AC,FFFFFF
+2_0026_2_3,TC,2,Belconnen to Fyshwick,,3,,0042AC,FFFFFF
+30_8504_1_3,TC,30,Belconnen to Dickson via Giralang & Kaleen North,,3,,0042AC,FFFFFF
+30_8504_2_3,TC,30,Belconnen to Dickson via Giralang & Kaleen North,,3,,0042AC,FFFFFF
+31_0945_1_3,TC,31,Belconnen to City via Kaleen South & Dickson,,3,,0042AC,FFFFFF
+31_0945_2_3,TC,31,Belconnen to City via Kaleen South & Dickson,,3,,0042AC,FFFFFF
+32_8773_1_3,TC,32,Belconnen to City via Jamison & Aranda,,3,,0042AC,FFFFFF
+32_8773_2_3,TC,32,Belconnen to City via Jamison & Aranda,,3,,0042AC,FFFFFF
+3_3326_1_3,TC,3,Spence to CBR Airport via City & Brindabella Park,,3,,0042AC,FFFFFF
+3_3326_2_3,TC,3,Spence to CBR Airport via City & Brindabella Park,,3,,0042AC,FFFFFF
+40_4799_3_3,TC,40,Fraser East to Belconnen via Latham,,3,,0042AC,FFFFFF
+41_4227_1_3,TC,41,S - Belconnen to Fraser via Melba HS,,3,,0042AC,FFFFFF
+41_4227_2_3,TC,41,S - Belconnen to Fraser via Melba HS,,3,,0042AC,FFFFFF
+42_6283_4_3,TC,42,Fraser to Belconnen via Charnwood & Kippax,,3,,0042AC,FFFFFF
+43_0206_1_3,TC,43,Belconnen to Spence via McKellar & Evatt,,3,,0042AC,FFFFFF
+43_0206_2_3,TC,43,Belconnen to Spence via McKellar & Evatt,,3,,0042AC,FFFFFF
+44_0063_1_3,TC,44,Belconnen to Kippax via Higgins & West Macgregor,,3,,0042AC,FFFFFF
+44_0063_2_3,TC,44,Belconnen to Kippax via Higgins & West Macgregor,,3,,0042AC,FFFFFF
+45_7516_1_3,TC,45,Belconnen to Kippax via Weetangera & Hawker,,3,,0042AC,FFFFFF
+45_7516_2_3,TC,45,Belconnen to Kippax via Weetangera & Hawker,,3,,0042AC,FFFFFF
+46_3197_1_3,TC,46,Kippax to Belconnen via Latham & Florey,,3,,0042AC,FFFFFF
+46_3197_2_3,TC,46,Kippax to Belconnen via Latham & Florey,,3,,0042AC,FFFFFF
+47_7329_3_3,TC,47,S - Belconnen to Denman Prospect via Eveyln Scott School,,3,,0042AC,FFFFFF
+4_0392_1_3,TC,4,Woden to Belconnen via City,,3,,0042AC,FFFFFF
+4_0392_2_3,TC,4,Woden to Belconnen via City,,3,,0042AC,FFFFFF
+50_8188_1_3,TC,50,City to Watson via Lyneham & Dickson,,3,,0042AC,FFFFFF
+50_8188_2_3,TC,50,City to Watson via Lyneham & Dickson,,3,,0042AC,FFFFFF
+51_6865_1_3,TC,51,City to Dickson via O'Connor & Lyneham,,3,,0042AC,FFFFFF
+51_6865_2_3,TC,51,City to Dickson via O'Connor & Lyneham,,3,,0042AC,FFFFFF
+53_3695_1_3,TC,53,City to Dickson via Ainslie & Hackett,,3,,0042AC,FFFFFF
+53_3695_2_3,TC,53,City to Dickson via Ainslie & Hackett,,3,,0042AC,FFFFFF
+54_3193_4_3,TC,54,City to Majura Park via Campbell Park (both directions),,3,,0042AC,FFFFFF
+55_2526_4_3,TC,55,Duntroon Loop via Campbell & Reid,,3,,0042AC,FFFFFF
+56_5524_1_3,TC,56,Fyshwick to City via Red Hill & Kingston,,3,,0042AC,FFFFFF
+56_5524_2_3,TC,56,Fyshwick to City via Red Hill & Kingston,,3,,0042AC,FFFFFF
+57_5690_1_3,TC,57,City to Woden via Yarralumla & Hughes,,3,,0042AC,FFFFFF
+57_5690_2_3,TC,57,City to Woden via Yarralumla & Hughes,,3,,0042AC,FFFFFF
+58_2148_1_3,TC,58,City to Woden via Deakin & Curtin,,3,,0042AC,FFFFFF
+58_2148_2_3,TC,58,City to Woden via Deakin & Curtin,,3,,0042AC,FFFFFF
+59_7012_1_3,TC,59,City ANU to Woden via Russell & Barton,,3,,0042AC,FFFFFF
+59_7012_2_3,TC,59,City ANU to Woden via Russell & Barton,,3,,0042AC,FFFFFF
+5_4977_1_3,TC,5,S - Alfred Deakin HS to Lanyon,,3,,0042AC,FFFFFF
+5_4977_2_3,TC,5,S - Alfred Deakin HS to Lanyon,,3,,0042AC,FFFFFF
+60_2523_3_3,TC,60,Mawson Loop via O'Malley & Farrer,,3,,0042AC,FFFFFF
+61_0274_4_3,TC,61,Mawson Loop via Farrer & O'Malley,,3,,0042AC,FFFFFF
+62_7966_2_3,TC,62,Woden to Southlands via Lyons & Pearce,,3,,0042AC,FFFFFF
+63_9746_1_3,TC,63,Cooleman Court to Woden via Stirling & Fisher,,3,,0042AC,FFFFFF
+63_9746_2_3,TC,63,Cooleman Court to Woden via Stirling & Fisher,,3,,0042AC,FFFFFF
+64_5954_1_3,TC,64,Woden to Weston Creek via Cooleman Court & Rivett,,3,,0042AC,FFFFFF
+64_5954_2_3,TC,64,Woden to Weston Creek via Cooleman Court & Rivett,,3,,0042AC,FFFFFF
+65_1927_1_3,TC,65,Woden to Weston Creek via Cooleman Court & Duffy,,3,,0042AC,FFFFFF
+65_1927_2_3,TC,65,Woden to Weston Creek via Cooleman Court & Duffy,,3,,0042AC,FFFFFF
+66_7731_1_3,TC,66,Coombs to Woden,,3,,0042AC,FFFFFF
+66_7731_2_3,TC,66,Coombs to Woden,,3,,0042AC,FFFFFF
+6_3162_1_3,TC,6,Woden to City ANU via Kingston,,3,,0042AC,FFFFFF
+6_3162_2_3,TC,6,Woden to City ANU via Kingston,,3,,0042AC,FFFFFF
+70_0636_1_3,TC,70,Tuggeranong to Woden via Kambah West & Cooleman Court,,3,,0042AC,FFFFFF
+70_0636_2_3,TC,70,Tuggeranong to Woden via Kambah West & Cooleman Court,,3,,0042AC,FFFFFF
+71_1014_1_3,TC,71,Tuggeranong to Woden via Kambah East & Cooleman Court,,3,,0042AC,FFFFFF
+71_1014_2_3,TC,71,Tuggeranong to Woden via Kambah East & Cooleman Court,,3,,0042AC,FFFFFF
+72_8590_1_3,TC,72,Woden to Tuggeranong via Erindale & Oxley,,3,,0042AC,FFFFFF
+72_8590_2_3,TC,72,Woden to Tuggeranong via Erindale & Oxley,,3,,0042AC,FFFFFF
+73_3042_1_3,TC,73,Tuggeranong to Woden via Monash & Wanniassa,,3,,0042AC,FFFFFF
+73_3042_2_3,TC,73,Tuggeranong to Woden via Monash & Wanniassa,,3,,0042AC,FFFFFF
+74_8473_3_3,TC,74,Chisholm Loop via Erindale & Richardson,,3,,0042AC,FFFFFF
+75_8521_4_3,TC,75,Chisholm Loop via Richardson & Erindale,,3,,0042AC,FFFFFF
+76_8124_1_3,TC,76,Tuggeranong to Woden via Calwell & Erindale,,3,,0042AC,FFFFFF
+76_8124_2_3,TC,76,Tuggeranong to Woden via Calwell & Erindale,,3,,0042AC,FFFFFF
+77_4814_1_3,TC,77,Erindale to Tuggeranong via Gowrie,,3,,0042AC,FFFFFF
+77_4814_2_3,TC,77,Erindale to Tuggeranong via Gowrie,,3,,0042AC,FFFFFF
+78_9399_2_3,TC,78,Richardson Loop via Bonython & Isabella Plains,,3,,0042AC,FFFFFF
+79_3729_1_3,TC,79,Calwell to Tuggeranong via Theodore & Isabella Plains,,3,,0042AC,FFFFFF
+79_3729_2_3,TC,79,Calwell to Tuggeranong via Theodore & Isabella Plains,,3,,0042AC,FFFFFF
+7_8160_1_3,TC,7,City ANU to Weston Creek via Cooleman Court,,3,,0042AC,FFFFFF
+7_8160_2_3,TC,7,City ANU to Weston Creek via Cooleman Court,,3,,0042AC,FFFFFF
+80_5274_1_3,TC,80,S - Lanyon to Tuggeranong via Covenant Christian,,3,,0042AC,FFFFFF
+80_5274_2_3,TC,80,S - Lanyon to Tuggeranong via Covenant Christian,,3,,0042AC,FFFFFF
+81_5274_1_3,TC,81,S - Lanyon to Tuggeranong via Covenant Christian,,3,,0042AC,FFFFFF
+81_5274_2_3,TC,81,S - Lanyon to Tuggeranong via Covenant Christian,,3,,0042AC,FFFFFF
+8_4745_1_3,TC,8,Belconnen to Gungahlin,,3,,0042AC,FFFFFF
+8_4745_2_3,TC,8,Belconnen to Gungahlin,,3,,0042AC,FFFFFF
+901_1851_3_3,TC,901,Belconnen to North Canberra Hospital via UC Hospital & CIT,,3,,0042AC,FFFFFF
+902_4459_4_3,TC,902,Woden to AMC & Hume via CBR Hospital & Narrabundah,,3,,0042AC,FFFFFF
+903_9053_3_3,TC,903,Kippax to Strathnairn Loop,,3,,0042AC,FFFFFF
+9_6033_1_3,TC,9,Watson to Belconnen via Dickson & Bruce,,3,,0042AC,FFFFFF
+9_6033_2_3,TC,9,Watson to Belconnen via Dickson & Bruce,,3,,0042AC,FFFFFF
+X1_8979_1_0,TC,X1,Sandford Street - Gungahlin Place,,0,,BD0021,FFFFFF
+X1_8979_2_0,TC,X1,Sandford Street - Gungahlin Place,,0,,BD0021,FFFFFF
+X2_9541_1_0,TC,X2,EPIC - Alinga Street,,0,,BD0021,FFFFFF
+X2_9541_2_0,TC,X2,EPIC - Alinga Street,,0,,BD0021,FFFFFF

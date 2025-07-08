@@ -195,7 +195,12 @@ class Generator:
                 self.calendar_exception_index,
                 self.distinguishers
             ),
-            ServiceListGeneratorComponent(self.calendar_data, self.calendar_exception_index, self.trip_index_by_service, self.distinguishers)
+            ServiceListGeneratorComponent(
+                self.calendar_data,
+                self.calendar_exception_index,
+                self.trip_index_by_service,
+                self.distinguishers
+            )
         ]
 
         self._do_generation(generators, output_folder)

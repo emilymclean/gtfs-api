@@ -10,7 +10,7 @@ from .extras_helper import _get_route_designation, _get_route_prefix, _get_route
     _get_show_on_zoom_out_stop, _get_show_on_zoom_in_stop, _get_show_children_stop, _get_search_weight_stop, \
     _get_search_weight_route, _get_hidden_route, _get_route_has_realtime, _get_has_realtime_stop, \
     _get_route_description, _get_route_show_on_browse, _get_route_approximate_timings, _get_route_event_route, \
-    _get_route_link_url
+    _get_route_link_url, _get_route_name
 from ..time_helper import TimeHelper
 
 
@@ -32,7 +32,7 @@ class LocationCSV(Intermediary):
 
 @dataclass
 class StopAccessibilityCSV(Intermediary):
-    wheelchair: int
+    wheelchair: Optional[int]
 
     def to_json(self) -> Dict[str, Any]:
         return {
@@ -255,11 +255,12 @@ class RouteIntermediary(Intermediary):
         colors = _get_route_colors(route.code, extras)
         search_weight = _get_search_weight_route(route.id, extras)
         hidden = _get_hidden_route(route.id, extras)
+        rename = _get_route_name(route.id, extras)
 
         return RouteIntermediary(
             route.id,
             route.code,
-            route.name,
+            rename if rename is not None else route.name,
             _get_route_description(route.id, extras),
             route.type,
             designation,
@@ -347,13 +348,13 @@ class CalendarCSV(Intermediary):
 
     def to_json(self, time_helper: TimeHelper) -> Dict[str, Any]:
         return {
-            'monday': self.days_of_week[0],
-            'tuesday': self.days_of_week[1],
-            'wednesday': self.days_of_week[2],
-            'thursday': self.days_of_week[3],
-            'friday': self.days_of_week[4],
-            'saturday': self.days_of_week[5],
-            'sunday': self.days_of_week[6],
+            'monday': bool(self.days_of_week[0]),
+            'tuesday': bool(self.days_of_week[1]),
+            'wednesday': bool(self.days_of_week[2]),
+            'thursday': bool(self.days_of_week[3]),
+            'friday': bool(self.days_of_week[4]),
+            'saturday': bool(self.days_of_week[5]),
+            'sunday': bool(self.days_of_week[6]),
             'start_date': time_helper.output_date_iso(self.start_date),
             'end_date': time_helper.output_date_iso(self.end_date),
         }

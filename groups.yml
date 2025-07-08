@@ -1,0 +1,155 @@
+groupings:
+- children:
+  - 8100
+  name: Gungahlin Place
+  stop_id: GGN
+- children:
+  - 8104
+  - 8105
+  name: Manning Clark Crescent
+  stop_id: MCK
+- children:
+  - 8106
+  - 8107
+  name: Mapleton Avenue
+  stop_id: MPN
+- children:
+  - 8108
+  - 8109
+  name: Nullarbor Avenue
+  stop_id: NLR
+- children:
+  - 8110
+  - 8111
+  name: Well Station Drive
+  stop_id: WSN
+- children:
+  - 8112
+  - 8113
+  name: Sandford Street
+  stop_id: SFD
+- children:
+  - 8114
+  - 8115
+  name: EPIC and Racecourse
+  stop_id: EPC
+- children:
+  - 8116
+  - 8117
+  name: Phillip Avenue
+  stop_id: PLP
+- children:
+  - 8118
+  - 8119
+  name: Swinden Street
+  stop_id: SWN
+- children:
+  - 8120
+  - 8121
+  name: Dickson Interchange (Stop)
+  stop_id: DKN
+- children:
+  - 8122
+  - 8123
+  name: Macarthur Avenue
+  stop_id: MCR
+- children:
+  - 8124
+  - 8125
+  name: Ipima Street
+  stop_id: IPA
+- children:
+  - 8126
+  - 8127
+  name: Elouera Street
+  stop_id: ELA
+- children:
+  - 8129
+  name: Alinga Street
+  stop_id: ALG
+- children:
+  - 1721
+  - 3402
+  name: City Interchange Plt 11
+  stop_id: city-interchange-11-synthetic
+- children:
+  - 1708
+  - 1723
+  - 3000
+  - 3401
+  - 3404
+  - 3406
+  - 3409
+  - 3410
+  - 3413
+  - 3418
+  - 3419
+  - 3420
+  - ALG
+  - city-interchange-11-synthetic
+  name: City Interchange
+  stop_id: city-interchange
+- children:
+  - 5511
+  - 5512
+  - 5513
+  - 5514
+  - 5515
+  - 5516
+  - 5517
+  - 5518
+  name: Belconnen Interchange
+  stop_id: belconnen-interchange
+- children:
+  - 4479
+  - 4480
+  - 940
+  - 941
+  - 942
+  - 956
+  - 959
+  name: Cohen St Interchange
+  stop_id: cohen-st-interchange
+- children:
+  - 945
+  - 946
+  - DKN
+  name: Dickson Interchange
+  stop_id: dickson-interchange
+- children:
+  - 1801
+  - 7011
+  name: Gungahlin Place Plt 3
+  stop_id: gungahlin-place-3-synthetic
+- children:
+  - 7012
+  - 7016
+  name: Gungahlin Place Plt 4
+  stop_id: gungahlin-place-4-synthetic
+- children:
+  - gungahlin-place-3-synthetic
+  - gungahlin-place-4-synthetic
+  - GGN
+  name: Gungahlin Interchange
+  stop_id: gungahlin-interchange
+- children:
+  - 2761
+  - 2762
+  - 2763
+  - 2764
+  - 2766
+  - 2767
+  - 2768
+  - 2769
+  - 2770
+  name: Woden Interchange
+  stop_id: woden-interchange
+- children:
+  - 13
+  - 1803
+  - 1804
+  - 1807
+  - 1808
+  - 49
+  name: Tuggeranong Interchange
+  stop_id: tuggeranong-interchange

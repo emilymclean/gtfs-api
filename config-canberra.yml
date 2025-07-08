@@ -5,19 +5,6 @@ designations:
   rapid:
     prefix: R
 route:
-  real-time:
-    - id: ACTO001
-      url: https://files.transport.act.gov.au/feeds/lightrail.pb
-    - id: NIS
-      url: https://files.transport.act.gov.au/feeds/lightrail.pb
-    - id: X1
-      url: https://files.transport.act.gov.au/feeds/lightrail.pb
-    - id: X2
-      url: https://files.transport.act.gov.au/feeds/lightrail.pb
-    - id: X3
-      url: https://files.transport.act.gov.au/feeds/lightrail.pb
-    - id: X4
-      url: https://files.transport.act.gov.au/feeds/lightrail.pb
   special-designations:
     - code: 1
       designation: light_rail
@@ -89,156 +76,35 @@ route:
       hidden: true
     X4:
       hidden: true
-    1:
+    1-10657:
       search-weight: 1.7
-    2:
+    2-10657:
       search-weight: 1.7
-    3:
+    3-10657:
       search-weight: 1.7
-    4:
+    4-10657:
       search-weight: 1.7
-    5:
+    5-10657:
       search-weight: 1.7
-    6:
+      name: Lanyon to City ANU via Erindale & Woden
+    6-10657:
       search-weight: 1.7
-    7:
+    7-10657:
       search-weight: 1.7
-    8:
+    8-10657:
       search-weight: 1.7
-    9:
+    9-10657:
       search-weight: 1.7
-    10:
+    10-10657:
       search-weight: 1.7
-    2-10647:
-      hidden: true
-    3-10647:
-      hidden: true
-    4-10647:
-      hidden: true
-    5-10647:
-      hidden: true
-    6-10647:
-      hidden: true
-    7-10647:
-      hidden: true
-    8-10647:
-      hidden: true
-    9-10647:
-      hidden: true
-    10-10647:
-      hidden: true
-    18-10647:
-      hidden: true
-    19-10647:
-      hidden: true
-    20-10647:
-      hidden: true
-    21-10647:
-      hidden: true
-    22-10647:
-      hidden: true
-    23-10647:
-      hidden: true
-    24-10647:
-      hidden: true
-    25-10647:
-      hidden: true
-    26-10647:
-      hidden: true
-    27-10647:
-      hidden: true
-    28-10647:
-      hidden: true
-    30-10647:
-      hidden: true
-    31-10647:
-      hidden: true
-    32-10647:
-      hidden: true
-    40-10647:
-      hidden: true
-    41-10647:
-      hidden: true
-    42-10647:
-      hidden: true
-    43-10647:
-      hidden: true
-    44-10647:
-      hidden: true
-    45-10647:
-      hidden: true
-    46-10647:
-      hidden: true
-    47-10647:
-      hidden: true
-    50-10647:
-      hidden: true
-    51-10647:
-      hidden: true
-    53-10647:
-      hidden: true
-    54-10647:
-      hidden: true
-    55-10647:
-      hidden: true
-    56-10647:
-      hidden: true
-    57-10647:
-      hidden: true
-    58-10647:
-      hidden: true
-    59-10647:
-      hidden: true
-    60-10647:
-      hidden: true
-    61-10647:
-      hidden: true
-    62-10647:
-      hidden: true
-    63-10647:
-      hidden: true
-    64-10647:
-      hidden: true
-    65-10647:
-      hidden: true
-    66-10647:
-      hidden: true
-    70-10647:
-      hidden: true
-    71-10647:
-      hidden: true
-    72-10647:
-      hidden: true
-    73-10647:
-      hidden: true
-    74-10647:
-      hidden: true
-    75-10647:
-      hidden: true
-    76-10647:
-      hidden: true
-    77-10647:
-      hidden: true
-    78-10647:
-      hidden: true
-    79-10647:
-      hidden: true
-    80-10647:
-      hidden: true
-    81-10647:
-      hidden: true
-    180-10647:
-      hidden: true
-    181-10647:
-      hidden: true
-    182-10647:
-      hidden: true
-    901-10647:
-      hidden: true
-    902-10647:
-      hidden: true
-    903-10647:
-      hidden: true
+    41-10657:
+      name: Fraser to Belconnen via Charnwood
+    47-10657:
+      name: Belconnen to Denman Prospect via Whitlam
+    80-10657:
+      name: Lanyon Marketplace to Tuggeranong via Banks
+    81-10657:
+      name: Lanyon Marketplace to Tuggeranong via Gordon
 stops:
   modifications:
     "959":

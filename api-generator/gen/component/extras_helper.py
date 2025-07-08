@@ -57,6 +57,14 @@ def _get_route_description(route_id: str, extras: Dict[str, Any]) -> Optional[st
     return modifications["description"].strip() if "description" in modifications else None
 
 
+def _get_route_name(route_id: str, extras: Dict[str, Any]) -> Optional[str]:
+    modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
+    if modifications is None:
+        return None
+
+    return modifications["name"].strip() if "name" in modifications else None
+
+
 def _get_route_has_realtime(route_id: str, extras: Dict[str, Any]) -> bool:
     modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
     if modifications is None:
