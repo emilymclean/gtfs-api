@@ -26,12 +26,13 @@ service_id_map = {}
 
 def generate_service_id_map(calendar_csv: pd.DataFrame):
     for index, row in calendar_csv.iterrows():
-        service_id_map[f"{row['service_id']}"] = base64.urlsafe_b64encode(
-            hashlib.sha1((f"{row['service_id']},{row['monday']},{row['tuesday']},"
-                          "{row['wednesday']},{row['thursday']},{row['friday']},"
-                          "{row['saturday']},{row['sunday']},{row['start_date']},"
-                          "{row['end_date']}").encode("utf-8")).digest()
-        ).decode("utf-8")[0:16]
+        service_id_map[f"{row['service_id']}"] = (f"{row['service_id']}-" +
+            base64.urlsafe_b64encode(
+                hashlib.sha1((f"{row['monday']},{row['tuesday']},"
+                              f"{row['wednesday']},{row['thursday']},{row['friday']},"
+                              f"{row['saturday']},{row['sunday']},{row['start_date']},"
+                              f"{row['end_date']}").encode("utf-8")).digest()
+            ).decode("utf-8")[0:16])
 
 
 def map_service_id(service_id: str) -> str:
