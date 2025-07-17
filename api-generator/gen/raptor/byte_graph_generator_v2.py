@@ -18,7 +18,7 @@ mapping_count_byte_format = "< I I I I I"
 stop_node_byte_format = "<I f f B I I"
 route_node_byte_format = "<I I I B I I"
 # Assumes that all services can be fit into three bytes
-edge_byte_format = "<I I I I 3s B"
+edge_byte_format = "<I I I I {}s B"
 
 
 def set_bits(bits: Set[int], size: int) -> bytes:
@@ -37,8 +37,12 @@ def str_to_bytes(s: str) -> bytes:
 
 class Edge(ABC):
     @abstractmethod
-    def build(self, from_node_index: int) -> bytes:
+    def build(self, from_node_index: int, service_byte_count: int) -> bytes:
         pass
+
+    @staticmethod
+    def _format(service_byte_count: int) -> str:
+        return edge_byte_format.format(service_byte_count)
 
 
 @dataclass
@@ -46,9 +50,9 @@ class StopRouteEdge(Edge):
     connected_route_node: int
     available_services: Set[int]
 
-    def build(self, from_node_index: int) -> bytes:
+    def build(self, from_node_index: int, service_byte_count: int) -> bytes:
         return struct.pack(
-            edge_byte_format,
+            self._format(service_byte_count),
             self.connected_route_node,
             0,
             0,
@@ -62,9 +66,9 @@ class StopRouteEdge(Edge):
 class RouteStopEdge(Edge):
     connected_stop_node: int
 
-    def build(self, from_node_index: int) -> bytes:
+    def build(self, from_node_index: int, service_byte_count: int) -> bytes:
         return struct.pack(
-            edge_byte_format,
+            self._format(service_byte_count),
             self.connected_stop_node,
             0,
             0,
@@ -84,9 +88,9 @@ class TravelEdge(Edge):
     wheelchair_accessible: bool
     bikes_allowed: bool
 
-    def build(self, from_node_index: int) -> bytes:
+    def build(self, from_node_index: int, service_byte_count: int) -> bytes:
         return struct.pack(
-            edge_byte_format,
+            self._format(service_byte_count),
             self.connected_route_node,
             self.travel_time,
             self.departure_time,
@@ -101,9 +105,9 @@ class TransferEdge(Edge):
     connected_stop_node: int
     travel_time: int
 
-    def build(self, from_node_index: int) -> bytes:
+    def build(self, from_node_index: int, service_byte_count: int) -> bytes:
         return struct.pack(
-            edge_byte_format,
+            self._format(service_byte_count),
             self.connected_stop_node,
             self.travel_time,
             0,
@@ -213,6 +217,7 @@ class ByteNetworkGraphGeneratorV2(Writer):
     def _connect_graph(self, reverse=False) -> bytes:
         edges = self.edges if not reverse else self.reverse_edges
 
+        service_size = -(len(self.service_ids) // -8)
         mapping_bytes = bytearray()
         node_bytes = bytearray()
         edges_bytes = bytearray()
@@ -252,7 +257,7 @@ class ByteNetworkGraphGeneratorV2(Writer):
             node_bytes.extend(node.build(len(edges_bytes), len(associated_edges)))
 
             for edge in associated_edges:
-                edges_bytes.extend(edge.build(node_index))
+                edges_bytes.extend(edge.build(node_index, service_size))
 
         metadata_size = struct.calcsize(metadata_byte_format)
         mapping_size = len(mapping_bytes)
@@ -263,7 +268,7 @@ class ByteNetworkGraphGeneratorV2(Writer):
             metadata_byte_format,
             'emily'.encode('ascii'),  # Magic number
             2,  # Version
-            3,  # Available service length
+            service_size,  # Available service length
             metadata_size + mapping_size,  # Nodes start
             metadata_size + mapping_size + nodes_size,  # Edges start
             1.0,  # Penalty multiplier
