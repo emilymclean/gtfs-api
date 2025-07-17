@@ -58,7 +58,7 @@ class StopRouteEdge(Edge):
             0,
             0,
             set_bits(self.available_services, 3),
-            0b10
+            0b11
         )
 
 
@@ -74,7 +74,7 @@ class RouteStopEdge(Edge):
             0,
             0,
             bytes(bytearray(3)),
-            0b11
+            0b01
         )
 
 
