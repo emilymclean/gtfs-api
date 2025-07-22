@@ -22,6 +22,7 @@ from .component.v2.route_canonical_timetable_generator_v2 import RouteCanonicalT
 from .location_helper import LocationHelper
 from .models import *
 from .raptor.byte_graph_generator import ByteNetworkGraphGenerator
+from .raptor.byte_graph_generator_v2 import ByteNetworkGraphGeneratorV2
 from .time_helper import TimeHelper
 
 T = TypeVar('T')
@@ -206,14 +207,23 @@ class Generator:
         self._do_generation(generators, output_folder)
 
     def network_graph(self, output_folder: Path):
-        g = ByteNetworkGraphGenerator(
-            flatten_parsed(self.stop_data),
-            self.route_index,
-            flatten_parsed(self.trip_data),
-            self.stop_time_index_by_trip
-        )
-        g.time_helper = self.time_helper
-        g.generate(output_folder)
+        generators = [
+            ByteNetworkGraphGenerator(
+                flatten_parsed(self.stop_data),
+                self.route_index,
+                flatten_parsed(self.trip_data),
+                self.stop_time_index_by_trip
+            ),
+            ByteNetworkGraphGeneratorV2(
+                flatten_parsed(self.stop_data),
+                self.route_index,
+                flatten_parsed(self.trip_data),
+                self.stop_time_index_by_trip
+            )
+        ]
+        for g in generators:
+            g.time_helper = self.time_helper
+            g.generate(output_folder)
 
     def generate_trip_index(self, output_folder: Path):
         generators = [
