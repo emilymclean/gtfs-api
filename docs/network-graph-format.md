@@ -49,7 +49,7 @@ All nodes are the same length (21 bytes), but differ depending on whether they a
 | ------------ | ------ | ------ | --------- | ------------------------------------------------------------- |
 | Stop Index   | 0x00   | 4      | uint32    | Represents an index into the stop ID array.                   |
 | Latitude     | 0x04   | 4      | float     | The latitude of the stop.                                     |
-| Longitude    | 0x08   | 4      | uint32    | The longitude of the stop.                                    |
+| Longitude    | 0x08   | 4      | float     | The longitude of the stop.                                    |
 | Flags        | 0x0C   | 1      | NODE_FLAG | Bit flags describing this node.                               |
 | Edge Pointer | 0x0D   | 4      | uint32    | Pointer to where in the edge collection this node's edges are |
 | Edge Count   | 0x11   | 4      | uint32    | The number of edges associated with this node                 |
