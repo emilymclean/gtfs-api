@@ -68,9 +68,9 @@ def _get_route_name(route_id: str, extras: Dict[str, Any]) -> Optional[str]:
 def _get_route_has_realtime(route_id: str, extras: Dict[str, Any]) -> bool:
     modifications: Dict[str, Any] | None = extras.get("route", {}).get("modifications", {}).get(f"{route_id}", None)
     if modifications is None:
-        return False
+        return True
 
-    return modifications["has-realtime"] if "has-realtime" in modifications else False
+    return modifications["has-realtime"] if "has-realtime" in modifications else True
 
 
 def _get_route_real_time(id: str, extras: Dict[str, Any]) -> Optional[str]:
@@ -164,6 +164,6 @@ def _get_has_realtime_stop(stop_id: str, extras: Dict[str, Any]) -> bool:
     modifications: Dict[str, Any] | None = extras.get("stops", {}).get("modifications", {}).get(f"{stop_id}", None)
 
     if modifications is None:
-        return False
+        return True
 
-    return modifications["has-realtime"] if "has-realtime" in modifications else False
+    return modifications["has-realtime"] if "has-realtime" in modifications else True

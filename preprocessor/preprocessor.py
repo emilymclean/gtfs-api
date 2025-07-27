@@ -1,10 +1,12 @@
+import base64
+import hashlib
 from pathlib import Path
 
 import click
 import pandas as pd
 
 
-def map_route(route_id: str) -> str:
+def map_route_id(route_id: str) -> str:
     r = route_id.partition("_")[0]
 
     if r == "1":
@@ -17,6 +19,24 @@ def map_route(route_id: str) -> str:
 
 def combine_routes(df: pd.DataFrame):
     return df.drop_duplicates(subset='route_id', keep='first')
+
+
+service_id_map = {}
+
+
+def generate_service_id_map(calendar_csv: pd.DataFrame):
+    for index, row in calendar_csv.iterrows():
+        service_id_map[f"{row['service_id']}"] = (f"{row['service_id']}-" +
+            base64.urlsafe_b64encode(
+                hashlib.sha1((f"{row['monday']},{row['tuesday']},"
+                              f"{row['wednesday']},{row['thursday']},{row['friday']},"
+                              f"{row['saturday']},{row['sunday']},{row['start_date']},"
+                              f"{row['end_date']}").encode("utf-8")).digest()
+            ).decode("utf-8")[0:16])
+
+
+def map_service_id(service_id: str) -> str:
+    return service_id_map[f"{service_id}"]
 
 
 @click.group()
@@ -39,10 +59,16 @@ def process(
     stop_time_csv = pd.read_csv(Path(input_folder).joinpath("stop_times.txt"), keep_default_na=False)
     trips_csv = pd.read_csv(Path(input_folder).joinpath("trips.txt"), keep_default_na=False)
 
-    route_csv['route_id'] = route_csv['route_id'].apply(map_route)
-    route_csv = combine_routes(route_csv)
+    generate_service_id_map(calendar_csv)
 
-    trips_csv['route_id'] = trips_csv['route_id'].apply(map_route)
+    calendar_csv['service_id'] = calendar_csv['service_id'].apply(map_service_id)
+    calendar_date_csv['service_id'] = calendar_date_csv['service_id'].apply(map_service_id)
+    trips_csv['service_id'] = trips_csv['service_id'].apply(map_service_id)
+
+    route_csv['route_id'] = route_csv['route_id'].apply(map_route_id)
+    trips_csv['route_id'] = trips_csv['route_id'].apply(map_route_id)
+
+    route_csv = combine_routes(route_csv)
 
     Path(output_folder).mkdir(parents=True, exist_ok=True)
     stop_csv.to_csv(Path(output_folder).joinpath("stops.txt"), index=False)
