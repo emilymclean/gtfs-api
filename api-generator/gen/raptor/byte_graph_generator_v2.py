@@ -11,7 +11,7 @@ from ..component.base import Writer
 from ..component.intermediaries import StopCSV, RouteCSV, TripCSV, StopTimeCSV
 from ..time_helper import TimeHelper
 
-metadata_byte_format = "< 5s B B I I f I I"
+metadata_byte_format = "< 5s B B I I f I I B B"
 
 mapping_count_byte_format = "< I I I I I"
 
@@ -263,6 +263,8 @@ class ByteNetworkGraphGeneratorV2(Writer):
         mapping_size = len(mapping_bytes)
         nodes_size = len(node_bytes)
         edges_size = len(edges_bytes)
+        node_size = struct.calcsize(stop_node_byte_format)
+        edge_size = struct.calcsize(edge_byte_format.format(service_size))
 
         metadata_bytes = struct.pack(
             metadata_byte_format,
@@ -273,7 +275,9 @@ class ByteNetworkGraphGeneratorV2(Writer):
             metadata_size + mapping_size + nodes_size,  # Edges start
             1.0,  # Penalty multiplier
             self.distance_time_multiplier,  # Assumed walking seconds per kilometer
-            len(self.nodes)  # Node count
+            len(self.nodes),  # Node count
+            node_size,  # Node byte count
+            edge_size,  # Edge byte count
         )
 
         return metadata_bytes + mapping_bytes + node_bytes + edges_bytes
@@ -281,7 +285,6 @@ class ByteNetworkGraphGeneratorV2(Writer):
     def generate(self, output_folder: Path):
         self._compute_graph()
         graph = self._connect_graph(reverse=False)
-        # Legacy because I'm dumb
         self._write(graph, output_folder.joinpath("v2/network-graph.eng"))
 
         reverse_graph = self._connect_graph(reverse=True)
