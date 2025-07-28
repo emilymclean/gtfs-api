@@ -69,7 +69,7 @@ class LicenseCollection {
                 if (e.note == null) "**\(e.name)**" else null
                 if (e.note != null) "\(e.note)" else null
                 if (e.note == null && copyright != null) ", " else null
-                if (copyright != null) " \(copyright)" else null
+                if (copyright != null) "\(copyright)" else null
             }.toList().filterNonNull().join("")
         ).join("\n").trim()
 
@@ -130,6 +130,8 @@ hidden appLicense = new LicenseCollection {
         }
         new {
             name = "Kotlin Datetime"
+            attribution = "JetBrains s.r.o"
+            year = "2019-2020"
             licenseCode = "A2.0"
         }
         new {
@@ -176,10 +178,14 @@ hidden appLicense = new LicenseCollection {
         }
         new {
             name = "Moko Permissions"
+            attribution = "IceRock MAG Inc"
+            year = "2025"
             licenseCode = "A2.0"
         }
         new {
             name = "Firebase"
+            attribution = "Google LLC"
+            year = "2019"
             licenseCode = "A2.0"
         }
         new {
