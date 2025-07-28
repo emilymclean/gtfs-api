@@ -26,6 +26,8 @@ All numbers are little endian. All strings are null terminated UTF-8 encoded.
 | Penalty Multiplier                | 4      | float32 | The number to multiply the penalty value by.                |
 | assumedWalkingSecondsPerKilometer | 4      | uint32  | Assumed number of seconds required to traverse a kilometer. |
 | Node count                        | 4      | uint32  | Total number of nodes                                       |
+| Node Length                       | 1      | uint8   | The number of bytes used to represent a node.               |
+| Edge Length                       | 1      | uint8   | The number of bytes used to represent an edge.              |
 
 # Mapping
 | Field         | Length   | Type     | Description                                  |
