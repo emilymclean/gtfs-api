@@ -6,9 +6,9 @@ hidden const isDefault = read?("env:default") == "true"
 
 const function parseVersion(version: String) = 
     let(split = version.split("."))
-    1_000_000 * split[0].toInt() +
-    10_000    * split[1].toInt() +
-    1         * split[2].takeWhile((x) -> x.matches(Regex(#"^\d*$"#))).toInt()
+    1_000_000 + split[0].toInt() +
+    10_000    + split[1].toInt() +
+    1         + split[2].takeWhile((x) -> x.matches(Regex(#"^\d*$"#))).toInt()
 
 const function isPlatform(platforms: List<Platform>) = platforms.contains(read?("env:platform"))
 const function versionGEQ(version: String) = 
