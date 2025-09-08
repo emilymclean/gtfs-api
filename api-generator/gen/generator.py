@@ -208,12 +208,12 @@ class Generator:
 
     def network_graph(self, output_folder: Path):
         generators = [
-            # ByteNetworkGraphGenerator(
-            #     flatten_parsed(self.stop_data),
-            #     self.route_index,
-            #     flatten_parsed(self.trip_data),
-            #     self.stop_time_index_by_trip
-            # ),
+            ByteNetworkGraphGenerator(
+                flatten_parsed(self.stop_data),
+                self.route_index,
+                flatten_parsed(self.trip_data),
+                self.stop_time_index_by_trip
+            ),
             ByteNetworkGraphGeneratorV2(
                 flatten_parsed(self.stop_data),
                 self.route_index,

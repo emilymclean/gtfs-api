@@ -1,4 +1,10 @@
 trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,timepoint
+floriade_2025_1_0_000,09:25,09:25,3051,0,F1,0,0,0
+floriade_2025_1_0_000,09:30,09:30,3420,1,F1,0,0,0
+floriade_2025_1_0_000,09:40,09:40,temp_floriade_regatta,2,F1,0,0,0
+floriade_2025_1_0_00,09:45,09:45,3051,0,F1,0,0,0
+floriade_2025_1_0_00,09:50,09:50,3420,1,F1,0,0,0
+floriade_2025_1_0_00,10:00,10:00,temp_floriade_regatta,2,F1,0,0,0
 floriade_2025_1_0_0,09:40,09:40,temp_floriade_regatta,0,F1,0,0,0
 floriade_2025_1_0_0,09:44,09:44,3258,1,F1,0,0,0
 floriade_2025_1_0_0,09:45,09:45,3028,2,F1,0,0,0
@@ -718,11 +724,11 @@ floriade_2025_3_0_7,17:05,17:50,temp_floriade_regatta,2,F3,0,0,0
 floriade_2025_3_0_7,18:03,18:03,2769,3,F3,0,0,0
 floriade_2025_3_0_7,18:19,18:19,1808,4,F3,0,0,0
 floriade_2025_3_0_8,17:40,17:40,1808,0,F3,0,0,0
-floriade_2025_3_0_8,18:00,18:80,2769,1,F3,0,0,0
+floriade_2025_3_0_8,18:00,18:00,2769,1,F3,0,0,0
 floriade_2025_3_0_8,18:15,18:15,temp_floriade_regatta,2,F3,0,0,0
-floriade_2025_3_1_0,18:20,18:20,temp_floriade_regatta,0,F3,0,0,0
-floriade_2025_3_1_0,18:33,18:33,2769,1,F3,0,0,0
-floriade_2025_3_1_0,18:49,18:49,1808,2,F3,0,0,0
+floriade_2025_3_1_00,18:20,18:20,temp_floriade_regatta,0,F3,0,0,0
+floriade_2025_3_1_00,18:33,18:33,2769,1,F3,0,0,0
+floriade_2025_3_1_00,18:49,18:49,1808,2,F3,0,0,0
 floriade_2025_3_1_0,18:00,18:00,1808,0,F3,0,0,0
 floriade_2025_3_1_0,18:20,18:20,2769,1,F3,0,0,0
 floriade_2025_3_1_0,18:35,19:20,temp_floriade_regatta,2,F3,0,0,0
@@ -730,7 +736,7 @@ floriade_2025_3_1_0,19:33,19:33,2769,3,F3,0,0,0
 floriade_2025_3_1_0,19:49,19:49,1808,4,F3,0,0,0
 floriade_2025_3_1_1,19:00,19:00,1808,0,F3,0,0,0
 floriade_2025_3_1_1,19:20,19:20,2769,1,F3,0,0,0
-floriade_2025_3_1_1,29:35,20:20,temp_floriade_regatta,2,F3,0,0,0
+floriade_2025_3_1_1,19:35,20:20,temp_floriade_regatta,2,F3,0,0,0
 floriade_2025_3_1_1,20:33,20:33,2769,3,F3,0,0,0
 floriade_2025_3_1_1,20:49,20:49,1808,4,F3,0,0,0
 floriade_2025_3_1_2,20:00,20:00,1808,0,F3,0,0,0

@@ -1,4 +1,6 @@
 route_id,service_id,trip_id,trip_headsign,direction_id,shape_id,wheelchair_accessible,bikes_allowed
+floriade_2025_1,floriade_2025_1-20250913-20251012-1111100,floriade_2025_1_0_000,F1,1,floriade_2025_1_shape,0,0
+floriade_2025_1,floriade_2025_1-20250913-20251012-1111100,floriade_2025_1_0_00,F1,1,floriade_2025_1_shape,0,0
 floriade_2025_1,floriade_2025_1-20250913-20251012-1111100,floriade_2025_1_0_0,F1,1,floriade_2025_1_shape,0,0
 floriade_2025_1,floriade_2025_1-20250913-20251012-1111100,floriade_2025_1_0_1,F1,1,floriade_2025_1_shape,0,0
 floriade_2025_1,floriade_2025_1-20250913-20251012-1111100,floriade_2025_1_0_2,F1,1,floriade_2025_1_shape,0,0
@@ -123,6 +125,7 @@ floriade_2025_3,floriade_2025_3-20250913-20251012-0000011,floriade_2025_3_0_5,F3
 floriade_2025_3,floriade_2025_3-20250913-20251012-0000011,floriade_2025_3_0_6,F3,1,floriade_2025_3_shape,0,0
 floriade_2025_3,floriade_2025_3-20250913-20251012-0000011,floriade_2025_3_0_7,F3,1,floriade_2025_3_shape,0,0
 floriade_2025_3,floriade_2025_3-20250913-20251012-0000011,floriade_2025_3_0_8,F3,1,floriade_2025_3_shape,0,0
+floriade_2025_3,floriade_2025_3-20251002-20251005-1111111,floriade_2025_3_1_00,F3,1,floriade_2025_3_shape,0,0
 floriade_2025_3,floriade_2025_3-20251002-20251005-1111111,floriade_2025_3_1_0,F3,1,floriade_2025_3_shape,0,0
 floriade_2025_3,floriade_2025_3-20251002-20251005-1111111,floriade_2025_3_1_1,F3,1,floriade_2025_3_shape,0,0
 floriade_2025_3,floriade_2025_3-20251002-20251005-1111111,floriade_2025_3_1_2,F3,1,floriade_2025_3_shape,0,0
