@@ -17,7 +17,7 @@ mapping_count_byte_format = "< I I I I"
 
 node_byte_format = "<I I I B I I"
 # Assumes that all services can be fit into three bytes
-edge_byte_format = "<I I I 4s B"
+edge_byte_format = "<I I I 5s B"
 
 
 def set_bits(bits: Set[int], size: int) -> bytes:
@@ -51,7 +51,7 @@ class StopRouteEdge(Edge):
             self.connected_route_node,
             0,
             0,
-            set_bits(self.available_services, 4),
+            set_bits(self.available_services, 5),
             0b10
         )
 
@@ -71,7 +71,7 @@ class TravelEdge(Edge):
             self.connected_route_node,
             self.travel_time,
             self.departure_time,
-            set_bits(self.available_services, 4),
+            set_bits(self.available_services, 5),
             0b00 | (int(self.wheelchair_accessible) << 2) | (int(self.bikes_allowed) << 3),
         )
 
@@ -87,7 +87,7 @@ class TransferEdge(Edge):
             self.connected_stop_node,
             self.travel_time,
             0,
-            bytes(bytearray(4)),
+            bytes(bytearray(5)),
             0b11,
         )
 
@@ -229,7 +229,7 @@ class ByteNetworkGraphGenerator(Writer):
             metadata_byte_format,
             'emily'.encode('ascii'),
             1,
-            4,
+            5,
             metadata_size + mapping_size,
             metadata_size + mapping_size + nodes_size,
             1.0,
