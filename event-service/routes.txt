@@ -1,3 +1,4 @@
 route_id,route_short_name,route_long_name,route_type,route_color,route_text_color,route_url,agency_id
 floriade_2025_1,F1,Floriade Free Shuttle Loop,3,dc177a,FFFFFF,https://www.transport.act.gov.au/getting-around/timetables/routes-by-number,TC
 floriade_2025_2,F2,Belconnen to Floriade Weekend Express,3,dc177a,FFFFFF,https://www.transport.act.gov.au/getting-around/timetables/routes-by-number,TC
+floriade_2025_3,F3,Tuggeranong to Floriade Weekend Express,3,dc177a,FFFFFF,https://www.transport.act.gov.au/getting-around/timetables/routes-by-number,TC
