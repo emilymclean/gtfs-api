@@ -105,6 +105,33 @@ route:
       name: Lanyon Marketplace to Tuggeranong via Banks
     81-10657:
       name: Lanyon Marketplace to Tuggeranong via Gordon
+    floriade_2025_1:
+      show-on-browse: true
+      approximate-timings: true
+      event-route: true
+      description: |
+        Floriade, Australia's Biggest Celebration of Spring, returns to Commonwealth Park.
+
+        Catch the free **Floriade Shuttle Bus** from the city or National Triangle direct to the Floriade gates.
+      more-link: https://events.canberra.com.au/whats-on/66399c89e45a397e21dffe32/floriade-2025
+    floriade_2025_2:
+      show-on-browse: false
+      approximate-timings: true
+      event-route: true
+      description: |
+        Floriade, Australia's Biggest Celebration of Spring, returns to Commonwealth Park.
+
+        The free **Floriade Weekend Express** will leave from Belconnen Interchange at Westfield, stop at Emu Bank and then travel direct to Regatta Point to drop passengers at the Floriade gates. Weekends and NightFest only.
+      more-link: https://events.canberra.com.au/whats-on/66399c89e45a397e21dffe32/floriade-2025
+    floriade_2025_3:
+      show-on-browse: false
+      approximate-timings: true
+      event-route: true
+      description: |
+        Floriade, Australia's Biggest Celebration of Spring, returns to Commonwealth Park.
+
+        The free **Floriade Weekend Express** will leave from Tuggeranong Interchange and Woden Interchange and travel direct to Regatta Point to drop passengers at the Floriade gates. Weekends and NightFest only.
+      more-link: https://events.canberra.com.au/whats-on/66399c89e45a397e21dffe32/floriade-2025
 stops:
   modifications:
     "959":
