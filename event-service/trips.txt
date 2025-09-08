@@ -100,3 +100,17 @@ floriade_2025_1,floriade_2025_1-20251002-20251005-1111111,floriade_2025_1_2_24,F
 floriade_2025_1,floriade_2025_1-20251002-20251005-1111111,floriade_2025_1_2_25,F1,1,floriade_2025_1_shape,0,0
 floriade_2025_1,floriade_2025_1-20251002-20251005-1111111,floriade_2025_1_2_26,F1,1,floriade_2025_1_shape,0,0
 floriade_2025_1,floriade_2025_1-20251002-20251005-1111111,floriade_2025_1_2_27,F1,1,floriade_2025_1_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_0,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_1,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_2,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_3,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_4,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_5,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_6,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_7,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20250913-20251012-0000011,floriade_2025_2_0_8,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20251002-20251005-1111111,floriade_2025_2_1_0,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20251002-20251005-1111111,floriade_2025_2_1_1,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20251002-20251005-1111111,floriade_2025_2_1_2,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20251002-20251005-1111111,floriade_2025_2_1_3,F2,1,floriade_2025_2_shape,0,0
+floriade_2025_2,floriade_2025_2-20251002-20251005-1111111,floriade_2025_2_1_4,F2,1,floriade_2025_2_shape,0,0
