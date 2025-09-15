@@ -17,6 +17,8 @@ seq:
     size: 5
     encoding: ASCII
     doc: Magic string (must equal "emily")
+    valid:
+      eq: "\"emily\""
   - id: version
     type: u1
     doc: File format version (must equal 2)
@@ -60,9 +62,6 @@ instances:
     pos: edges_start
     type: edge
     repeat: eos
-    
-  valid_magic:
-    value: magic == "emily"
 
 types:
   mapping_section:
