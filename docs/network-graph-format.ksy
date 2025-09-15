@@ -145,6 +145,12 @@ types:
       - id: trip_index
         type: u4
         if: (flags & 3) == 0  # only for travel edges
+      - id: unused_departure_time
+        size: 4
+        if: (flags & 3) != 0
+      - id: unused_trip_index
+        size: 4
+        if: (flags & 3) != 0
       - id: available_services
         size: _root.available_services_length
       - id: flags
