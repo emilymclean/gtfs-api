@@ -129,6 +129,7 @@ types:
     instances:
       node_type:
         value: flags & 1
+        enum: node_type
       wheelchair_accessible:
         value: (flags >> 1) & 1
 
@@ -160,8 +161,19 @@ types:
     instances:
       edge_type:
         value: flags & 3
+        enum: edge_type
       wheelchair_accessible:
         value: (flags >> 2) & 1
       bikes_allowed:
         value: (flags >> 3) & 1
 
+enums:
+  node_type:
+    0: stop
+    1: stop_route
+
+  edge_type:
+    0: travel
+    1: to_stop
+    2: transfer
+    3: to_stop_route
