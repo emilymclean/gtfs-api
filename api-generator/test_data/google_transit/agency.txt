@@ -1,2 +1,2 @@
-﻿agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url
-TC,Transport Canberra,https://www.transport.act.gov.au,Australia/Sydney,En,131710,https://www.transport.act.gov.au/tickets-and-myway/fares
+﻿agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url,agency_email
+TC,Transport Canberra,https://www.transport.act.gov.au,Australia/Sydney,,131710,https://www.transport.act.gov.au/tickets-and-myway/fares,

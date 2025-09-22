@@ -87,6 +87,7 @@ class TravelEdge(Edge):
     available_services: Set[int]
     wheelchair_accessible: bool
     bikes_allowed: bool
+    school_service_only: bool
 
     def build(self, from_node_index: int, service_byte_count: int) -> bytes:
         return struct.pack(
@@ -96,7 +97,10 @@ class TravelEdge(Edge):
             self.departure_time,
             self.trip_index,
             set_bits(self.available_services, 3),
-            0b00 | (int(self.wheelchair_accessible) << 2) | (int(self.bikes_allowed) << 3),
+            (0b00 |
+             (int(self.wheelchair_accessible) << 2) |
+             (int(self.bikes_allowed) << 3) |
+             (int(self.school_service_only) << 4)),
         )
 
 
@@ -309,6 +313,7 @@ class ByteNetworkGraphGeneratorV2(Writer):
             for i, stop_time in enumerate(stop_times):
                 stop_index = self.stop_id_to_node_index[stop_time.stop_id]
                 route_id = trip.route_id
+                route = self.route_index[route_id]
                 heading_index = self.heading_to_heading_index[trip.trip_headsign]
 
                 if (stop_index, route_id, heading_index) not in self.stop_id_route_id_to_node_index:
@@ -346,13 +351,15 @@ class ByteNetworkGraphGeneratorV2(Writer):
                         trip.service_id,
                         trip.id,
                         trip.wheelchair_accessible == 1,
-                        trip.bikes_allowed == 1
+                        trip.bikes_allowed == 1,
+                        route.school
                     )
 
             # UGLY!!! CLEAN UP LAter :/
             for i, stop_time in enumerate(stop_times):
                 stop_index = self.stop_id_to_node_index[stop_time.stop_id]
                 route_id = trip.route_id
+                route = self.route_index[route_id]
                 heading_index = self.heading_to_heading_index[trip.trip_headsign]
 
                 index = self.stop_id_route_id_to_node_index[(stop_index, route_id, heading_index)]
@@ -378,6 +385,7 @@ class ByteNetworkGraphGeneratorV2(Writer):
                         trip.id,
                         trip.wheelchair_accessible == 1,
                         trip.bikes_allowed == 1,
+                        route.school,
                         reverse=True
                     )
 
@@ -533,6 +541,7 @@ class ByteNetworkGraphGeneratorV2(Writer):
             trip_id: str,
             wheelchair_accessible: bool,
             bikes_allowed: bool,
+            school_service_only: bool,
             reverse: bool = False
     ):
         service_index = self._register_service(service_id)
@@ -544,7 +553,8 @@ class ByteNetworkGraphGeneratorV2(Writer):
             self.trip_id_to_trip_id_index[trip_id],
             {service_index},
             wheelchair_accessible,
-            bikes_allowed
+            bikes_allowed,
+            school_service_only
         )
 
         self.add_edge(from_node_index, out, reverse)
