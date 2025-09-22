@@ -46,8 +46,8 @@ def map_service_id(service_id: str) -> str:
     return service_id_map[f"{service_id}"]
 
 
-def stop_is_school_only(stop_id: str) -> bool:
-    return False
+def stop_is_school_only(stop_name: str) -> bool:
+    return stop_name.endswith(" SSO")
 
 
 @click.group()
@@ -71,7 +71,7 @@ def process(
     trips_csv = pd.read_csv(Path(input_folder).joinpath("trips.txt"), keep_default_na=False)
 
     route_csv['school'] = route_csv['route_id'].apply(route_is_school_only)
-    stop_csv['school'] = stop_csv['stop_id'].apply(stop_is_school_only)
+    stop_csv['school'] = stop_csv['stop_name'].apply(stop_is_school_only)
 
     generate_service_id_map(calendar_csv)
 
