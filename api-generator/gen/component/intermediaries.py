@@ -47,6 +47,7 @@ class StopCSV(Intermediary):
     parent_station: Optional[str]
     location: LocationCSV
     accessibility: StopAccessibilityCSV
+    school: bool
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "StopCSV":
@@ -60,7 +61,8 @@ class StopCSV(Intermediary):
             ),
             StopAccessibilityCSV(
                 row['wheelchair_boarding']
-            )
+            ),
+            row['school'] if "school" in row else False,
         )
 
     @staticmethod
@@ -83,6 +85,7 @@ class StopIntermediary(Intermediary):
     show_children: bool
     search_weight: Optional[float]
     hasRealtime: bool
+    school: bool
 
     def to_json(self) -> dict:
         return {
@@ -98,6 +101,7 @@ class StopIntermediary(Intermediary):
                 "searchWeight": self.search_weight
             },
             "hasRealtime": self.hasRealtime,
+            "schoolServiceOnly": self.school,
         }
 
     def to_pb(self, stop: pb.Stop):
@@ -117,6 +121,7 @@ class StopIntermediary(Intermediary):
         if self.search_weight is not None:
             stop.visibility.searchWeight = self.search_weight
         stop.hasRealtime = self.hasRealtime
+        stop.schoolServiceOnly = self.school
 
     @staticmethod
     def from_csv(
@@ -139,7 +144,8 @@ class StopIntermediary(Intermediary):
             show_on_zoom_in,
             show_children,
             search_weight,
-            has_realtime
+            has_realtime,
+            stop.school,
         )
 
 
@@ -149,7 +155,7 @@ class RouteCSV(Intermediary):
     code: str
     name: str
     type: int
-
+    school: bool
 
     @staticmethod
     def from_csv_row(row: pd.Series) -> "RouteCSV":
@@ -158,6 +164,7 @@ class RouteCSV(Intermediary):
             f"{row['route_short_name']}",
             row['route_long_name'],
             row['route_type'],
+            row['school'] if "school" in row else False,
         )
 
     @staticmethod
@@ -202,6 +209,7 @@ class RouteIntermediary(Intermediary):
     approximate_timings: bool
     event_route: bool
     link_url: Optional[str]
+    school: bool
 
     def to_json(self) -> dict:
         return {
@@ -222,7 +230,8 @@ class RouteIntermediary(Intermediary):
                 "hidden": self.hidden,
                 "searchWeight": self.search_weight,
                 "showOnBrowse": self.show_on_browse,
-            }
+            },
+            "schoolServiceOnly": self.school,
         }
 
     def to_pb(self, route: pb.Route):
@@ -248,6 +257,7 @@ class RouteIntermediary(Intermediary):
             route.description = self.description
         if self.link_url is not None:
             route.moreLink = self.link_url
+        route.schoolServiceOnly = self.school
 
     @staticmethod
     def from_csv(route: RouteCSV, extras: Dict[str, Any]) -> "RouteIntermediary":
@@ -274,6 +284,7 @@ class RouteIntermediary(Intermediary):
             _get_route_approximate_timings(route.id, extras),
             _get_route_event_route(route.id, extras),
             _get_route_link_url(route.id, extras),
+            route.school
         )
 
 

@@ -162,6 +162,7 @@ types:
             11 = To Stop-Route node
           Bit 2 = Wheelchair accessible
           Bit 3 = Bikes allowed
+          Bit 4 = School service only
 
     instances:
       edge_type:
@@ -171,6 +172,8 @@ types:
         value: (flags >> 2) & 1
       bikes_allowed:
         value: (flags >> 3) & 1
+      school_service_only:
+        value: (flags >> 4) & 1
 
 enums:
   node_type:

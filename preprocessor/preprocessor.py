@@ -17,6 +17,13 @@ def map_route_id(route_id: str) -> str:
         return f"{r}-10657"
 
 
+def route_is_school_only(route_id: str) -> bool:
+    try:
+        return int(route_id.partition("_")[0]) >= 1000
+    except ValueError:
+        return False
+
+
 def combine_routes(df: pd.DataFrame):
     return df.drop_duplicates(subset='route_id', keep='first')
 
@@ -39,6 +46,10 @@ def map_service_id(service_id: str) -> str:
     return service_id_map[f"{service_id}"]
 
 
+def stop_is_school_only(stop_id: str) -> bool:
+    return False
+
+
 @click.group()
 def cli() -> None:
     pass
@@ -58,6 +69,9 @@ def process(
     shape_csv = pd.read_csv(Path(input_folder).joinpath("shapes.txt"), keep_default_na=False)
     stop_time_csv = pd.read_csv(Path(input_folder).joinpath("stop_times.txt"), keep_default_na=False)
     trips_csv = pd.read_csv(Path(input_folder).joinpath("trips.txt"), keep_default_na=False)
+
+    route_csv['school'] = route_csv['route_id'].apply(route_is_school_only)
+    stop_csv['school'] = stop_csv['stop_id'].apply(stop_is_school_only)
 
     generate_service_id_map(calendar_csv)
 
