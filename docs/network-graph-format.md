@@ -88,3 +88,4 @@ All nodes are the same length (21 bytes), but differ depending on whether they a
 | 0-1    | Edge Type             | `00` = Travel, `10` = Transfer, `01` = To stop node, `11` = To stop-route node. |
 | 2      | Wheelchair Accessible | Boolean indicating if the route is wheelchair accessible.                       |
 | 3      | Bikes Allowed         | Boolean indicating if the route allows bikes.                                   |
+| 4      | School Service Only   | Boolean indicating if the edge is only available for school services            |

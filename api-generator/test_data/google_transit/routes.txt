@@ -1,4 +1,106 @@
 ﻿route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+1001_2672_1_3,TC,1001,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1001_2672_2_3,TC,1001,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1002_2672_1_3,TC,1002,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1002_2672_2_3,TC,1002,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1003_2672_1_3,TC,1003,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1003_2672_2_3,TC,1003,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1004_2672_1_3,TC,1004,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1004_2672_2_3,TC,1004,John Paul College School Grounds SSO,,3,,0042AC,FFFFFF
+1009_8443_1_3,TC,1009,Burgmann Anglican School Forde Campus,,3,,0042AC,FFFFFF
+1009_8443_2_3,TC,1009,Burgmann Anglican School Forde Campus,,3,,0042AC,FFFFFF
+1010_2622_1_3,TC,1010,Burgmann Anglican School Valley Campus,,3,,0042AC,FFFFFF
+1010_2622_2_3,TC,1010,Burgmann Anglican School Valley Campus,,3,,0042AC,FFFFFF
+1011_6904_1_3,TC,1011,John Paul College Gungahlin Dr,,3,,0042AC,FFFFFF
+1011_6904_2_3,TC,1011,John Paul College Gungahlin Dr,,3,,0042AC,FFFFFF
+1012_6303_1_3,TC,1012,Holy Spirit PS Plt 1,,3,,0042AC,FFFFFF
+1012_6303_2_3,TC,1012,Holy Spirit PS Plt 1,,3,,0042AC,FFFFFF
+1013_6303_1_3,TC,1013,Holy Spirit PS Plt 1,,3,,0042AC,FFFFFF
+1013_6303_2_3,TC,1013,Holy Spirit PS Plt 1,,3,,0042AC,FFFFFF
+1014_6303_1_3,TC,1014,Holy Spirit PS Plt 1,,3,,0042AC,FFFFFF
+1014_6303_2_3,TC,1014,Holy Spirit PS Plt 1,,3,,0042AC,FFFFFF
+1015_9354_1_3,TC,1015,Harrison School Wimmera St SSO,,3,,0042AC,FFFFFF
+1015_9354_2_3,TC,1015,Harrison School Wimmera St SSO,,3,,0042AC,FFFFFF
+1017_6148_1_3,TC,1017,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1017_6148_2_3,TC,1017,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1018_6148_1_3,TC,1018,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1018_6148_2_3,TC,1018,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1019_6148_1_3,TC,1019,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1019_6148_2_3,TC,1019,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1020_6148_1_3,TC,1020,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1020_6148_2_3,TC,1020,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1021_6311_1_3,TC,1021,Ainslie PS Donaldson St,,3,,0042AC,FFFFFF
+1021_6311_2_3,TC,1021,Ainslie PS Donaldson St,,3,,0042AC,FFFFFF
+1022_6148_1_3,TC,1022,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1022_6148_2_3,TC,1022,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1023_6148_1_3,TC,1023,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1023_6148_2_3,TC,1023,Merici College Wise St SSO,,3,,0042AC,FFFFFF
+1027_7097_1_3,TC,1027,Lyneham PS School Grounds SSO,,3,,0042AC,FFFFFF
+1027_7097_2_3,TC,1027,Lyneham PS School Grounds SSO,,3,,0042AC,FFFFFF
+1028_7097_1_3,TC,1028,Lyneham PS School Grounds SSO,,3,,0042AC,FFFFFF
+1028_7097_2_3,TC,1028,Lyneham PS School Grounds SSO,,3,,0042AC,FFFFFF
+1029_7097_1_3,TC,1029,Lyneham PS School Grounds SSO,,3,,0042AC,FFFFFF
+1029_7097_2_3,TC,1029,Lyneham PS School Grounds SSO,,3,,0042AC,FFFFFF
+1031_4834_1_3,TC,1031,St Thomas More's PS White St,,3,,0042AC,FFFFFF
+1031_4834_2_3,TC,1031,St Thomas More's PS White St,,3,,0042AC,FFFFFF
+1032_4834_1_3,TC,1032,St Thomas More's PS White St,,3,,0042AC,FFFFFF
+1032_4834_2_3,TC,1032,St Thomas More's PS White St,,3,,0042AC,FFFFFF
+1033_3261_1_3,TC,1033,Campbell HS Treloar Cr SSO,,3,,0042AC,FFFFFF
+1033_3261_2_3,TC,1033,Campbell HS Treloar Cr SSO,,3,,0042AC,FFFFFF
+1035_9184_1_3,TC,1035,North Ainslie PS School Grounds SSO,,3,,0042AC,FFFFFF
+1035_9184_2_3,TC,1035,North Ainslie PS School Grounds SSO,,3,,0042AC,FFFFFF
+1037_2808_1_3,TC,1037,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1037_2808_2_3,TC,1037,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1038_2707_1_3,TC,1038,St Matthews PS Stutchbury St SSO,,3,,0042AC,FFFFFF
+1038_2707_2_3,TC,1038,St Matthews PS Stutchbury St SSO,,3,,0042AC,FFFFFF
+1039_2707_1_3,TC,1039,St Matthews PS Stutchbury St SSO,,3,,0042AC,FFFFFF
+1039_2707_2_3,TC,1039,St Matthews PS Stutchbury St SSO,,3,,0042AC,FFFFFF
+1040_2707_1_3,TC,1040,St Matthews PS Stutchbury St SSO,,3,,0042AC,FFFFFF
+1040_2707_2_3,TC,1040,St Matthews PS Stutchbury St SSO,,3,,0042AC,FFFFFF
+1041_1823_1_3,TC,1041,Kippax Terminus,,3,,0042AC,FFFFFF
+1041_1823_2_3,TC,1041,Kippax Terminus,,3,,0042AC,FFFFFF
+1043_2808_1_3,TC,1043,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1043_2808_2_3,TC,1043,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1044_2808_1_3,TC,1044,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1044_2808_2_3,TC,1044,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1045_2808_1_3,TC,1045,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1045_2808_2_3,TC,1045,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1046_2808_1_3,TC,1046,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1046_2808_2_3,TC,1046,St Francis Xavier College Barnard Cct SSO,,3,,0042AC,FFFFFF
+1047_2789_1_3,TC,1047,Miles Franklin PS Alderman St SSO,,3,,0042AC,FFFFFF
+1047_2789_2_3,TC,1047,Miles Franklin PS Alderman St SSO,,3,,0042AC,FFFFFF
+1048_2789_1_3,TC,1048,Miles Franklin PS Alderman St SSO,,3,,0042AC,FFFFFF
+1048_2789_2_3,TC,1048,Miles Franklin PS Alderman St SSO,,3,,0042AC,FFFFFF
+1049_5595_1_3,TC,1049,Melba HS School Grounds SSO,,3,,0042AC,FFFFFF
+1049_5595_2_3,TC,1049,Melba HS School Grounds SSO,,3,,0042AC,FFFFFF
+1050_3565_1_3,TC,1050,Belconnen HS Murranji St,,3,,0042AC,FFFFFF
+1050_3565_2_3,TC,1050,Belconnen HS Murranji St,,3,,0042AC,FFFFFF
+1051_3565_1_3,TC,1051,Belconnen HS Murranji St,,3,,0042AC,FFFFFF
+1051_3565_2_3,TC,1051,Belconnen HS Murranji St,,3,,0042AC,FFFFFF
+1054_3031_1_3,TC,1054,Canberra HS Bowman St SSO,,3,,0042AC,FFFFFF
+1054_3031_2_3,TC,1054,Canberra HS Bowman St SSO,,3,,0042AC,FFFFFF
+1055_3031_1_3,TC,1055,Canberra HS Bowman St SSO,,3,,0042AC,FFFFFF
+1055_3031_2_3,TC,1055,Canberra HS Bowman St SSO,,3,,0042AC,FFFFFF
+1056_1951_1_3,TC,1056,Radford College College St,,3,,0042AC,FFFFFF
+1056_1951_2_3,TC,1056,Radford College College St,,3,,0042AC,FFFFFF
+1060_9955_1_3,TC,1060,UC High School Kaleen Baldwin Dr,,3,,0042AC,FFFFFF
+1060_9955_2_3,TC,1060,UC High School Kaleen Baldwin Dr,,3,,0042AC,FFFFFF
+1062_6326_1_3,TC,1062,Lhotsky St St Thomas Aquinas PS SSO,,3,,0042AC,FFFFFF
+1062_6326_2_3,TC,1062,Lhotsky St St Thomas Aquinas PS SSO,,3,,0042AC,FFFFFF
+1064_0771_1_3,TC,1064,Amaroo School Burdekin Av,,3,,0042AC,FFFFFF
+1064_0771_2_3,TC,1064,Amaroo School Burdekin Av,,3,,0042AC,FFFFFF
+1065_0771_1_3,TC,1065,Amaroo School Burdekin Av,,3,,0042AC,FFFFFF
+1065_0771_2_3,TC,1065,Amaroo School Burdekin Av,,3,,0042AC,FFFFFF
+1066_0771_1_3,TC,1066,Amaroo School Burdekin Av,,3,,0042AC,FFFFFF
+1066_0771_2_3,TC,1066,Amaroo School Burdekin Av,,3,,0042AC,FFFFFF
+1067_0115_1_3,TC,1067,Shirley Smith HS,,3,,0042AC,FFFFFF
+1067_0115_2_3,TC,1067,Shirley Smith HS,,3,,0042AC,FFFFFF
+1068_2789_1_3,TC,1068,Miles Franklin PS Alderman St SSO,,3,,0042AC,FFFFFF
+1068_2789_2_3,TC,1068,Miles Franklin PS Alderman St SSO,,3,,0042AC,FFFFFF
+1070_9251_1_3,TC,1070,Florey PS Krefft St,,3,,0042AC,FFFFFF
+1070_9251_2_3,TC,1070,Florey PS Krefft St,,3,,0042AC,FFFFFF
+1072_5163_1_3,TC,1072,Aunty Agnes Shea HS Sports Grounds,,3,,0042AC,FFFFFF
+1072_5163_2_3,TC,1072,Aunty Agnes Shea HS Sports Grounds,,3,,0042AC,FFFFFF
 10_8965_2_3,TC,10,Denman Prospect to City ANU,,3,,0042AC,FFFFFF
 180_4553_1_3,TC,180,City ANU to Lanyon via Condor & Banks,,3,,0042AC,FFFFFF
 180_4553_2_3,TC,180,City ANU to Lanyon via Condor & Banks,,3,,0042AC,FFFFFF
@@ -11,6 +113,146 @@
 19_5750_4_3,TC,19,Bonner to Gungahlin via Amaroo,,3,,0042AC,FFFFFF
 1_8674_1_0,TC,1,Alinga Street - Gungahlin Place,,0,,BD0021,FFFFFF
 1_8674_2_0,TC,1,Alinga Street - Gungahlin Place,,0,,BD0021,FFFFFF
+2001_2976_1_3,TC,2001,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2001_2976_2_3,TC,2001,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2002_2976_1_3,TC,2002,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2002_2976_2_3,TC,2002,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2003_2976_1_3,TC,2003,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2003_2976_2_3,TC,2003,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2004_2180_1_3,TC,2004,Theodore Terminus Chippindall Cct,,3,,0042AC,FFFFFF
+2004_2180_2_3,TC,2004,Theodore Terminus Chippindall Cct,,3,,0042AC,FFFFFF
+2005_2976_1_3,TC,2005,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2005_2976_2_3,TC,2005,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2006_2976_1_3,TC,2006,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2006_2976_2_3,TC,2006,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2007_2976_1_3,TC,2007,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2007_2976_2_3,TC,2007,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2008_2976_1_3,TC,2008,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2008_2976_2_3,TC,2008,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2009_2976_1_3,TC,2009,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2009_2976_2_3,TC,2009,St Edmunds College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2010_9409_1_3,TC,2010,St Clares College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2010_9409_2_3,TC,2010,St Clares College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2011_9409_1_3,TC,2011,St Clares College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2011_9409_2_3,TC,2011,St Clares College McMillan Cr SSO,,3,,0042AC,FFFFFF
+2014_3050_1_3,TC,2014,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2014_3050_2_3,TC,2014,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2015_0989_1_3,TC,2015,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2015_0989_2_3,TC,2015,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2016_0989_1_3,TC,2016,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2016_0989_2_3,TC,2016,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2017_3050_1_3,TC,2017,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2017_3050_2_3,TC,2017,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2018_0989_1_3,TC,2018,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2018_0989_2_3,TC,2018,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2019_3050_1_3,TC,2019,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2019_3050_2_3,TC,2019,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2020_7111_1_3,TC,2020,Astrolabe St Red Hill PS SSO,,3,,0042AC,FFFFFF
+2020_7111_2_3,TC,2020,Astrolabe St Red Hill PS SSO,,3,,0042AC,FFFFFF
+2022_8395_1_3,TC,2022,Telopea Park School New South Wales Cr SSO,,3,,0042AC,FFFFFF
+2022_8395_2_3,TC,2022,Telopea Park School New South Wales Cr SSO,,3,,0042AC,FFFFFF
+2023_2167_1_3,TC,2023,Forrest PS Hobart Av SSO,,3,,0042AC,FFFFFF
+2023_2167_2_3,TC,2023,Forrest PS Hobart Av SSO,,3,,0042AC,FFFFFF
+2024_2167_1_3,TC,2024,Forrest PS Hobart Av SSO,,3,,0042AC,FFFFFF
+2024_2167_2_3,TC,2024,Forrest PS Hobart Av SSO,,3,,0042AC,FFFFFF
+2025_8395_1_3,TC,2025,Telopea Park School New South Wales Cr SSO,,3,,0042AC,FFFFFF
+2025_8395_2_3,TC,2025,Telopea Park School New South Wales Cr SSO,,3,,0042AC,FFFFFF
+2026_9359_1_3,TC,2026,City Interchange Plt 11 Arrivals,,3,,0042AC,FFFFFF
+2026_9359_2_3,TC,2026,City Interchange Plt 11 Arrivals,,3,,0042AC,FFFFFF
+2029_6958_1_3,TC,2029,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2029_6958_2_3,TC,2029,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2030_6958_1_3,TC,2030,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2030_6958_2_3,TC,2030,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2031_6958_1_3,TC,2031,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2031_6958_2_3,TC,2031,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2032_6958_1_3,TC,2032,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2032_6958_2_3,TC,2032,Alfred Deakin High School Grounds SSO,,3,,0042AC,FFFFFF
+2035_2785_1_3,TC,2035,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2035_2785_2_3,TC,2035,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2036_2785_1_3,TC,2036,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2036_2785_2_3,TC,2036,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2037_2785_1_3,TC,2037,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2037_2785_2_3,TC,2037,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2038_2785_1_3,TC,2038,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2038_2785_2_3,TC,2038,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2039_2785_1_3,TC,2039,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2039_2785_2_3,TC,2039,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2040_2785_1_3,TC,2040,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2040_2785_2_3,TC,2040,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2041_2785_1_3,TC,2041,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2041_2785_2_3,TC,2041,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2042_2785_1_3,TC,2042,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2042_2785_2_3,TC,2042,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2043_2785_1_3,TC,2043,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2043_2785_2_3,TC,2043,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2044_2785_1_3,TC,2044,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2044_2785_2_3,TC,2044,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2045_2785_1_3,TC,2045,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2045_2785_2_3,TC,2045,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2046_2785_1_3,TC,2046,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2046_2785_2_3,TC,2046,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2047_7208_1_3,TC,2047,Marist College School Grounds SSO,,3,,0042AC,FFFFFF
+2047_7208_2_3,TC,2047,Marist College School Grounds SSO,,3,,0042AC,FFFFFF
+2048_7208_1_3,TC,2048,Marist College School Grounds SSO,,3,,0042AC,FFFFFF
+2048_7208_2_3,TC,2048,Marist College School Grounds SSO,,3,,0042AC,FFFFFF
+2049_2785_1_3,TC,2049,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2049_2785_2_3,TC,2049,Melrose HS Marr St SSO,,3,,0042AC,FFFFFF
+2053_9544_1_3,TC,2053,Mt Stromlo HS School Grounds SSO,,3,,0042AC,FFFFFF
+2053_9544_2_3,TC,2053,Mt Stromlo HS School Grounds SSO,,3,,0042AC,FFFFFF
+2054_9544_1_3,TC,2054,Mt Stromlo HS School Grounds SSO,,3,,0042AC,FFFFFF
+2054_9544_2_3,TC,2054,Mt Stromlo HS School Grounds SSO,,3,,0042AC,FFFFFF
+2056_1144_1_3,TC,2056,Orana Steiner School Hickey Ct SSO,,3,,0042AC,FFFFFF
+2056_1144_2_3,TC,2056,Orana Steiner School Hickey Ct SSO,,3,,0042AC,FFFFFF
+2057_1144_1_3,TC,2057,Orana Steiner School Hickey Ct SSO,,3,,0042AC,FFFFFF
+2057_1144_2_3,TC,2057,Orana Steiner School Hickey Ct SSO,,3,,0042AC,FFFFFF
+2060_7105_1_3,TC,2060,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2060_7105_2_3,TC,2060,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2061_7105_1_3,TC,2061,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2061_7105_2_3,TC,2061,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2062_7580_1_3,TC,2062,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2062_7580_2_3,TC,2062,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2063_1606_1_3,TC,2063,Boddington Cr after Carleton St,,3,,0042AC,FFFFFF
+2063_1606_2_3,TC,2063,Boddington Cr after Carleton St,,3,,0042AC,FFFFFF
+2064_7580_1_3,TC,2064,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2064_7580_2_3,TC,2064,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2065_7580_1_3,TC,2065,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2065_7580_2_3,TC,2065,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2066_7105_1_3,TC,2066,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2066_7105_2_3,TC,2066,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2067_0584_1_3,TC,2067,Trinity Christian School McBryde Cr,,3,,0042AC,FFFFFF
+2067_0584_2_3,TC,2067,Trinity Christian School McBryde Cr,,3,,0042AC,FFFFFF
+2068_7105_1_3,TC,2068,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2068_7105_2_3,TC,2068,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2069_7105_1_3,TC,2069,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2069_7105_2_3,TC,2069,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2070_7580_1_3,TC,2070,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2070_7580_2_3,TC,2070,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2071_0584_1_3,TC,2071,Trinity Christian School McBryde Cr,,3,,0042AC,FFFFFF
+2071_0584_2_3,TC,2071,Trinity Christian School McBryde Cr,,3,,0042AC,FFFFFF
+2072_7580_1_3,TC,2072,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2072_7580_2_3,TC,2072,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2073_7580_1_3,TC,2073,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2073_7580_2_3,TC,2073,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2074_7105_1_3,TC,2074,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2074_7105_2_3,TC,2074,St Anthony's PS School Grounds SSO,,3,,0042AC,FFFFFF
+2075_7580_1_3,TC,2075,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2075_7580_2_3,TC,2075,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2076_7580_1_3,TC,2076,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2076_7580_2_3,TC,2076,MacKillop College School Grounds SSO,,3,,0042AC,FFFFFF
+2078_1736_1_3,TC,2078,Calwell PS Casey Cr,,3,,0042AC,FFFFFF
+2078_1736_2_3,TC,2078,Calwell PS Casey Cr,,3,,0042AC,FFFFFF
+2079_9454_1_3,TC,2079,Theodore PS Lawrence Wackett Cr,,3,,0042AC,FFFFFF
+2079_9454_2_3,TC,2079,Theodore PS Lawrence Wackett Cr,,3,,0042AC,FFFFFF
+2081_5688_1_3,TC,2081,Caroline Chisholm Senior School Hambidge Cr SSO,,3,,0042AC,FFFFFF
+2081_5688_2_3,TC,2081,Caroline Chisholm Senior School Hambidge Cr SSO,,3,,0042AC,FFFFFF
+2090_0989_1_3,TC,2090,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2090_0989_2_3,TC,2090,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2091_3050_1_3,TC,2091,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2091_3050_2_3,TC,2091,Canberra Girls Grammar Junior School Grounds SSO,,3,,0042AC,FFFFFF
+2092_0989_1_3,TC,2092,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2092_0989_2_3,TC,2092,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2093_0989_1_3,TC,2093,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
+2093_0989_2_3,TC,2093,Canberra Senior Grammar School Golden Gr,,3,,0042AC,FFFFFF
 20_3046_3_3,TC,20,Bonner Loop via Amaroo & Forde,,3,,0042AC,FFFFFF
 21_7852_4_3,TC,21,Harrison Loop via Palmerston & Throsby,,3,,0042AC,FFFFFF
 22_6706_3_3,TC,22,Palmerston to Gungahlin,,3,,0042AC,FFFFFF

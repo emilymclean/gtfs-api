@@ -114,7 +114,8 @@ class Generator:
                 midpoint,
                 StopAccessibilityCSV(
                     wheelchair_accessibility
-                )
+                ),
+                False
             )
 
             added_stops.append(stop)
