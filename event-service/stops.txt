@@ -1,2 +1,1 @@
 stop_id,stop_name,stop_lat,stop_lon,location_type,wheelchair_boarding,parent_station
-temp_floriade_regatta,Floriade Shuttle Stop Regatta Point Gate,-35.289899051472325,149.1301701812299,0,0,
