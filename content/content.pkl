@@ -138,10 +138,4 @@ pages = new Listing<Content> {
     }
 }
 
-banners = new Mapping<String, Banner> {
-    ["home"] = new Banner {
-        title = "Light Rail Information Unavailable"
-        message = "Transport Canberra has accidentally removed all information relating to Light Rail journeys. Please refer to the official MyWay+ app until they resolve the issue."
-        severity = "warning"
-    }
-}
+banners = new Mapping<String, Banner> {}
