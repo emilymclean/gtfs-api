@@ -86,7 +86,7 @@ def process(
     route_csv['route_id'] = route_csv['route_id'].apply(map_route_id)
     trips_csv['route_id'] = trips_csv['route_id'].apply(map_route_id)
 
-    route_csv['route_name'] = route_csv['route_name'].apply(map_route_name)
+    route_csv['route_long_name'] = route_csv['route_long_name'].apply(map_route_name)
 
     route_csv = combine_routes(route_csv)
 
