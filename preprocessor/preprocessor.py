@@ -17,6 +17,10 @@ def map_route_id(route_id: str) -> str:
         return f"{r}-10657"
 
 
+def map_route_name(route_name: str) -> str:
+    return route_name.removeprefix("S - ")
+
+
 def route_is_school_only(route_id: str) -> bool:
     try:
         return int(route_id.partition("_")[0]) >= 1000
@@ -81,6 +85,8 @@ def process(
 
     route_csv['route_id'] = route_csv['route_id'].apply(map_route_id)
     trips_csv['route_id'] = trips_csv['route_id'].apply(map_route_id)
+
+    route_csv['route_long_name'] = route_csv['route_long_name'].apply(map_route_name)
 
     route_csv = combine_routes(route_csv)
 
