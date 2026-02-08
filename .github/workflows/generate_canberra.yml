@@ -31,7 +31,7 @@ jobs:
           wget -q --header="Authorization: Basic ${{ secrets.TC_API_AUTH }}"  https://transport.api.act.gov.au/gtfs/data/gtfs/v2/gtfs.zip
           
           mkdir canberra
-          unzip google_transit.zip -d canberra/raw
+          unzip gtfs.zip -d canberra/raw
       - name: Preprocess
         run: |
           python preprocessor/preprocessor.py process -i canberra/raw -o canberra/normal
