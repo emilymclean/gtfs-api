@@ -103,11 +103,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
       - run: aws s3 cp --recursive build s3://${{ vars.AWS_PRIVATE_BUCKET }}
-  test-site:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          wget --content-on-error -qO - https://www.transport.act.gov.au/news/service-alerts-and-updates
   keep-alive:
     permissions:
       actions: write
