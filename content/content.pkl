@@ -138,4 +138,30 @@ pages = new Listing<Content> {
     }
 }
 
-banners = new Mapping<String, Banner> {}
+banners = new Mapping<String, Banner> {
+    ...(
+        new Listing {
+            "route-ACTO001"
+            "stop-GGN"
+            "stop-MCK"
+            "stop-MPN"
+            "stop-WSN"
+            "stop-SFD"
+            "stop-EPC"
+            "stop-PLP"
+            "stop-SWN"
+            "stop-DKN"
+            "stop-MCR"
+            "stop-IPA"
+            "stop-ELA"
+            "stop-ALG"
+        }.toList().toMap(
+            (k) -> k,
+            (k) -> new Banner {
+                title = "Unreliable Light Rail Information"
+                message = "Transport Canberra has consistently provided unreliable Light Rail information to unofficial apps, including Sinatra and Google Maps. Consider checking information with MyWay+."
+                severity = "warning"
+            }
+        )
+    )
+}
