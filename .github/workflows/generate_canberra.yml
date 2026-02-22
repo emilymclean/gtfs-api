@@ -108,9 +108,10 @@ jobs:
     needs:
       - build
       - build-content
+    if: github.ref == 'refs/heads/main'
     steps:
       - run: |
-          curl https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache \
+          curl --fail --show-error --silent https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache \
             -H 'Content-Type: application/json' \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_KEY }}" \
             -d '{"purge_everything": true}'
