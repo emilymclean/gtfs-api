@@ -21,7 +21,8 @@ route_type_options = {
     1: "metro",
     2: "rail",
     3: "bus",
-    4: "ferry"
+    4: "ferry",
+    712: "bus" # School bus
 }
 
 route_type_options_pb = {
@@ -29,7 +30,8 @@ route_type_options_pb = {
     1: pb.RouteType.ROUTE_TYPE_METRO,
     2: pb.RouteType.ROUTE_TYPE_RAIL,
     3: pb.RouteType.ROUTE_TYPE_BUS,
-    4: pb.RouteType.ROUTE_TYPE_FERRY
+    4: pb.RouteType.ROUTE_TYPE_FERRY,
+    712: pb.RouteType.ROUTE_TYPE_BUS
 }
 
 timetable_service_exception_type = {
