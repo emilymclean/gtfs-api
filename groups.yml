@@ -133,15 +133,25 @@ groupings:
   name: Gungahlin Interchange
   stop_id: gungahlin-interchange
 - children:
-  - 2761
-  - 2762
-  - 2763
-  - 2764
-  - 2766
-  - 2767
-  - 2768
-  - 2769
+  - 2746
+  - 2745
+  - 2749
+  - 2748
+  - 2747
+  - 2754
+  - 2753
+  - 2752
+  - 2751
+  - 2750
   - 2770
+  - 2768
+  - 2767
+  - 2766
+  - 2764
+  - 2763
+  - 2762
+  - 2761
+  - 2769
   name: Woden Interchange
   stop_id: woden-interchange
 - children:
