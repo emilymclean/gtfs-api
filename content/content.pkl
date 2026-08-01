@@ -134,25 +134,7 @@ pages = new Listing<Content> {
             default = "Service Updates"
             zh = "服务警报"
         }.pick()
-        contentLinks = new {
-            new ContentLink {
-                title = "Sources and Disclaimers"
-                contentId = "government-sources-disclaimer"
-                order = 1000
-            }
-        }
-        content = "Update to the latest version of Sinatra to view service alerts and updates, or visit Transport Canberra's website at [transport.act.gov.au](https://www.transport.act.gov.au/news/service-alerts-and-updates)."
-    }
-    new Content {
-        id = "government-sources-disclaimer"
-        title = "Government Sources"
-        content = """
-        Service alerts and transport network data are provided by the ACT Government, with which \"*Sinatra for Canberra*\" has no affiliation.
-
-        Transport data feeds can be found documented by the ACT Government at [https://anypoint.mulesoft.com/exchange/portals/act-government-9/e48d1999-b5c6-4944-b5cf-23de022d1287/gtfs-prx-api/](https://anypoint.mulesoft.com/exchange/portals/act-government-9/e48d1999-b5c6-4944-b5cf-23de022d1287/gtfs-prx-api/).
-
-        Service alerts can be found on the official Transport Canberra website at [https://www.transport.act.gov.au/news/service-alerts-and-updates](https://www.transport.act.gov.au/news/service-alerts-and-updates).
-        """
+        content = "Service updates are provided by the ACT Government. [Read full disclaimer](https://sinatra-transport.com/government-sources)."
     }
 }
 
