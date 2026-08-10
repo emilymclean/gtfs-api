@@ -7,7 +7,7 @@ name = "pypi"
 click = "*"
 pandas = "*"
 dataclasses = "*"
-protobuf = "==6.32.1"
+protobuf = "==6.33.5"
 pyyaml = "*"
 
 [dev-packages]
