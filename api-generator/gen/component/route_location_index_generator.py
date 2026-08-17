@@ -20,24 +20,19 @@ class RouteLocationIndex:
         }
 
 
-class JsonRouteLocationIndexGeneratorFormat(JsonGeneratorFormat[RouteLocationIndex]):
+class ProtoRouteLocationIndexGeneratorFormat(ProtoGeneratorFormat[List[RouteLocationIndex]]):
 
-    def parse(self, intermediary: RouteLocationIndex, distinguisher: Optional[str]) -> Any:
-        return intermediary.to_json()
-
-
-class ProtoRouteLocationIndexGeneratorFormat(ProtoGeneratorFormat[RouteLocationIndex]):
-
-    def parse(self, intermediary: RouteLocationIndex, distinguisher: Optional[str]) -> Any:
+    def parse(self, intermediary: List[RouteLocationIndex], distinguisher: Optional[str]) -> Any:
         out = pb.RouteLocationIndexEndpoint()
-        index = out.indicies.add()
-        index.point.lat = intermediary.point.lat
-        index.point.lng = intermediary.point.lng
-        index.routeId.extend(intermediary.route_ids)
+        for i in intermediary:
+            index = out.indicies.add()
+            index.point.lat = i.point.lat
+            index.point.lng = i.point.lng
+            index.routeId.extend(i.route_ids)
         return out
 
 
-class RouteLocationIndexGeneratorComponent(FormatGeneratorComponent[RouteLocationIndex]):
+class RouteLocationIndexGeneratorComponent(FormatGeneratorComponent[List[RouteLocationIndex]]):
 
     def __init__(
             self,
@@ -51,16 +46,15 @@ class RouteLocationIndexGeneratorComponent(FormatGeneratorComponent[RouteLocatio
         self.trip_index = trip_index
         self.distinguishers = distinguishers
 
-    def _formats(self) -> List[GeneratorFormat[RouteLocationIndex]]:
+    def _formats(self) -> List[GeneratorFormat[List[RouteLocationIndex]]]:
         return [
-            JsonRouteLocationIndexGeneratorFormat(),
             ProtoRouteLocationIndexGeneratorFormat(),
         ]
 
-    def _path(self, output_folder: Path, intermediary: RouteLocationIndex, extension: str) -> Path:
-        return output_folder.joinpath(f"route-location-index.{extension}")
+    def _path(self, output_folder: Path, intermediary: List[RouteLocationIndex], extension: str) -> Path:
+        return output_folder.joinpath(f"v1/route/location-index.{extension}")
 
-    def _read_intermediary(self, distinguisher: Optional[str]) -> List[RouteLocationIndex]:
+    def _read_intermediary(self, distinguisher: Optional[str]) -> List[List[RouteLocationIndex]]:
         stops = flatten_parsed(filter_parsed_by_distinguisher(self.stop_csvs, distinguisher))
         stop_times = flatten_parsed(filter_parsed_by_distinguisher(self.stop_time_data, distinguisher))
 
@@ -70,10 +64,10 @@ class RouteLocationIndexGeneratorComponent(FormatGeneratorComponent[RouteLocatio
             if trip is not None:
                 routes_by_stop.setdefault(stop_time.stop_id, set()).add(trip.route_id)
 
-        return [
+        return [[
             RouteLocationIndex(
                 stop.location,
                 sorted(routes_by_stop.get(stop.id, set())),
             )
             for stop in stops
-        ]
+        ]]
