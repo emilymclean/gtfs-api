@@ -125,6 +125,11 @@ pages = new Listing<Content> {
 
         \(licenses.appLicense.description())
 
+        #### Special Thanks
+
+        * **Clover Oxborrow** for keeping me sane.
+        * **Finn Woolley** for you support, enthusiasm and suggestions.
+
         Sinatra is not affiliated with Transport Canberra, NEC, or MyWay+.
         """
     }
