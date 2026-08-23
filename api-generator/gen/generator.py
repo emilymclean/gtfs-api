@@ -9,6 +9,7 @@ from .component.route_canonical_timetable_generator import RouteCanonicalTimetab
 from .component.route_detail_generator import RouteDetailGeneratorComponent
 from .component.route_headings_generator import RouteHeadingsGeneratorComponent
 from .component.route_list_generator import RouteListGeneratorComponent
+from .component.route_location_index_generator import RouteLocationIndexGeneratorComponent
 from .component.route_service_generator import RouteServiceGeneratorComponent
 from .component.route_timetable_generator import RouteTimetableGeneratorComponent
 from .component.service_list_generator import ServiceListGeneratorComponent
@@ -149,6 +150,12 @@ class Generator:
             StopListGeneratorComponent(self.stop_data, self.distinguishers),
             StopDetailGeneratorComponent(self.stop_data, self.stop_index_by_parent, self.distinguishers),
             StopRoutesGeneratorComponent(self.stop_time_data, self.trip_index, self.distinguishers),
+            RouteLocationIndexGeneratorComponent(
+                self.stop_data,
+                self.stop_time_data,
+                self.trip_index,
+                self.distinguishers
+            ),
             RouteListGeneratorComponent(self.route_data, self.distinguishers),
             RouteDetailGeneratorComponent(self.route_data, self.distinguishers),
             RouteTimetableGeneratorComponent(

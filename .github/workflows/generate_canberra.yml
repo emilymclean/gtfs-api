@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Protoc
-        uses: arduino/setup-protoc@v3
+        uses: rustfs/setup-protoc@v3.0.1
       - name: Install pkl
         uses: pkl-community/setup-pkl@v0
         with:

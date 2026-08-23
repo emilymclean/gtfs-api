@@ -69,9 +69,9 @@ class ProtoServiceListGeneratorFormat(ProtoGeneratorFormat[List[ServiceIntermedi
                 service.exception.append(exception)
 
             service.accessibility.bikesAllowed = service_bikes_allowed_pb[i.bikes_allowed]
-            service.accessibility.bikesAllowedAppliesToAllTrips = i.all_trips_bikes_allowed
+            service.accessibility.bikesAllowedAppliesToAllTrips = int(i.all_trips_bikes_allowed)
             service.accessibility.wheelchairAccessible = service_bikes_allowed_pb[i.wheelchair_accessible]
-            service.accessibility.wheelchairAccessibleAppliesToAllTrips = i.all_trips_wheelchair_accessible
+            service.accessibility.wheelchairAccessibleAppliesToAllTrips = int(i.all_trips_wheelchair_accessible)
 
             out.service.append(service)
 
