@@ -9,6 +9,7 @@ protobuf = "==5.29.3"
 beautifulsoup4 = "*"
 urllib3 = "*"
 isodate = "*"
+cloudscraper = "*"
 
 [dev-packages]
 
